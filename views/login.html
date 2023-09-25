@@ -4,34 +4,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
+<!--<div class="nav-bar">-->
+<!--    <div><h1>Authorization</h1></div>-->
+<!--    <div class="nav-menu">-->
+<!--        <ul>-->
+<!--            <li onclick="window.location.assign('/')">Home</li>-->
+<!--            <li onclick="window.location.assign('/register')">Register</li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</div>-->
 <div class="container">
-    <h1>Registration</h1>
     <div class="box">
-        <form action="/registration" method="post">
+        <h1>Login</h1>
+        <form action="/login" method="post">
             <div class="form-group">
-                <label for="name">username: </label>
-                <input type="text" name="name" id="name" placeholder="Input your full name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">email: </label>
-                <input type="email" name="email" id="email" placeholder="Input your email" required>
+                <label for="login">login: </label>
+                <input type="text" name="login" id="login" placeholder="Input login" required>
             </div>
             <div class="form-group">
                 <label for="password">password: </label>
                 <input type="password" name="password" id="password" placeholder="Input password" required minlength="6">
             </div>
+
             <div class="form-group">
-                <label for="confirm">Confirm password: </label>
-                <input type="password" name="confirm" id="confirm" placeholder="Confirm password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <button type="submit">Signup</button>
-                <button type="button" onclick="window.location.assign('/login')">Go to login</button>
+                <button type="submit">Log in</button>
+                <button type="button" onclick="window.location.assign('/signup')">Go to signup</button>
             </div>
         </form>
     </div>

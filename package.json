@@ -1,8 +1,30 @@
 {
+  "name": "ucode-cardgame",
+  "description": "Web cardgame on JS using Node.JS",
+  "version": "1.0.0",
+  "main": "index.js",
   "type": "module",
   "dependencies": {
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "mysql2": "^3.6.1"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raddzor01/ucode-cardgame.git"
+  },
+  "author": "Danylo Harin, Kirylo Yehorov, Ilya Serikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raddzor01/ucode-cardgame/issues"
+  },
+  "homepage": "https://github.com/Raddzor01/ucode-cardgame#readme"
 }

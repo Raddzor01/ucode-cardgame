@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 
-import { authRouter } from "./routes/authRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 const port = process.env.PORT || 8080;
