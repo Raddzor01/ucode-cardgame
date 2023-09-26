@@ -21,7 +21,7 @@
 <div class="container">
     <div class="box">
         <h1>Login</h1>
-        <form action="/login" method="post">
+        <form action="/login" method="post" id="loginForm">
             <div class="form-group">
                 <label for="login">login: </label>
                 <input type="text" name="login" id="login" placeholder="Input login" required>
@@ -40,19 +40,39 @@
 </div>
 
 <script>
-    document.querySelector("button").addEventListener('click', (e) => validate(e));
-    function validate(e) {
-        let password = document.querySelector('#password');
-        let confirm = document.querySelector('#confirm');
-        console.log(password.value);
-        if(password.value !== confirm.value) {
-            e.preventDefault();
-            confirm.insertAdjacentHTML("afterend", "<div class='message error' id='error'>Passwords does not match</div>");
-            setTimeout(() => {
-                document.querySelector('.error').outerHTML = '';
-            },2000);
+   document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
+
+    var data = {
+        login: login,
+        password: password
+    };
+
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.redirected) {
+            document.location = response.url;
+        } else {
+            // Обработка ошибки от сервера
+            // Вывести сообщение об ошибке или выполнить другие действия
+            console.error('Ошибка при отправке данных на сервер.');
         }
-    }
+    })
+    .catch(error => {
+        // Обработка ошибки, которая могла возникнуть при отправке запроса
+        console.error('Произошла ошибка при отправке запроса: ' + error.message);
+    });
+});
+
 </script>
 </body>
 
