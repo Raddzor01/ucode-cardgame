@@ -232,3 +232,34 @@ input:focus, input:hover {
         margin-top: 20px;
     }
 }
+
+@media (max-height: 845px) {
+
+    .banner {
+        margin-top: 50px;
+    }
+
+    .auth_container {
+        height: calc(100vh - 224px);
+    }
+}
+
+@media (max-height: 780px) {
+
+    .banner {
+        margin-top: 25px;
+    }
+    .auth_container {
+        height: calc(100vh - 124px);
+    }
+}
+
+@media (max-height: 650px) {
+
+    .banner {
+        margin-top: 15px;
+    }
+    .auth_container {
+        height: calc(100vh - 24px);
+    }
+}
