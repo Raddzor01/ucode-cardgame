@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+#signup_body {
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/auth_bg.png");
+    background-size: cover; /* Масштабировать изображение, чтобы оно заполнило весь фон */
+    background-repeat: no-repeat; /* Запретить повторение фонового изображения */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

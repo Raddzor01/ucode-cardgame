@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registration</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
 
-<body>
-<div class="container">
-    <h1>Registration</h1>
-    <div class="box">
-        <form action="/registration" method="post">
-            <div class="form-group">
-                <label for="name">username: </label>
-                <input type="text" name="name" id="name" placeholder="Input your full name" required>
+    <body id="signup_body">
+        <div class="auth_container">
+            <h1>Registration</h1>
+            <div class="box">
+                <div class="message error">
+                    Error
+                </div>
+                <form action="/registration" method="post">
+                    <div class="form-group">
+                        <label for="name">username: </label>
+                        <input type="text" name="name" id="name"
+                            placeholder="Input your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">email: </label>
+                        <input type="email" name="email" id="email"
+                            placeholder="Input your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">password: </label>
+                        <input type="password" name="password" id="password"
+                            placeholder="Input password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm">Confirm password: </label>
+                        <input type="password" name="confirm" id="confirm"
+                            placeholder="Confirm password" required
+                            minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Signup</button>
+                        <button type="button"
+                            onclick="window.location.assign('/login')">Go to
+                            login</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="email">email: </label>
-                <input type="email" name="email" id="email" placeholder="Input your email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">password: </label>
-                <input type="password" name="password" id="password" placeholder="Input password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <label for="confirm">Confirm password: </label>
-                <input type="password" name="confirm" id="confirm" placeholder="Confirm password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <button type="submit">Signup</button>
-                <button type="button" onclick="window.location.assign('/login')">Go to login</button>
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-<script>
+        <script>
     document.querySelector("button").addEventListener('click', (e) => validate(e));
     function validate(e) {
         let password = document.querySelector('#password');
@@ -52,6 +62,6 @@
         }
     }
 </script>
-</body>
+    </body>
 
 </html>
