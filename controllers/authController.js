@@ -13,7 +13,7 @@ export default class controller {
     }
 
     static login(req, res) {
-        if(req.cookies && req.cookies.token) {
+        if(req.cookies.token) {
             // вынести константы в конфиг или отдельный модуль Приоритет: 5
             jsonwebtoken.verify(req.cookies.token, "securepass", (err, decoded) => {
                 if (err) {
@@ -44,6 +44,7 @@ export default class controller {
             login: newUser.login
         }, "securepass", {expiresIn: 5000});
         res.cookie("token", token);
+        console.log(res.cookie.token + ";" + token);
         res.redirect("/");
     }
 
