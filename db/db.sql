@@ -10,3 +10,12 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(256) NOT NULL UNIQUE,
     password VARCHAR(256) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS cards (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    mana INT NOT NULL,
+    damage INT NOT NULL,
+    hp INT NOT NULL,
+    picture_path VARCHAR(256) NOT NULL
+);
