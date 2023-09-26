@@ -4,7 +4,7 @@ import path from 'path';
 import authRouter from "./routes/authRouter.js";
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
