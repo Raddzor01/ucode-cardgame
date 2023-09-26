@@ -44,7 +44,6 @@ export default class controller {
             login: newUser.login
         }, "securepass", {expiresIn: 5000});
         res.cookie("token", token);
-        console.log(res.cookie.token + ";" + token);
         res.redirect("/");
     }
 
