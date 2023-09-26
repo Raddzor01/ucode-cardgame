@@ -1,56 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registration</title>
+        <link href='https://fonts.googleapis.com/css?family=DotGothic16'
+            rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=VT323'
+            rel='stylesheet'>
+        <link rel="stylesheet" href="/style.css">
+    </head>
 
-<body>
-<div class="container">
-    <h1>Registration</h1>
-    <div class="box">
-        <form action="/registration" method="post">
-            <div class="form-group">
+    <body id="signup_body">
+        <div class="message_error">
+            Error
+        </div>
+        <div class="auth_container">
+
+            <p class="banner">Create an Acccount</p>
+            <p class="desc">Sign up and start playing!</p>
+
+            <form action="/signup" method="post" id="singupForm">
+
                 <label for="name">username: </label>
-                <input type="text" name="name" id="name" placeholder="Input your full name" required>
-            </div>
-            <div class="form-group">
+                <input type="text" name="name" id="name"
+                    placeholder="Input your full name" required>
+
                 <label for="email">email: </label>
-                <input type="email" name="email" id="email" placeholder="Input your email" required>
-            </div>
-            <div class="form-group">
+                <input type="email" name="email" id="email"
+                    placeholder="Input your email" required>
+
                 <label for="password">password: </label>
-                <input type="password" name="password" id="password" placeholder="Input password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <label for="confirm">Confirm password: </label>
-                <input type="password" name="confirm" id="confirm" placeholder="Confirm password" required minlength="6">
-            </div>
-            <div class="form-group">
-                <button type="submit">Signup</button>
-                <button type="button" onclick="window.location.assign('/login')">Go to login</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <input type="password" name="password" id="password"
+                    placeholder="Input password" required minlength="6">
+
+                <button type="submit" id="create_acc_btn">Create Account</button>
+                <button type="button" id="sign_in_btn"
+                    onclick="window.location.assign('/login')">Log in
+                    </button>
+
+            </form>
+
+        </div>
 
 <script>
-    document.querySelector("button").addEventListener('click', (e) => validate(e));
-    function validate(e) {
-        let password = document.querySelector('#password');
-        let confirm = document.querySelector('#confirm');
-        console.log(password.value);
-        if(password.value !== confirm.value) {
-            e.preventDefault();
-            confirm.insertAdjacentHTML("afterend", "<div class='message error' id='error'>Passwords does not match</div>");
-            setTimeout(() => {
-                document.querySelector('.error').outerHTML = '';
-            },2000);
-        }
+document.getElementById("singupForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const name = document.querySelector('#name').value;
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
+
+    if (name === '') {
+        alert('Пожалуйста, введите логин.');
+        return; // Останавливаем отправку формы
     }
+
+    if (password === '') {
+        alert('Пожалуйста, введите пароль.');
+        return;
+    }
+
+    // Проверка на правильный формат email
+    var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+        alert('Пожалуйста, введите корректный email.');
+        return;
+    }
+
+    // Создаем объект с данными, которые будут отправлены на сервер
+    const data = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    // Отправляем данные на сервер с использованием AJAX-запроса
+    fetch('/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (response.redirected) {
+                document.location = response.url;
+            } else {
+                // Обработка ошибки от сервера
+                // Вывести сообщение об ошибке или выполнить другие действия
+                console.error('Ошибка при отправке данных на сервер.');
+            }
+        })
+        .catch(error => {
+            // Обработка ошибки, которая могла возникнуть при отправке запроса
+            console.error('Произошла ошибка при отправке запроса: ' + error.message);
+        });
+});
 </script>
 </body>
 

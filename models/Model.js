@@ -7,17 +7,14 @@ export default class Model {
     }
 
     async save(data) {
-        const propertyNames = [];
         const propertyValues = [];
-        for(const property in data) {
-            if (property !== "id") {
-                propertyNames.push(property);
+        for(const property in data)
+            if (property !== "id")
                 propertyValues.push(data[property]);
-            }
-        }
-        const sql = `INSERT INTO ${this.table} (${propertyNames}) VALUES (${propertyValues});`;
+
+        const sql = `INSERT INTO ${this.table} (login, email, password) VALUES (?, ?, ?);`;
         const db = connectToDatabase();
-        let res = await db.promise().query(sql).catch((reason) => {
+        let res = await db.promise().query(sql, propertyValues).catch((reason) => {
             return reason.sqlMessage;
         });
         db.end();
