@@ -19,3 +19,4 @@ CREATE TABLE IF NOT EXISTS cards (
     hp INT NOT NULL,
     picture_path VARCHAR(256) NOT NULL
 );
+
