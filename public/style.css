@@ -7,7 +7,7 @@ html, body {
     width: 100vw;
     height: 100vh;
 
-    background-image: url("/images/auth_bg.png");
+    background-image: url("/images/auth_bgg.png");
     background-size: cover;
     /* Масштабировать изображение, чтобы оно заполнило весь фон */
     background-repeat: no-repeat;
@@ -19,8 +19,14 @@ html, body {
 }
 
 .auth_container {
-    width: 1500px;
-    height: 750px;
+    width: calc(100vw - 548px);
+    height: calc(100vh - 324px);
+
+    /* margin-top: 162px;
+    margin-bottom: 162px;
+
+    margin-left: 274px;
+    margin-right: 274px; */
 
     display: flex;
     align-items: center;
