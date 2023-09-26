@@ -1,56 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Registration</title>
-        <link href='https://fonts.googleapis.com/css?family=DotGothic16'
-            rel='stylesheet'>
-        <link href='https://fonts.googleapis.com/css?family=VT323'
-            rel='stylesheet'>
-        <link rel="stylesheet" href="/style.css">
-    </head>
-
-    <body id="signup_body">
-        <div class="message_error">
-            Error
-        </div>
-        <div class="auth_container">
-
-            <p class="banner">Create an Acccount</p>
-            <p class="desc">Sign up and start playing!</p>
-
-            <form action="/signup" method="post">
-
-                <label for="name">username: </label>
-                <input type="text" name="name" id="name"
-                    placeholder="Input your full name" required>
-
-                <label for="email">email: </label>
-                <input type="email" name="email" id="email"
-                    placeholder="Input your email" required>
-
-                <label for="password">password: </label>
-                <input type="password" name="password" id="password"
-                    placeholder="Input password" required minlength="6">
-
-                <button type="submit" id="create_acc_btn">Create Account</button>
-                <button type="button" id="sign_in_btn"
-                    onclick="window.location.assign('/login')">Log in
-                    </button>
-
-            </form>
-
-        </div>
-
-<script>
 document.getElementById("singupForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
     const name = document.querySelector('#name').value;
     const email = document.querySelector('#email').value;
     const password = document.querySelector('#password').value;
+    const confirm = document.querySelector('#confirm').value;
 
     if (name === '') {
         alert('Пожалуйста, введите логин.');
@@ -59,6 +13,16 @@ document.getElementById("singupForm").addEventListener("submit", function (event
 
     if (password === '') {
         alert('Пожалуйста, введите пароль.');
+        return;
+    }
+
+    if (confirm === '') {
+        alert('Пожалуйста, подтвердите пароль.');
+        return;
+    }
+
+    if (password !== confirm) {
+        alert('Пароль и подтверждение пароля не совпадают.');
         return;
     }
 
@@ -77,7 +41,7 @@ document.getElementById("singupForm").addEventListener("submit", function (event
     };
 
     // Отправляем данные на сервер с использованием AJAX-запроса
-    fetch('/signup', {
+    fetch('/registration', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -85,8 +49,10 @@ document.getElementById("singupForm").addEventListener("submit", function (event
         body: JSON.stringify(data)
     })
         .then(response => {
-            if (response.redirected) {
-                document.location = response.url;
+            if (response.ok) {
+                // Обработка успешного ответа от сервера
+                // Например, можно перенаправить пользователя на другую страницу
+                window.location.assign('/success');
             } else {
                 // Обработка ошибки от сервера
                 // Вывести сообщение об ошибке или выполнить другие действия
@@ -98,7 +64,36 @@ document.getElementById("singupForm").addEventListener("submit", function (event
             console.error('Произошла ошибка при отправке запроса: ' + error.message);
         });
 });
-</script>
-</body>
 
-</html>
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
+
+    var data = {
+        login: login,
+        password: password
+    };
+
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.redirected) {
+            document.location = response.url;
+        } else {
+            // Обработка ошибки от сервера
+            // Вывести сообщение об ошибке или выполнить другие действия
+            console.error('Ошибка при отправке данных на сервер.');
+        }
+    })
+    .catch(error => {
+        // Обработка ошибки, которая могла возникнуть при отправке запроса
+        console.error('Произошла ошибка при отправке запроса: ' + error.message);
+    });
+});

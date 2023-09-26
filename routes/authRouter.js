@@ -15,7 +15,7 @@ authRouter.post('/login', controller.loginUser);
 // напоминание пароля Приоритет: 5
 
 function checkToken(req, res, next) {
-    let token = req.cookies ? req.cookies.token : undefined;
+    let token = req.cookies.token;
     if(!token)
         return res.redirect("/login");
     jsonwebtoken.verify(token, "securepass", (err, decoded) => {
@@ -23,6 +23,8 @@ function checkToken(req, res, next) {
            res.status(403).redirect("/login");
            return;
        }
+        req.user = decoded;
+        next();
     });
 }
 
