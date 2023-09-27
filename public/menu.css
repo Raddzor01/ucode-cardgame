@@ -73,7 +73,7 @@ html, body {
 }
 
 .wrapper {
-    outline: 2px darkblue dotted;
+    /* outline: 2px darkblue dotted; */
 
     margin-top: 58px;
 
