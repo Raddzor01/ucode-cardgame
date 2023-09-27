@@ -28,7 +28,7 @@ html, body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    
+
     /* outline: 2px red dotted; */
 }
 
@@ -184,8 +184,6 @@ html, body {
 }
 
 .username {
-
-
     font-family: 'Retro Gaming';
     font-style: normal;
     font-weight: 400;
@@ -195,8 +193,6 @@ html, body {
     text-align: center;
 
     color: #DFEAFF;
-
-
 }
 
 .logout {
@@ -232,37 +228,241 @@ html, body {
     .container {
         height: calc(100vh - 100px);
     }
+
     .avatar {
         width: 200px;
         height: 200px;
     }
+
     .wins, .username {
         font-size: 2rem;
     }
+
     .wrapper {
         width: 450px;
         height: 450px;
     }
-} 
+}
 
 @media (max-height: 860px) {
     .container {
         height: calc(100vh - 100px);
     }
+
     .avatar {
         width: 100px;
         height: 100px;
     }
+
     .wins, .username {
         font-size: 1rem;
     }
+
     .wrapper {
         width: 350px;
         height: 350px;
     }
+
     #check_cards, #find_game {
         width: 300px;
         height: 75px;
         font-size: 1.25rem;
     }
-} 
+}
+
+
+/* .loader, .loader::before, .loader::after {
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 10px;
+    animation: rotate 5s linear infinite;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-color: #5a4ff3;
+}
+
+.loader::before, .loader::after {
+    position: absolute;
+    content: "";
+}
+
+.loader::before {
+    border-color: #35a2d2;
+    width: 110%;
+    height: 110%;
+    animation-delay: .5s
+}
+
+.loader::after {
+    border-color: #9c40fc;
+    width: 120%;
+    height: 120%;
+    animation-delay: .10s;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg)
+    }
+} */
+
+
+/* .custom-loader {
+    width: 200px;
+    height: 200px;
+    display: grid;
+}
+
+.custom-loader::before,
+.custom-loader::after {
+    content: "";
+    grid-area: 1/1;
+    --c: radial-gradient(farthest-side, #1692f8 92%, rgba(179, 53, 53, 0));
+    background: var(--c) 50% 0,
+        var(--c) 50% 100%,
+        var(--c) 100% 50%,
+        var(--c) 0 50%;
+    background-size: 48px 48px;
+    background-repeat: no-repeat;
+    animation: s2 1s infinite;
+}
+
+.custom-loader::before {
+    margin: 4px;
+    filter: hue-rotate(45deg);
+    background-size: 32px 32px;
+    animation-timing-function: linear
+}
+
+@keyframes s2 {
+
+    100% {
+        transform: rotate(.5turn)
+    }
+} */
+
+/* beeear */
+.loader {
+    width: 160px;
+    height: 185px;
+    position: relative;
+    background: #fff;
+    border-radius: 100px 100px 0 0;
+}
+
+.loader:after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 125px;
+    left: 50%;
+    top: 25px;
+    transform: translateX(-50%);
+    background-image: radial-gradient(circle, #000 48%, transparent 55%),
+        radial-gradient(circle, #000 48%, transparent 55%),
+        radial-gradient(circle, #fff 30%, transparent 45%),
+        radial-gradient(circle, #000 48%, transparent 51%),
+        linear-gradient(#000 20px, transparent 0),
+        linear-gradient(#cfecf9 60px, transparent 0),
+        radial-gradient(circle, #cfecf9 50%, transparent 51%),
+        radial-gradient(circle, #cfecf9 50%, transparent 51%);
+    background-repeat: no-repeat;
+    background-size: 16px 16px, 16px 16px, 10px 10px, 42px 42px, 12px 3px,
+        50px 25px, 70px 70px, 70px 70px;
+    background-position: 25px 10px, 55px 10px, 36px 44px, 50% 30px, 50% 85px,
+        50% 50px, 50% 22px, 50% 45px;
+    animation: faceLift 3s linear infinite alternate;
+}
+
+.loader:before {
+    content: "";
+    position: absolute;
+    width: 140%;
+    height: 125px;
+    left: -20%;
+    top: 0;
+    background-image: radial-gradient(circle, #fff 48%, transparent 50%),
+        radial-gradient(circle, #fff 48%, transparent 50%);
+    background-repeat: no-repeat;
+    background-size: 65px 65px;
+    background-position: 0px 12px, 145px 12px;
+    animation: earLift 3s linear infinite alternate;
+}
+
+@keyframes faceLift {
+    0% {
+        transform: translateX(-60%);
+    }
+
+    100% {
+        transform: translateX(-30%);
+    }
+}
+
+@keyframes earLift {
+    0% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+
+
+.notification {
+    margin-top: 50px;
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 61px;
+    /* identical to box height */
+    text-align: center;
+
+    color: #DFEAFF;
+}
+
+.cancel_btn {
+    margin-top: 58px;
+    width: 400px;
+    height: 100px;
+
+    background: #DFEAFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+
+
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 41px;
+    text-align: center;
+
+    border: none;
+
+    padding: 0;
+
+    color: #0A0A0A;
+
+    transition: all 0.3s ease-in-out;
+}
+
+.cancel_btn:hover:active {
+    transition: 0.5s;
+    transform: scale(0.9);
+}
+
+.cancel_btn:hover {
+    transition: 0.5s;
+    transform: translateY(-4px);
+}

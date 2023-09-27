@@ -13,31 +13,33 @@
     </head>
 
     <body id="menu_body">
-        
+
         <div class="container">
 
-        <button id="check_cards">Check cards</button>
+            <button id="check_cards">Check cards</button>
 
-        <div class="wrapper">
-            <p class="wins">Wins:</p>
-            <button class="button_for_avatar"><?xml version="1.0" encoding="UTF-8"?>
+            <div class="wrapper">
+                <p class="wins">Wins:</p>
+                <button class="button_for_avatar"><?xml version="1.0" encoding="UTF-8"?>
 
-                <svg class="image" class="icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="125px" height="125px" fill="none" stroke-width="1.5"
-                    viewBox="0 0 24 24" color="#DFEAFF">
-                    <path stroke="#DFEAFF" stroke-width="1.5"
-                        stroke-linecap="round" stroke-linejoin="round"
-                        d="M6 3H3v3M18 3h3v3M6 21H3v-3M7 18v-1a5 5 0 0 1 5-5v0a5 5 0 0 1 5 5v1M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 21h3v-3"></path>
-                </svg>
-                <img src="/avatars/default_avatar.png" alt="pfp" class="avatar">
+                    <svg class="image" class="icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="125px" height="125px" fill="none"
+                        stroke-width="1.5"
+                        viewBox="0 0 24 24" color="#DFEAFF">
+                        <path stroke="#DFEAFF" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 3H3v3M18 3h3v3M6 21H3v-3M7 18v-1a5 5 0 0 1 5-5v0a5 5 0 0 1 5 5v1M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 21h3v-3"></path>
+                    </svg>
+                    <img src="/avatars/default_avatar.png" alt="pfp"
+                        class="avatar">
 
-            </button>
-            <p class="username"></p>
+                </button>
+                <p class="username"></p>
+            </div>
+
+            <button id="find_game">Find Game!</button>
         </div>
-
-        <button id="find_game">Find Game!</button>
-    </div>
 
         <button class="logout" onclick="window.location.assign('/logout')"><?xml
             version="1.0" encoding="UTF-8"?><svg
@@ -47,16 +49,8 @@
                     stroke-linejoin="round"
                     d="M12 12h7m0 0-3 3m3-3-3-3M19 6V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1"></path></svg></button>
 
-        <!-- <span class="user_name"></span>
-        <div class="score">
-            <span class="wins"></span>
-            <span class="loses"></span>
-        </div>
-        <button class="sign_out" onclick="window.location.assign('/logout')">Sign
-            out</button>
-        <button class="find_game">Find game!</button> -->
-
         <script src="/socket.io/socket.io.js"></script>
+
         <script src="/scripts/menu.js"></script>
 
     </body>
