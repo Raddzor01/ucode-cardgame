@@ -1,4 +1,4 @@
-document.getElementById("singupForm").addEventListener("submit", function (event) {
+document.getElementById("singupForm").addEventListener("submit", (event) => {
     event.preventDefault();
 
     const name = document.querySelector('#name').value;

@@ -8,7 +8,10 @@ CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     login VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(256) NOT NULL UNIQUE,
-    password VARCHAR(256) NOT NULL
+    password VARCHAR(256) NOT NULL,
+    wins INT NOT NULL DEFAULT 0,
+    loses INT NOT NULL DEFAULT 0,
+    picture_path VARCHAR(256) NOT NULL DEFAULT 'resources/users/user.png'
 );
 
 CREATE TABLE IF NOT EXISTS cards (

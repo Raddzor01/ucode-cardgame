@@ -29,11 +29,16 @@ export default class Model {
     }
 
     async find(id) {
-        const sql = 'SELECT * FROM ' + this.table + ' WHERE id = ' + id + ';';
-        const connection = connectToDatabase();
-        const data = await connection.promise().query(sql);
-        connection.end();
-        return data;
+        try {
+            const sql = 'SELECT * FROM ' + this.table + ' WHERE id = ' + id + ';';
+            const connection = connectToDatabase();
+            const data = await connection.promise().query(sql);
+            connection.end();
+            return data;
+        } catch (error) {
+            console.error('Ошибка SQL:', error.message);
+            return null;
+        }
     }
 
     async delete(id) {

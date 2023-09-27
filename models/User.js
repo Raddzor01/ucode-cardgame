@@ -15,12 +15,13 @@ export default class User extends Model {
 
     async find(id) {
         const data = await super.find(id);
-        this.id = data[0].id;
-        this.login = data[0].login;
-        this.password = data[0].password;
-        this.username = data[0].username;
-        this.email = data[0].email;
-        this.role = data[0].role;
+        this.id = data[0][0].id;
+        this.login = data[0][0].login;
+        this.password = data[0][0].password;
+        this.email = data[0][0].email;
+        this.picture_path = data[0][0].picture_path;
+        this.wins = data[0][0].wins;
+        this.loses = data[0][0].loses;
     }
 
     async check(data) {

@@ -9,18 +9,18 @@
 </head>
 
 <body>
-<div class="nav-bar">
-    <div>
-        <img src="" alt="pfp">
-        <span class="user_name"></span>
-        <button class="sign_out">Sign out</button>
-        <button class="find_game">Find game!</button>
+<div>
+    <img src="resources/users/user.png" alt="pfp">
+    <span class="user_name"></span>
+    <div class="score">
+        <span class="wins"></span>
+        <span class="loses"></span>
     </div>
+    <button class="sign_out" onclick="window.location.assign('/logout')">Sign out</button>
+    <button class="find_game">Find game!</button>
 </div>
-<div class="container">
-
-
-</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/menu.js"></script>
 
 </body>
 

@@ -64,4 +64,9 @@ export default class controller {
         // Добавить логин сразу после рега
         res.redirect('/login');
     }
+
+    static logout(req, res) {
+        res.clearCookie('token');
+        res.redirect('/login');
+    }
 }
