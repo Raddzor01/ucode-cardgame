@@ -156,7 +156,6 @@ input:focus, input:hover {
 #create_acc_btn:active, #sign_in_btn:active {
     transition: 0.5s;
     transform: scale(0.93);
-    background-color: #fff;
 
 }
 
@@ -192,20 +191,6 @@ input:focus, input:hover {
     color: #DFEAFF;
 
     transition: transform 0.35s;
-}
-
-#sign_in_btn:active {
-    background-color: #DFEAFF;
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-#sign_in_btn:focus {
-    background-color: #DFEAFF;
-    border: none;
-    outline: none;
-    box-shadow: none;
 }
 
 @media (max-height: 1072px) {

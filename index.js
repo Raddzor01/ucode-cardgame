@@ -16,6 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('resources')));
 
+
 app.use(authRouter);
 
 app.use((req, res, next)=>{

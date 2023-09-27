@@ -1,0 +1,268 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+#menu_body {
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url("/images/menu_bg.png");
+    background-size: cover;
+    /* Масштабировать изображение, чтобы оно заполнило весь фон */
+    background-repeat: no-repeat;
+    /* Запретить повторение фонового изображения */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container {
+    width: calc(100vw - 1548px);
+    height: calc(100vh - 258px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    
+    /* outline: 2px red dotted; */
+}
+
+
+#check_cards {
+    margin: 0;
+    width: 400px;
+    height: 100px;
+
+    background: #0A0A0A;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+
+
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 41px;
+    /* identical to box height */
+    text-align: center;
+
+    color: #DFEAFF;
+
+    border: none;
+
+    padding: 0;
+
+    color: #DFEAFF;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#check_cards:hover:active {
+    transition: 0.5s;
+    transform: scale(0.9);
+}
+
+#check_cards:hover {
+    transition: 0.5s;
+    transform: translateY(-4px);
+}
+
+.wrapper {
+    outline: 2px darkblue dotted;
+
+    margin-top: 58px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 500px;
+    height: 500px;
+
+
+    background-color: rgba(66, 78, 139, 0.7);
+    border-radius: 90px;
+}
+
+.wins {
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 61px;
+
+    text-align: center;
+
+    color: #0A0A0A;
+}
+
+.button_for_avatar {
+    align-self: center;
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    padding: 0;
+    background: none;
+    outline: none;
+    border: none;
+    align-items: center;
+
+    transition: all 0.3s ease-in-out;
+
+    position: relative;
+}
+
+
+.image {
+    display: none;
+}
+
+/* Отобразить SVG при наведении на кнопку */
+.button_for_avatar:hover .image {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 125px;
+    height: 125px;
+
+    animation: circle-in-hesitate;
+
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    padding: 0;
+    outline: 6px solid #2C3D57;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+#find_game {
+    margin-top: 58px;
+    width: 400px;
+    height: 100px;
+
+    background: #DFEAFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+
+
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 41px;
+    text-align: center;
+
+    border: none;
+
+    padding: 0;
+
+    color: #0A0A0A;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#find_game:hover:active, .button_for_avatar:active {
+    transition: 0.5s;
+    transform: scale(0.9);
+}
+
+#find_game:hover {
+    transition: 0.5s;
+    transform: translateY(-4px);
+}
+
+.username {
+
+
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 61px;
+    /* identical to box height */
+    text-align: center;
+
+    color: #DFEAFF;
+
+
+}
+
+.logout {
+    position: absolute;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    margin: 0;
+    cursor: pointer;
+
+    transition: transform 0.35s;
+
+    bottom: 46px;
+    left: 50px;
+}
+
+.logout:hover {
+    transform: scale(1.25);
+    transition: transform 0.5s;
+    /* Увеличиваем время анимации при уходе курсора */
+}
+
+@media (max-height: 1080px) {
+
+    .container {
+        height: calc(100vh - 129px);
+    }
+
+}
+
+@media (max-height: 975px) {
+    .container {
+        height: calc(100vh - 100px);
+    }
+    .avatar {
+        width: 200px;
+        height: 200px;
+    }
+    .wins, .username {
+        font-size: 2rem;
+    }
+    .wrapper {
+        width: 450px;
+        height: 450px;
+    }
+} 
+
+@media (max-height: 860px) {
+    .container {
+        height: calc(100vh - 100px);
+    }
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    .wins, .username {
+        font-size: 1rem;
+    }
+    .wrapper {
+        width: 350px;
+        height: 350px;
+    }
+    #check_cards, #find_game {
+        width: 300px;
+        height: 75px;
+        font-size: 1.25rem;
+    }
+} 

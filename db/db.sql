@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(256) NOT NULL,
     wins INT NOT NULL DEFAULT 0,
     loses INT NOT NULL DEFAULT 0,
-    picture_path VARCHAR(256) NOT NULL DEFAULT 'resources/users/user.png'
+    picture_path VARCHAR(256) NOT NULL DEFAULT 'resources/avatars/default_avatar.png'
 );
 
 CREATE TABLE IF NOT EXISTS cards (
