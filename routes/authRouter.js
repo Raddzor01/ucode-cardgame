@@ -17,13 +17,13 @@ router.get('/logout', checkToken, controller.logout);
 
 function checkToken(req, res, next) {
     let token = req.cookies.token;
-    if(!token)
+    if (!token)
         return res.redirect("/login");
     jsonwebtoken.verify(token, "securepass", (err, decoded) => {
-       if(err) {
-           res.status(403).clearCookie('token').redirect("/login");
-           return;
-       }
+        if (err) {
+            res.status(403).clearCookie('token').redirect("/login");
+            return;
+        }
         req.user = decoded;
         next();
     });

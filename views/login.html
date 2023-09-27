@@ -1,44 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link href='https://fonts.googleapis.com/css?family=DotGothic16'
+            rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=VT323'
+            rel='stylesheet'>
+        <link rel="stylesheet" href="/login.css">
+    </head>
 
-<body>
-<div class="container">
-    <div class="box">
-        <h1>Login</h1>
-        <form action="/login" method="post" id="loginForm">
-            <div class="form-group">
-                <label for="login">login: </label>
-                <input type="text" name="login" id="login" placeholder="Input login" required>
-            </div>
-            <div class="form-group">
-                <label for="password">password: </label>
-                <input type="password" name="password" id="password" placeholder="Input password" required minlength="6">
-            </div>
+    <body id="login_body">
+        <div class="message_error">
+            Error
+        </div>
 
-            <div class="form-group">
-                <button type="submit">Log in</button>
-                <button type="button" onclick="window.location.assign('/signup')">Go to signup</button>
-            </div>
-        </form>
-    </div>
-</div>
+        <div class="container">
 
-<script>
+            <div class="wrapper">
+
+                <p class="banner">Hello again!</p>
+                <p class="desc">Welcome back you`ve been missed!</p>
+
+                <form action="/login" method="post" id="loginForm">
+
+                    <label for="username">username: </label>
+                    <input type="text" name="username" id="username"
+                        placeholder="Please enter username" required>
+
+                    <label for="password">password: </label>
+                    <input type="password" name="password" id="password"
+                        placeholder="Please enter password" required
+                        minlength="6">
+
+                    <button type="submit" id="log_in_btn">Log in</button>
+                    <button type="button" id="sign_up_btn"
+                        onclick="window.location.assign('/signup')">
+                        Sign up</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
    document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
-    var login = document.getElementById("login").value;
+    var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
 
     var data = {
-        login: login,
+        login: username,
         password: password
     };
 
@@ -65,6 +78,6 @@
 });
 
 </script>
-</body>
+    </body>
 
 </html>
