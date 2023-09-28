@@ -4,6 +4,10 @@ import User from '../models/User.js';
 
 export default class controller {
 
+    static game(req, res) {
+        res.sendFile(path.resolve('views', 'field.html'));
+    }
+
     static signup(req, res) {
         res.sendFile(path.resolve('views', 'signup.html'));
     }

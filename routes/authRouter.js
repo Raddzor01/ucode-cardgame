@@ -13,6 +13,7 @@ router.post('/signup', controller.registration);
 router.get('/login', controller.login);
 router.post('/login', controller.loginUser);
 router.get('/logout', checkToken, controller.logout);
+router.get('/game', checkToken, controller.game);
 // напоминание пароля Приоритет: 5
 
 function checkToken(req, res, next) {

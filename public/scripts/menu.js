@@ -18,6 +18,7 @@ const initialWrapperChildren = Array.from(wrapper.children);
 const initialContainerChildren = Array.from(container.children);
 
 find_game_btn.addEventListener('click', () => {
+    socket.emit("findGame", getCookie('token'));
     const loader = document.createElement('div');
     loader.classList.add('loader');
 
@@ -43,6 +44,7 @@ find_game_btn.addEventListener('click', () => {
 
     // Обработчик события для кнопки "Cancel"
     cancel_btn.addEventListener('click', () => {
+        socket.emit("cancelSearch", getCookie("token"));
         // Удаляем все дочерние элементы из .wrapper
         while (wrapper.firstChild) {
             wrapper.removeChild(wrapper.firstChild);
@@ -61,11 +63,11 @@ find_game_btn.addEventListener('click', () => {
         // Добавляем кнопку "Find Game!" обратно
         container.appendChild(find_game_btn);
     });
+
+    socket.on("toGame", (data) => {
+        window.location.href = data;
+    });
 });
-
-
-
-
 
 function getCookie(name) {
     const cookies = document.cookie.split(';');
