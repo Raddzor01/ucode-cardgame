@@ -1,7 +1,5 @@
 const socket = io();
 
-console.log(socket)
-
 let userData;
 
 socket.emit("getUserData", getCookie('token'));

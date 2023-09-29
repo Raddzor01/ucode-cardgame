@@ -45,22 +45,6 @@ export default class socketController {
             matchQueue.dequeue();
             gameRooms[roomNbr].players.push(userData);
             io.sockets.in("room-" + roomNbr).emit("toGame", "game");
-            const players = gameRooms[roomNbr].players;
-
-            const firstPlayer = {
-                login: players[0].login,
-                wins: players[0].wins,
-                profile_image: players[0].picture_path
-            };
-
-            const secondPlayer = {
-                login: players[1].login,
-                wins: players[1].wins,
-                profile_image: players[1].picture_path
-            };
-
-
-            io.sockets.in("room-" + roomNbr).emit("startGame", [firstPlayer, secondPlayer]);
             roomNbr++;
             return;
         }
@@ -80,21 +64,28 @@ export default class socketController {
             socket.join("room-" + roomNbr);
             const players = foundRoom.players;
 
+            const firstTurn = Math.floor(Math.random() * 2);
+            console.log(firstTurn);
+
             const firstPlayer = {
                 login: players[0].login,
                 wins: players[0].wins,
-                profile_image: players[0].picture
+                profile_image: players[0].picture,
+                firstTurn: firstTurn === 0
             };
 
             const secondPlayer = {
                 login: players[1].login,
                 wins: players[1].wins,
-                profile_image: players[1].picture
+                profile_image: players[1].picture,
+                firstTurn: firstTurn === 1
             };
 
             console.log(firstPlayer);
 
             io.sockets.in("room-" + roomNbr).emit("startGame", [firstPlayer, secondPlayer]);
+
+
             return userData;
         }
     }
