@@ -4,10 +4,11 @@ import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 
+import config from "./config.json" assert { type: 'json' };
 import authRouter from "./routes/authRouter.js";
 import socketRouter from "./routes/socketRouter.js";
 
-const port = process.env.PORT || 8000;
+const port = config.port || 8000;
 const app = express();
 
 app.use(cookieParser());
@@ -15,7 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('resources')));
-
 
 app.use(authRouter);
 

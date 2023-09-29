@@ -1,8 +1,13 @@
 {
-  "port": 8080, "db" : {
+  "port": 8080,
+  "db" : {
     "host": "localhost",
     "user": "dharin",
     "database": "cardgame",
     "password": "securepass"
+  },
+  "jswt": {
+    "secretKey": "securepass",
+    "tokenLife": 5000
   }
 }

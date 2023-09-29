@@ -5,8 +5,6 @@ import controller from "../controllers/authController.js";
 
 const router = express.Router();
 
-// добавить функцию для аунтентификации вебтокена после почти каждого чиха,
-// особенно для меню для перенаправления на логин Приоритет: 9
 router.get('/', checkToken, controller.menu);
 router.get('/signup', controller.signup);
 router.post('/signup', controller.registration);

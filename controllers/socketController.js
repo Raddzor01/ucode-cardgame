@@ -1,5 +1,6 @@
 import jsonwebtoken from "jsonwebtoken";
 
+import config from "../config.json" assert { type: 'json' };
 import User from '../models/User.js';
 import MatchQueue from "./matchQueue.js";
 
@@ -14,7 +15,7 @@ export default class socketController {
             let userData = {};
 
             try {
-                const decoded = await jsonwebtoken.verify(data, "securepass");
+                const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
 
                 await newUser.find(decoded.id);
                 userData = {
@@ -57,7 +58,7 @@ export default class socketController {
     }
 
     static async connectToRoom(io, socket, data, userData) {
-        const decoded = await jsonwebtoken.verify(data, "securepass");
+        const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
         const foundRoom = findRoomByUserData(decoded.id, decoded.login);
         if(foundRoom) {
             userData.roomNbr = foundRoom.roomNbr;
@@ -91,18 +92,16 @@ export default class socketController {
     }
 
     static async cancelSearch(io, socket, data) {
-        const decoded = await jsonwebtoken.verify(data, "securepass");
+        const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
         matchQueue.removePlayerById(decoded.id);
     }
 }
 
 function findRoomByUserData(id, login) {
-    for (const room of gameRooms) {
-        for (const player of room.players) {
-            if (player.id === id && player.login === login) {
+    for (const room of gameRooms)
+        for (const player of room.players)
+            if (player.id === id && player.login === login)
                 return room;
-            }
-        }
-    }
-    return null; // Комната не найдена
+
+    return null;
 }

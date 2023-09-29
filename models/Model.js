@@ -45,11 +45,12 @@ export default class Model {
 
     }
 
-    async exists(data) {
+    async checkData(data) {
         const sql = 'SELECT * FROM ' + this.table + ' WHERE ' + data.name + ' = \'' + data.value + '\';';
         const db = connectToDatabase();
         const result = await db.promise().query(sql);
         db.end();
         return !!result[0].length;
     }
+
 }
