@@ -1,0 +1,23 @@
+body {
+    background-color: gray;
+    margin: 0;
+    overflow: hidden;
+}
+
+#first-player,
+#second-player {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#second-player {
+    top: 0;
+    background-color: rgb(255, 0, 0);
+}
+
+#first-player {
+    order: 1;
+    bottom: 0%; /* Второй игрок снизу без отступа */
+    background-color: aqua;
+}

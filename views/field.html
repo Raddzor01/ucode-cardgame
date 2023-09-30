@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Game</title>
+    <link rel="stylesheet" href="/field.css">
 </head>
+
 <body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/field.js"></script>
+
+    <div id="first-player-container">
+        <div id="first-player">
+            <h2>First Player</h2>
+            <p><span id="first-player-login"></span></p>
+            <p>Wins: <span id="first-player-wins"></span></p>
+        </div>
+    </div>
+
+    <div id="second-player-container">
+        <div id="second-player">
+            <h2>Second Player</h2>
+            <p><span id="second-player-login"></span></p>
+            <p>Wins: <span id="second-player-wins"></span></p>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/field.js"></script>
 </body>
+
 </html>

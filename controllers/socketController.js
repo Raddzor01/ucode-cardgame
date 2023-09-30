@@ -66,7 +66,6 @@ export default class socketController {
             const players = foundRoom.players;
 
             const firstTurn = Math.floor(Math.random() * 2);
-            console.log(firstTurn);
 
             const firstPlayer = {
                 login: players[0].login,
@@ -82,7 +81,6 @@ export default class socketController {
                 firstTurn: firstTurn === 1
             };
 
-            console.log(firstPlayer);
 
             io.sockets.in("room-" + roomNbr).emit("startGame", [firstPlayer, secondPlayer]);
 
