@@ -77,7 +77,7 @@ export default class socketController {
                 wins: players[0].wins,
                 profile_image: players[0].picture,
                 firstTurn: firstTurn === 0,
-                startCards: generateStartCards()
+                startCards: decoded.id === players[0].id ? generateStartCards() : null
             };
 
             const secondPlayer = {
@@ -85,7 +85,7 @@ export default class socketController {
                 wins: players[1].wins,
                 profile_image: players[1].picture,
                 firstTurn: firstTurn === 1,
-                startCards: generateStartCards()
+                startCards: decoded.id === players[1].id ? generateStartCards() : null
             };
 
             console.log(firstPlayer);
