@@ -13,7 +13,7 @@ router.post('/login', controller.loginUser);
 router.get('/logout', checkToken, controller.logout);
 router.get('/game', checkToken, controller.game);
 // напоминание пароля Приоритет: 5
-
+router.post('/upload', checkToken, controller.updatePhoto);
 function checkToken(req, res, next) {
     let token = req.cookies.token;
     if (!token)

@@ -3,7 +3,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-
+import fileUpload from 'express-fileupload';
 import config from "./config.json" assert { type: 'json' };
 import authRouter from "./routes/authRouter.js";
 import socketRouter from "./routes/socketRouter.js";
@@ -13,6 +13,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(fileUpload({}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('resources')));

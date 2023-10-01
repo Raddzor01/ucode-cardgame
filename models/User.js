@@ -3,8 +3,8 @@ import Model from "./Model.js";
 import {connectToDatabase} from "../db/db.js";
 
 export default class User extends Model {
-    constructor(table) {
-        super(table);
+    constructor() {
+        super("users");
     }
 
     async save(data) {

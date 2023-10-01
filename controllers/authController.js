@@ -31,7 +31,7 @@ export default class controller {
     }
 
     static async loginUser (req, res) {
-        const newUser = new User('users');
+        const newUser = new User();
         const data = req.body;
 
         let userId = await newUser.check(data);
@@ -51,9 +51,8 @@ export default class controller {
     }
 
     static async registration(req, res) {
-        console.log(req.body);
         const data = req.body;
-        const userTable = new User('users');
+        const userTable = new User();
         if (await userTable.checkData({ name: 'login', value: data.login })) {
             res.send('User exists');
             return;
@@ -72,5 +71,15 @@ export default class controller {
     static logout(req, res) {
         res.clearCookie('token');
         res.redirect('/login');
+    }
+
+    static async updatePhoto(req, res) {
+        const decoded = await jsonwebtoken.verify(req.cookies.token, config.jswt.secretKey);
+        const userTable = new User();
+
+        const filePath = '/pics/IMG_' + Date.now() + '.' + req.files.photo.name.split('.').pop();
+        await req.files.photo.mv("public" + filePath);
+        await userTable.updateField({id: decoded.id, name: 'picture_path', value: filePath});
+        res.redirect("/")
     }
 }

@@ -3,7 +3,7 @@ let socket = io();
 socket.emit("getUserData", getCookie('token'));
 socket.on("userData", (data) => {
     document.querySelector('.username').textContent = data.login;
-    // document.querySelector('.card img').setAttribute('src', data.picture_path);
+    document.querySelector('.avatar').setAttribute('src', data.picture);
     document.querySelector('.wins').textContent = "Wins: " + data.wins;
     // document.querySelector('.loses').textContent = "Loses: " + data.loses;
 });
@@ -68,6 +68,19 @@ find_game_btn.addEventListener('click', () => {
         window.location.href = data;
     });
 });
+
+const form = document.getElementById('uploadForm');
+const fileInput = document.getElementById('fileInput');
+
+form.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0)
+        form.submit();
+});
+
 
 function getCookie(name) {
     const cookies = document.cookie.split(';');

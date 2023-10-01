@@ -1,8 +1,9 @@
 import Model from "./Model.js";
+import {connectToDatabase} from "../db/db.js";
 
-export class Card extends Model {
+export default class Card extends Model {
     constructor(table) {
-        super(table);
+        super("cards");
     }
 
     async find(id) {
@@ -20,4 +21,17 @@ export class Card extends Model {
         if(typeof result === "number")
             return this.find(result);
     }
+
+    async getAllCards() {
+        const db = connectToDatabase();
+        const result = await db.promise().query(`SELECT * FROM ${this.table};`);
+        db.end();
+        if(result[0].length) {
+            this.cardsArray = result[0];
+            return true;
+        }
+        return false;
+
+    }
+
 }

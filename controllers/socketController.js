@@ -2,16 +2,21 @@ import jsonwebtoken from "jsonwebtoken";
 
 import config from "../config.json" assert { type: 'json' };
 import User from '../models/User.js';
-import MatchQueue from "./matchQueue.js";
+import Card from "../models/Card.js";
+import MatchQueue from "../utils/matchQueue.js";
 
 let roomNbr = 0;
 let gameRooms = [];
+
+const cardsDeck = new Card();
+cardsDeck.getAllCards();
+
 const matchQueue = new MatchQueue();
 
 export default class socketController {
     static async getUserData(io, socket, data) {
         return new Promise(async (resolve, reject) => {
-            const newUser = new User('users');
+            const newUser = new User();
             let userData = {};
 
             try {
@@ -66,20 +71,21 @@ export default class socketController {
             const players = foundRoom.players;
 
             const firstTurn = Math.floor(Math.random() * 2);
-            console.log(firstTurn);
 
             const firstPlayer = {
                 login: players[0].login,
                 wins: players[0].wins,
                 profile_image: players[0].picture,
-                firstTurn: firstTurn === 0
+                firstTurn: firstTurn === 0,
+                startCards: generateStartCards()
             };
 
             const secondPlayer = {
                 login: players[1].login,
                 wins: players[1].wins,
                 profile_image: players[1].picture,
-                firstTurn: firstTurn === 1
+                firstTurn: firstTurn === 1,
+                startCards: generateStartCards()
             };
 
             console.log(firstPlayer);
@@ -95,6 +101,15 @@ export default class socketController {
         const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
         matchQueue.removePlayerById(decoded.id);
     }
+}
+
+function generateStartCards() {
+    const startCardArray = [];
+    for (let i = 0; i < 6; i++) {
+        let cardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
+        startCardArray.push(cardsDeck.cardsArray[cardIndex]);
+    }
+    return startCardArray;
 }
 
 function findRoomByUserData(id, login) {

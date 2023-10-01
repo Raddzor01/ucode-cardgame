@@ -20,21 +20,24 @@
 
             <div class="wrapper">
                 <p class="wins">Wins:</p>
-                <button class="button_for_avatar"><?xml version="1.0" encoding="UTF-8"?>
-
-                    <svg class="image" class="icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="125px" height="125px" fill="none"
-                        stroke-width="1.5"
-                        viewBox="0 0 24 24" color="#DFEAFF">
-                        <path stroke="#DFEAFF" stroke-width="1.5"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            d="M6 3H3v3M18 3h3v3M6 21H3v-3M7 18v-1a5 5 0 0 1 5-5v0a5 5 0 0 1 5 5v1M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 21h3v-3"></path>
-                    </svg>
-                    <img src="/avatars/default_avatar.png" alt="pfp"
-                        class="avatar">
-
-                </button>
+                <form action="/upload" id="uploadForm" method="POST" enctype="multipart/form-data" >
+                    <input type="file" name="photo" id="fileInput" style="display: none;">
+                    <label for="fileInput">
+                        <button type="button" class="button_for_avatar">
+                            <svg class="image" class="icon"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 width="125px" height="125px" fill="none"
+                                 stroke-width="1.5"
+                                 viewBox="0 0 24 24" color="#DFEAFF">
+                                <path stroke="#DFEAFF" stroke-width="1.5"
+                                      stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6 3H3v3M18 3h3v3M6 21H3v-3M7 18v-1a5 5 0 0 1 5-5v0a5 5 0 0 1 5 5v1M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 21h3v-3"></path>
+                            </svg>
+                            <img src="/avatars/default_avatar.png" alt="pfp" class="avatar">
+                        </button>
+                    </label>
+                    <input type="submit" value="Отправить" style="display: none;">
+                </form>
                 <p class="username"></p>
             </div>
 

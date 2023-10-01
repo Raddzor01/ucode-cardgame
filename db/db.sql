@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(256) NOT NULL,
     wins INT NOT NULL DEFAULT 0,
     loses INT NOT NULL DEFAULT 0,
-    picture_path VARCHAR(256) NOT NULL DEFAULT 'resources/avatars/default_avatar.png'
+    picture_path VARCHAR(256) NOT NULL DEFAULT '/avatars/default_avatar.png'
 );
 
 CREATE TABLE IF NOT EXISTS cards (
@@ -22,4 +22,8 @@ CREATE TABLE IF NOT EXISTS cards (
     hp INT NOT NULL,
     picture_path VARCHAR(256) NOT NULL
 );
+
+INSERT INTO cards (name, mana, damage, hp, picture_path) VALUES
+                    ('Diamond shield', 3, 1, 10, 'images/diamond_shield.png'),
+                    ('Manastorm', 5, 7, 5, 'images/manashtorm.png');
 

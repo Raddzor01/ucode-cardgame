@@ -53,4 +53,12 @@ export default class Model {
         return !!result[0].length;
     }
 
+
+    async updateField(data) {
+        const sql = 'UPDATE ' + this.table + ' SET ' + data.name + ' = \'' + data.value + '\'  ' +
+            'WHERE id =' + data.id + ' ;';
+        const db = connectToDatabase();
+        const result = await db.promise().query(sql);
+        db.end();
+    }
 }
