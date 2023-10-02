@@ -8,8 +8,11 @@ import MatchQueue from "../utils/matchQueue.js";
 let roomNbr = 0;
 let gameRooms = [];
 
+let gameStarted = false;
 const cardsDeck = new Card();
 cardsDeck.getAllCards();
+
+let roomCreated = false;
 
 const matchQueue = new MatchQueue();
 
@@ -44,57 +47,62 @@ export default class socketController {
     }
 
     static async findGame(io, socket, data, userData) {
-        socket.join("room-" + roomNbr);
+        socket.join(`tempRoom-${roomNbr}`);
         userData.roomNbr = roomNbr;
         if(matchQueue.getLength() > 0) {
-            userData.roomNbr = roomNbr;
             matchQueue.dequeue();
             gameRooms[roomNbr].players.push(userData);
-            io.sockets.in("room-" + roomNbr).emit("toGame", "game");
+            io.sockets.in(`tempRoom-${roomNbr}`).emit("toGame", "game");
             roomNbr++;
-            return;
+        } else {
+            gameRooms[roomNbr] = {players: []};
+            userData.roomNbr = roomNbr;
+            gameRooms[roomNbr].players.push(userData);
+            matchQueue.enqueue(userData);
         }
-
-        gameRooms[roomNbr] = {players: []};
-        userData.roomNbr = roomNbr;
-        gameRooms[roomNbr].players.push(userData);
-        matchQueue.enqueue(userData);
         return userData;
     }
 
     static async connectToRoom(io, socket, data, userData) {
-        const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
-        const foundRoom = findRoomByUserData(decoded.id, decoded.login);
-        if(foundRoom) {
-            userData.roomNbr = foundRoom.roomNbr;
-            socket.join("room-" + roomNbr);
-            const players = foundRoom.players;
+        const { id, login } = jsonwebtoken.verify(data, config.jswt.secretKey);
+        const foundRoom = findRoomByUserData(id, login);
+        if(!foundRoom)
+            return;
 
-            const firstTurn = Math.floor(Math.random() * 2);
+        userData.roomNbr = foundRoom.roomNbr;
 
-            const firstPlayer = {
-                login: players[0].login,
-                wins: players[0].wins,
-                profile_image: players[0].picture,
-                firstTurn: firstTurn === 0,
-                startCards: decoded.id === players[0].id ? generateStartCards() : null
-            };
+        socket.join(`room-${roomNbr}`);
 
-            const secondPlayer = {
-                login: players[1].login,
-                wins: players[1].wins,
-                profile_image: players[1].picture,
-                firstTurn: firstTurn === 1,
-                startCards: decoded.id === players[1].id ? generateStartCards() : null
-            };
-
-            console.log(firstPlayer);
-
-            io.sockets.in("room-" + roomNbr).emit("startGame", [firstPlayer, secondPlayer]);
-
-
-            return userData;
+        if(roomCreated === false) {
+            roomCreated = true;
+            return;
         }
+
+        const players = foundRoom.players;
+
+        const firstTurn = Math.floor(Math.random() * 2);
+
+        const firstPlayer = {
+            login: players[0].login,
+            wins: players[0].wins,
+            profile_image: players[0].picture,
+            firstTurn: firstTurn === 0,
+            startCards: id === players[0].id ? generateStartCards() : null
+        };
+
+        const secondPlayer = {
+            login: players[1].login,
+            wins: players[1].wins,
+            profile_image: players[1].picture,
+            firstTurn: firstTurn === 1,
+            startCards: id === players[1].id ? generateStartCards() : null
+        };
+
+
+        io.sockets.in(`room-${roomNbr}`).emit("startGame", [firstPlayer, secondPlayer]);
+        roomCreated = false;
+
+        return userData;
     }
 
     static async cancelSearch(io, socket, data) {
