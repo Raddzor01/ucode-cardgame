@@ -34,6 +34,7 @@ export default class socketController {
                     loses: newUser.loses
                 };
 
+                console.log(userData);
                 socket.emit("userData", userData);
                 userData.socket = socket;
                 userData.roomNbr = 0;

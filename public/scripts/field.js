@@ -1,17 +1,18 @@
 const socket = io();
 
-let userData;
+let userData = {};
 
 socket.emit("getUserData", getCookie('token'));
-socket.emit("connectToRoom", getCookie('token'));
 
 socket.on("userData", (data) => {
         userData = data;
-        //console.log(data);
+        socket.emit("connectToRoom", getCookie('token'));
 });
+
 
 socket.on('startGame', (data) => {
         console.log('startGame event received:', data);
+        console.log(userData);
         const firstPlayer = data[0];
         const secondPlayer = data[1];
         console.log(data[0]);
