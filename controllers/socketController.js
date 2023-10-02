@@ -113,7 +113,7 @@ export default class socketController {
 
 function generateStartCards() {
     const startCardArray = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 3; i++) {
         let cardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
         startCardArray.push(cardsDeck.cardsArray[cardIndex]);
     }

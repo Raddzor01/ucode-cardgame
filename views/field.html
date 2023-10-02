@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Game</title>
-</head>
-<body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/field.js"></script>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Game</title>
+        <link href='https://fonts.googleapis.com/css?family=DotGothic16'
+            rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=VT323'
+            rel='stylesheet'>
+        <link rel="stylesheet" href="/field.css">
+    </head>
+
+    <body id="field_body">
+
+        <div id="first-player">
+            <h2>First Player</h2>
+            <p><span id="first-player-login"></span></p>
+            <p>Wins: <span id="first-player-wins"></span></p>
+        </div>
+
+        <div id="second-player">
+            <h2>Second Player</h2>
+            <p><span id="second-player-login"></span></p>
+            <p>Wins: <span id="second-player-wins"></span></p>
+        </div>
+
+        <div class="card">
+            <div class="mana_cost">5</div>
+            <img src="/images/shield.png" class="card_img" alt="wfe"></img>
+            <div class="attack">5</div>
+            <div class="hp">5</div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/scripts/field.js"></script>
+    </body>
+
 </html>
