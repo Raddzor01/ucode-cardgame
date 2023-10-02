@@ -9,27 +9,43 @@
         <link href='https://fonts.googleapis.com/css?family=VT323'
             rel='stylesheet'>
         <link rel="stylesheet" href="/field.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
 
     <body id="field_body">
 
-        <div id="first-player">
-            <h2>First Player</h2>
-            <p><span id="first-player-login"></span></p>
-            <p>Wins: <span id="first-player-wins"></span></p>
-        </div>
-
         <div id="second-player">
-            <h2>Second Player</h2>
-            <p><span id="second-player-login"></span></p>
-            <p>Wins: <span id="second-player-wins"></span></p>
+            
+            <img src="/avatars/avatar2.jpg" alt="pfp" class="avatar">
+            
         </div>
 
-        <div class="card">
-            <div class="mana_cost">5</div>
-            <img src="/images/shield.png" class="card_img" alt="wfe"></img>
-            <div class="attack">5</div>
-            <div class="hp">5</div>
+        <div class="field">
+            <div class="player-area" id="player2-area">
+                <!-- позиции для карт -->
+                <div class="card-position" id="p2-pos1"></div>
+                <!-- ...и так для каждой из 7 позиций -->
+            </div>
+            <div class="line"></div>
+            <div class="player-area" id="player1-area">
+                <!-- позиции для карт -->
+                <div class="card-position" id="p1-pos1"></div>
+                <!-- ...и так для каждой из 7 позиций -->
+            </div>
+        </div>
+        <div id="first-player">
+            <img src="/avatars/girl.jpg" alt="pfp" class="avatar">
+        </div>
+
+
+        <div class="card" id="btn-div">
+            
+            <div class="mana_cost">8</div>
+            <img src="/images/Robo spider.png" class="card_img" alt="wfe"></img>
+            <p class="cardname">Robo Spider</p>
+            <div class="attack">8</div>
+            <div class="hp">8</div>
+            
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
