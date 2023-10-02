@@ -1,23 +1,126 @@
-body {
-    background-color: gray;
+html, body {
     margin: 0;
-    overflow: hidden;
+    padding: 0;
 }
 
-#first-player,
+
+#field_body {
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url("/images/field_bg.png");
+    background-size: cover;
+    /* Масштабировать изображение, чтобы оно заполнило весь фон */
+    background-repeat: no-repeat;
+    /* Запретить повторение фонового изображения */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
 #second-player {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-#second-player {
     top: 0;
     background-color: rgb(255, 0, 0);
 }
 
 #first-player {
-    order: 1;
-    bottom: 0%; /* Второй игрок снизу без отступа */
+
+    position: absolute;
+    bottom: 0;
+    /* Второй игрок снизу без отступа */
     background-color: aqua;
+}
+
+#first-player, #second-player {
+    height: 20%;
+    /* Устанавливаем высоту, чтобы каждый контейнер занимал половину экрана */
+}
+
+.current-user {
+    position: absolute;
+    bottom: 0;
+    /* Второй игрок снизу без отступа */
+    background-color: aqua;
+}
+
+
+.card {
+    width: 150px;
+    height: 250px;
+
+    background: #617A9F;
+    border: 6px solid #435165;
+    border-radius: 50px;
+
+
+
+}
+
+.mana_cost {
+    position: absolute;
+
+    margin-top: -5px;
+    margin-left: 115px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 50%;
+
+    width: 50px;
+    height: 50px;
+
+    background: #2C333F;
+
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 36px;
+
+    color: #7B99B6;
+
+}
+
+.attack {
+    margin-left: 105px;
+    background: #C5293B;
+    border: 2px solid #435165;
+}
+
+.hp {
+    margin-left: -10px;
+    background: #2BC27F;
+    border: 2px solid #435165;
+}
+
+.attack, .hp {
+    position: absolute;
+    margin-top: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 50%;
+
+    width: 50px;
+    height: 50px;
+
+
+    font-family: 'Retro Gaming';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+
+    color: #FFFFFF;
 }

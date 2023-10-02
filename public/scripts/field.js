@@ -7,38 +7,42 @@ socket.emit("connectToRoom", getCookie('token'));
 
 socket.on("userData", (data) => {
         userData = data;
-        console.log(data);
+        //console.log(data);
 });
 
 socket.on('startGame', (data) => {
+        console.log('startGame event received:', data);
         const firstPlayer = data[0];
         const secondPlayer = data[1];
-    
-        // Получаем имя текущего пользователя (замените на реальное имя пользователя)
-        const currentUserLogin = 'Имя пользователя';
+        console.log(data[0]);
+        console.log(data[1]);
+        // Получаем имя текущего пользователя
+        const currentUserLogin = data[0].login;  // используем данные из data
     
         // Получаем контейнеры игроков
-        const firstPlayerContainer = document.getElementById('first-player-container');
-        const secondPlayerContainer = document.getElementById('second-player-container');
+        const firstPlayerContainer = document.getElementById('first-player');
+        const secondPlayerContainer = document.getElementById('second-player');
     
-        if (firstPlayer.login === userData.login) {
-            // Если текущий пользователь - первый игрок, помещаем его контейнер вниз
-            firstPlayerContainer.style.order = '2';
-            secondPlayerContainer.style.order = '1';
+        // Проверяем, кто из игроков является текущим пользователем, и заполняем контейнеры соответственно
+        if (firstPlayer.login === currentUserLogin) {
+            document.getElementById('first-player-login').textContent = firstPlayer.login;
+            document.getElementById('second-player-login').textContent = secondPlayer.login;  // Добавлено
+            // ваш аватар будет всегда снизу
+            firstPlayerContainer.classList.add('current-user');
+            secondPlayerContainer.classList.remove('current-user');
         } else {
-            // Если текущий пользователь - второй игрок, помещаем его контейнер вниз
-            firstPlayerContainer.style.order = '1';
-            secondPlayerContainer.style.order = '2';
+            document.getElementById('first-player-login').textContent = firstPlayer.login;  // Добавлено
+            document.getElementById('second-player-login').textContent = secondPlayer.login;
+            // ваш аватар будет всегда снизу
+            secondPlayerContainer.classList.add('current-user');
+            firstPlayerContainer.classList.remove('current-user');
         }
     
-        // Заполняем данные первого игрока
-        document.getElementById('first-player-login').textContent = firstPlayer.login;
-        // Остальные данные firstPlayer
-    
-        // Заполняем данные второго игрока
-        document.getElementById('second-player-login').textContent = secondPlayer.login;
-        // Остальные данные secondPlayer
+        // Заполняем остальные данные первого и второго игроков
+        // ...
     });
+    
+    
     
     
 
