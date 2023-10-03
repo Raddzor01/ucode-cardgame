@@ -130,6 +130,7 @@ export default class socketController {
 
     static async placeCard(socket, data, gameRoomNbr) {
         const card = cardsDeck.cardsArray[data.cardId];
+        // console.log(data);
         socket.to(`room-${gameRoomNbr}`).emit("placeEnemyCard", { card: card, slotId: data.slotId } );
     }
 

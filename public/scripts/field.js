@@ -24,6 +24,10 @@ socket.on('youWin', () => {
         setTimeout(() => { document.location.href = "/" }, 200);
 });
 
+socket.on('placeEnemyCard', (data) => {
+        console.log(data);
+});
+
 startTimer();
 
 function startTimer() {
@@ -98,7 +102,7 @@ function createCard(cardData) {
         console.log(cardData);
         const cardDiv = document.createElement('div');
         cardDiv.className = "card";
-        cardDiv.id = "btn-div";
+        cardDiv.id = `${cardData.id}`;
 
         // Создаем div для стоимости маны
         const manaCostDiv = document.createElement('div');
@@ -144,25 +148,25 @@ function activateDragAndDrop(cardElement) {
                 gridColumns = 8,
                 i, x;
 
-                let containerWidth = $container.width(),
+        let containerWidth = $container.width(),
                 totalDivsWidth = (gridColumns * gridWidth) + (gridColumns - 1) * 10, // Добавляем отступы
                 leftOffset = (containerWidth - totalDivsWidth) / 2;
-            
-            if ($(".dropzone").length === 0) {
+
+        if ($(".dropzone").length === 0) {
                 for (i = 0; i < gridColumns; i++) {
-                    x = i * (gridWidth + 20) + leftOffset; // Учитываем отступ
-                    $("<div/>").css({
-                        position: "absolute",
-                        // border: "1px solid #454545",
-                        width: gridWidth - 1,
-                        height: gridHeight - 1,
-                        top: 5,
-                        left: x,
-                        zIndex: -9999
-                    }).prependTo($container).addClass("dropzone");
+                        x = i * (gridWidth + 20) + leftOffset; // Учитываем отступ
+                        $("<div/>").css({
+                                position: "absolute",
+                                // border: "1px solid #454545",
+                                width: gridWidth - 1,
+                                height: gridHeight - 1,
+                                top: 5,
+                                left: x,
+                                zIndex: -9999
+                        }).prependTo($container).addClass("dropzone");
                 }
-            }
-            
+        }
+
 
         let startPosition = {};
 
@@ -188,6 +192,11 @@ function activateDragAndDrop(cardElement) {
                 accept: ".card",
                 drop: function (event, ui) {
                         ui.draggable.data('dropped', true);
+
+                        const cardId = ui.draggable.attr("id");
+                        const dropZonePosition = $(this).index('.dropzone');
+                        socket.emit("placeCard", { slotId: dropZonePosition, cardId: cardId });
+
                         console.log("Card was dropped into a dropzone");
 
                         ui.draggable.draggable("disable");
