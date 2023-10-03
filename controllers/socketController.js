@@ -15,33 +15,31 @@ const matchQueue = new MatchQueue();
 
 export default class socketController {
     static async getUserData(io, socket, data) {
-        return new Promise(async (resolve, reject) => {
+        try {
             const newUser = new User();
-            let userData = {};
+            const { id } = await jsonwebtoken.verify(data, config.jswt.secretKey);
 
-            try {
-                const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
+            await newUser.find(id);
+            const userData = {
+                login: newUser.login,
+                id: newUser.id,
+                picture: newUser.picture_path,
+                wins: newUser.wins,
+                loses: newUser.loses
+            };
 
-                await newUser.find(decoded.id);
-                userData = {
-                    login: newUser.login,
-                    id: newUser.id,
-                    picture: newUser.picture_path,
-                    wins: newUser.wins,
-                    loses: newUser.loses
-                };
+            socket.emit("userData", userData);
 
-                socket.emit("userData", userData);
-                userData.socket = socket;
-                userData.roomNbr = 0;
-                userData.hp = 30;
-                userData.mana = 2;
+            userData.socket = socket;
+            userData.roomNbr = 0;
+            userData.hp = 30;
+            userData.mana = 2;
+            userData.cards = 17;
 
-                resolve(userData);
+            return userData;
             } catch (err) {
-                reject(err);
+                throw err;
             }
-        });
     }
 
     static async findGame(io, socket, data, userData) {
@@ -92,7 +90,7 @@ export default class socketController {
             wins: player.wins,
             profile_image: player.picture,
             firstTurn: firstTurn === players.indexOf(player),
-            startCards: id === player.id ? generateStartCards() : null
+            startCards: generateStartCards()
         }));
 
         io.sockets.in(`room-${roomIndex}`).emit("startGame", playersData);
@@ -124,12 +122,13 @@ export default class socketController {
 
     static async endTurn(io, socket, userData){
         const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
-        io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
+        if(userData.cards-- > 0)
+            io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
         socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
     }
 
     static async placeCard(socket, data, gameRoomNbr) {
-        const card = cardsDeck.cardsArray[data.cardId];
+        const card = cardsDeck.cardsArray[data.cardId - 1];
         // console.log(data);
         socket.to(`room-${gameRoomNbr}`).emit("placeEnemyCard", { card: card, slotId: data.slotId } );
     }
@@ -154,7 +153,5 @@ function findRoomByUserData(id, login) {
             if (player.id === id && player.login === login)
                 return room;
     }
-
-
     return null;
 }
