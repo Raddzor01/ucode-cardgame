@@ -3,6 +3,8 @@ const socket = io();
 let userData = {};
 
 socket.emit("getUserData", getCookie('token'));
+// socket.emit("placeCard", { slotId: slotId, cardId: card.id }); // - отправка запроса
+// socket.on("placeEnemyCard", (data) => {  }; - прием запроса если противиник поставил карту
 
 socket.on("getNewCard", (data) => {
         console.log(data.name);

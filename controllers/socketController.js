@@ -128,6 +128,10 @@ export default class socketController {
         socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
     }
 
+    static async placeCard(socket, data, gameRoomNbr) {
+        const card = cardsDeck.cardsArray[data.cardId];
+        socket.to(`room-${gameRoomNbr}`).emit("placeEnemyCard", { card: card, slotId: data.slotId } );
+    }
 
 }
 
