@@ -4,11 +4,27 @@ let userData = {};
 
 socket.emit("getUserData", getCookie('token'));
 
+function endTurn() {
+        socket.emit("endTurn");
+}
+
+socket.on("getNewCard", (data) => {
+        console.log(data.name);
+});
+
+socket.on("changeTurn", (data) => {
+        console.log("changeTurn " + data.mana);
+});
+
 socket.on("userData", (data) => {
         userData = data;
         socket.emit("connectToRoom", getCookie('token'));
 });
 
+socket.on('youWin', () => {
+   // alert("You Win!");
+   setTimeout(() =>{document.location.href = "/"}, 200);
+});
 
 socket.on('startGame', (data) => {
 
