@@ -203,13 +203,6 @@ function activateDragAndDrop(cardElement) {
 }
 
 $(document).ready(function () {
-<<<<<<< HEAD
-        $(".avatar").on('mousedown', function () {
-                $(this).removeClass("animate").addClass("animate");
-        });
-
-        $(".avatar").on('animationend', function () {
-=======
         $(".avatar_container").on('mousedown', function () {
                 // Убедитесь, что класс animate удален перед добавлением, 
                 // чтобы можно было повторно запустить анимацию
@@ -218,7 +211,6 @@ $(document).ready(function () {
 
         // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
         $(".avatar_container").on('animationend', function () {
->>>>>>> 45a76c44401137e4d790c095dd6352d595057680
                 $(this).removeClass("animate");
         });
 });
