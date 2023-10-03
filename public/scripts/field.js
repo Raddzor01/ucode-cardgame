@@ -18,8 +18,8 @@ socket.on("userData", (data) => {
 });
 
 socket.on('youWin', () => {
-   // alert("You Win!");
-   setTimeout(() =>{document.location.href = "/"}, 200);
+        // alert("You Win!");
+        setTimeout(() => { document.location.href = "/" }, 200);
 });
 
 startTimer();
@@ -61,14 +61,16 @@ socket.on('startGame', (data) => {
         if (firstPlayer.login === currentUserLogin) {
                 document.getElementById('first_player_login').innerHTML = firstPlayer.login;
                 document.getElementById('second_player_login').innerHTML = secondPlayer.login;
-                
+
                 document.getElementById('first_avatar').setAttribute("src", firstPlayer.profile_image);
                 document.getElementById('second_avatar').setAttribute("src", secondPlayer.profile_image);
-                
+
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
 
-                
+                data[0].startCards.forEach((card) => {
+                        createCard(card);
+                });
 
 
         } else {
@@ -81,6 +83,48 @@ socket.on('startGame', (data) => {
                 firstPlayerContainer.classList.remove('current-user');
         }
 });
+
+function createCard(cardData) {
+        // Создаем главный div для карты
+        console.log(cardData);
+        const cardDiv = document.createElement('div');
+        cardDiv.className = "card";
+        cardDiv.id = "btn-div";
+
+        // Создаем div для стоимости маны
+        const manaCostDiv = document.createElement('div');
+        manaCostDiv.className = "mana_cost";
+        manaCostDiv.textContent = cardData.mana; // Предполагая, что у вас есть поле mana_cost в данных карты
+        cardDiv.appendChild(manaCostDiv);
+
+        // Создаем p для имени карты
+        const cardNameP = document.createElement('p');
+        cardNameP.className = "cardname";
+        cardNameP.textContent = cardData.name; // Предполагая, что у вас есть поле name в данных карты
+        cardDiv.appendChild(cardNameP);
+
+        // Создаем img для изображения карты
+        const cardImg = document.createElement('img');
+        cardImg.className = "card_img";
+        cardImg.src = cardData.picture_path; // Предполагая, что у вас есть поле image_url в данных карты
+        cardImg.alt = cardData.name;
+        cardDiv.appendChild(cardImg);
+
+        // Создаем div для атаки
+        const attackDiv = document.createElement('div');
+        attackDiv.className = "attack";
+        attackDiv.textContent = cardData.damage; // Предполагая, что у вас есть поле attack в данных карты
+        cardDiv.appendChild(attackDiv);
+
+        // Создаем div для здоровья
+        const hpDiv = document.createElement('div');
+        hpDiv.className = "hp";
+        hpDiv.textContent = cardData.hp; // Предполагая, что у вас есть поле hp в данных карты
+        cardDiv.appendChild(hpDiv);
+
+        // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
+        document.getElementById('player1-area').appendChild(cardDiv);
+}
 
 $(document).ready(function () {
         $(".avatar_container").on('mousedown', function () {
