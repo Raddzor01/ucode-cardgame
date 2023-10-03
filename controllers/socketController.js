@@ -8,11 +8,8 @@ import MatchQueue from "../utils/matchQueue.js";
 let roomNbr = 0;
 let gameRooms = [];
 
-let gameStarted = false;
 const cardsDeck = new Card();
 cardsDeck.getAllCards();
-
-let roomCreated = false;
 
 const matchQueue = new MatchQueue();
 
@@ -38,6 +35,7 @@ export default class socketController {
                 userData.socket = socket;
                 userData.roomNbr = 0;
                 userData.hp = 30;
+                userData.mana = 2;
 
                 resolve(userData);
             } catch (err) {
@@ -47,60 +45,57 @@ export default class socketController {
     }
 
     static async findGame(io, socket, data, userData) {
-        socket.join(`tempRoom-${roomNbr}`);
+        socket.join(`room-${roomNbr}`);
         userData.roomNbr = roomNbr;
         if(matchQueue.getLength() > 0) {
             matchQueue.dequeue();
             gameRooms[roomNbr].players.push(userData);
-            io.sockets.in(`tempRoom-${roomNbr}`).emit("toGame", "game");
+            io.sockets.in(`room-${roomNbr}`).emit("toGame", "game");
             roomNbr++;
         } else {
             gameRooms[roomNbr] = {players: []};
             userData.roomNbr = roomNbr;
+            gameRooms[roomNbr].inCreating = true;
             gameRooms[roomNbr].players.push(userData);
             matchQueue.enqueue(userData);
         }
         return userData;
     }
 
-    static async connectToRoom(io, socket, data, userData) {
+    static connectToRoom(io, socket, data, userData) {
         const { id, login } = jsonwebtoken.verify(data, config.jswt.secretKey);
         const foundRoom = findRoomByUserData(id, login);
+
         if(!foundRoom)
-            return;
+            return userData;
 
-        userData.roomNbr = foundRoom.roomNbr;
+        let roomIndex = gameRooms.indexOf(foundRoom);
 
-        socket.join(`room-${roomNbr}`);
+        gameRooms[roomIndex].players[gameRooms[roomIndex].players[0].id === userData.id ? 0 : 1].socket = socket;
 
-        if(roomCreated === false) {
-            roomCreated = true;
-            return;
+        userData.roomNbr = roomIndex;
+        userData.socket = socket;
+
+        socket.join(`room-${roomIndex}`);
+
+        if(foundRoom.inCreating === true) {
+            gameRooms[roomIndex].inCreating = false;
+            return userData;
         }
-
-        const players = foundRoom.players;
 
         const firstTurn = Math.floor(Math.random() * 2);
 
-        const firstPlayer = {
-            login: players[0].login,
-            wins: players[0].wins,
-            profile_image: players[0].picture,
-            firstTurn: firstTurn === 0,
-            startCards: id === players[0].id ? generateStartCards() : null
-        };
+        const players = foundRoom.players;
 
-        const secondPlayer = {
-            login: players[1].login,
-            wins: players[1].wins,
-            profile_image: players[1].picture,
-            firstTurn: firstTurn === 1,
-            startCards: id === players[1].id ? generateStartCards() : null
-        };
+        const playersData = players.map(player => ({
+            login: player.login,
+            wins: player.wins,
+            profile_image: player.picture,
+            firstTurn: firstTurn === players.indexOf(player),
+            startCards: id === player.id ? generateStartCards() : null
+        }));
 
-
-        io.sockets.in(`room-${roomNbr}`).emit("startGame", [firstPlayer, secondPlayer]);
-        roomCreated = false;
+        io.sockets.in(`room-${roomIndex}`).emit("startGame", playersData);
 
         return userData;
     }
@@ -109,6 +104,31 @@ export default class socketController {
         const decoded = await jsonwebtoken.verify(data, config.jswt.secretKey);
         matchQueue.removePlayerById(decoded.id);
     }
+
+    static async disconnect(io, socket, userData) {
+        const newUser = new User();
+        if(userData) {
+            if(gameRooms[userData.roomNbr] && gameRooms[userData.roomNbr].inCreating === false) {
+                let room = gameRooms[userData.roomNbr];
+                let enemyPlayer = room.players[0].id === userData.id ? room.players[1] : room.players[0];
+
+                if(enemyPlayer) {
+                    await newUser.updateField({id: enemyPlayer.id, name: 'wins' , value: ++enemyPlayer.wins});
+                    await newUser.updateField({id: userData.id, name: 'loses' , value: ++userData.loses});
+                    io.to(enemyPlayer.socket.id).emit('youWin', {user: userData.login});
+                }
+                gameRooms = gameRooms.splice(userData.roomNbr, 1);
+            }
+        }
+    }
+
+    static async endTurn(io, socket, userData){
+        const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
+        io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
+        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
+    }
+
+
 }
 
 function generateStartCards() {
@@ -121,10 +141,15 @@ function generateStartCards() {
 }
 
 function findRoomByUserData(id, login) {
-    for (const room of gameRooms)
+    for (const room of gameRooms) {
+        if (room === undefined)
+            continue;
+
         for (const player of room.players)
             if (player.id === id && player.login === login)
                 return room;
+    }
+
 
     return null;
 }

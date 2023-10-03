@@ -8,6 +8,6 @@
   },
   "jswt": {
     "secretKey": "securepass",
-    "tokenLife": 5000
+    "tokenLife": "1d"
   }
 }
