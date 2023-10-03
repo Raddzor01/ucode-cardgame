@@ -61,10 +61,16 @@ socket.on('startGame', (data) => {
         if (firstPlayer.login === currentUserLogin) {
                 document.getElementById('first_player_login').innerHTML = firstPlayer.login;
                 document.getElementById('second_player_login').innerHTML = secondPlayer.login;
+                
                 document.getElementById('first_avatar').setAttribute("src", firstPlayer.profile_image);
                 document.getElementById('second_avatar').setAttribute("src", secondPlayer.profile_image);
+                
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
+
+                
+
+
         } else {
                 document.getElementById('first_player_login').innerHTML = secondPlayer.login;
                 document.getElementById('second_player_login').innerHTML = firstPlayer.login;
