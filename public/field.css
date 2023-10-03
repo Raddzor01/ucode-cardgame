@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 
@@ -43,6 +44,86 @@ html, body {
     bottom: 140px;
 }
 
+#first_player_login {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 20px;
+
+    color: #576c9e;
+}
+
+#second_player_login {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 20px;
+
+    color: #576c9e;
+}
+
+.avatar_container {
+    transition: all 0.3s ease-in-out;
+    border-radius: 50%;
+}
+
+.avatar_container.animate {
+    animation: rotate-center 1s ease-in-out both;
+}
+
+.avatar_container:hover {
+    transition: 0.5s;
+    transform: translateY(-4px);
+    box-shadow: -25px -10px 30px -5px rgba(11, 80, 157, 0.8),
+        15px -20px 30px -5px rgba(11, 80, 157, 0.8),
+        15px 20px 30px -5px rgba(48, 197, 210, 0.8),
+        -15px 20px 30px -5px rgba(32, 172, 186, 0.8);
+}
+
+.players_hp {
+    position: absolute;
+
+    margin-top: -40px;
+    margin-left: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 50%;
+
+    width: 50px;
+    height: 50px;
+
+    background: #2BC27F;
+
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 20px;
+
+
+    color: #FFFFFF;
+}
+
+#second-player .players_hp {
+    margin-top: -40px;
+}
+
+
 .field {
     display: flex;
     align-items: center;
@@ -52,8 +133,7 @@ html, body {
     width: 1400px;
     height: 540px;
 
-    background: #424E8B;
-    opacity: 0.7;
+    background: rgba(66, 78, 139, 0.7);
     border-radius: 20px;
     z-index: -100;
 }
@@ -67,6 +147,345 @@ html, body {
     background-color: #262B45;
 }
 
+.unknown_card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    position: absolute;
+    width: 250px;
+    height: 150px;
+
+    background: transparent;
+
+    border-radius: 50px;
+    left: 37px;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 36px;
+    color: aliceblue;
+}
+
+.unknown_card svg, div {
+    z-index: 1;
+}
+
+.unknown_card:hover::before {
+    content: '';
+    position: absolute;
+    width: 130%;
+    background-image: linear-gradient(180deg, #9bafd9, #7990c4, #5971af, #395399, #103783);
+    height: 75px;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.unknown_card::after {
+    content: '';
+    position: absolute;
+    background-color: #617A9F;
+    border: 4px solid #435165;
+    border-radius: 50px;
+    left: 37px;
+    inset: 5px;
+    border-radius: 50px;
+}
+
+.leave_game_btn {
+    position: absolute;
+    margin-top: -145px;
+    right: 15px;
+
+    background: #BF0426;
+
+    padding: 0.5rem 2.55rem 0.5rem 2.55rem;
+    border-radius: 5rem;
+    border: 5px solid #435165;
+    letter-spacing: 0.075em;
+    transition: background 0.3s;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 36px;
+
+    cursor: pointer;
+}
+
+.leave_game_btn:active {
+    transform: scale(0.96);
+}
+
+.leave_game_btn:before,
+.leave_game_btn:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: -1000;
+    background-repeat: no-repeat;
+}
+
+.leave_game_btn:hover:before {
+    top: -70%;
+    background-image: radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 20%, #BF0426 20%, transparent 30%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #BF0426 15%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+        10% 10%, 18% 18%;
+    background-position: 50% 120%;
+    animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+            40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+            50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+            50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+.leave_game_btn:hover::after {
+    bottom: -70%;
+    background-image: radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #BF0426 15%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    background-position: 50% 0%;
+    animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+            70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+            105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+            110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+
+.voltage-button {
+    position: absolute;
+    margin-top: 145px;
+    right: 15px;
+
+}
+
+.voltage-button button {
+    color: white;
+    background: #0D1127;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    border-radius: 5rem;
+    border: 5px solid #435165;
+    letter-spacing: 0.075em;
+    transition: background 0.3s;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 36px;
+}
+
+.voltage-button button:hover {
+    cursor: pointer;
+    background: #0F1C53;
+}
+
+.voltage-button button:hover+svg, .voltage-button button:hover+svg+.dots {
+    opacity: 1;
+}
+
+.voltage-button svg {
+    display: block;
+    position: absolute;
+    top: -0.75em;
+    left: -0.25em;
+    width: calc(100% + 0.5em);
+    height: calc(100% + 1.5em);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+    transition-delay: 0.1s;
+}
+
+.voltage-button svg path {
+    stroke-dasharray: 100;
+    filter: url("#glow");
+}
+
+.voltage-button svg path.line-1 {
+    stroke: #f6de8d;
+    stroke-dashoffset: 0;
+    animation: spark-1 3s linear infinite;
+}
+
+.voltage-button svg path.line-2 {
+    stroke: #6bfeff;
+    stroke-dashoffset: 500;
+    animation: spark-2 3s linear infinite;
+}
+
+.voltage-button .dots {
+    opacity: 0;
+    transition: opacity 0.3s;
+    transition-delay: 0.4s;
+}
+
+.voltage-button .dots .dot {
+    width: 1rem;
+    height: 1rem;
+    background: white;
+    border-radius: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.voltage-button .dots .dot-1 {
+    top: 0;
+    left: 20%;
+    animation: fly-up 3s linear infinite;
+}
+
+.voltage-button .dots .dot-2 {
+    top: 0;
+    left: 55%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.voltage-button .dots .dot-3 {
+    top: 0;
+    left: 80%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 1s;
+}
+
+.voltage-button .dots .dot-4 {
+    bottom: 0;
+    left: 30%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 2.5s;
+}
+
+.voltage-button .dots .dot-5 {
+    bottom: 0;
+    left: 65%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 1.5s;
+}
+
+@keyframes spark-1 {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes spark-2 {
+    to {
+        stroke-dashoffset: -500;
+    }
+}
+
+@keyframes fly-up {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(-1.5rem) scale(0.4);
+    }
+
+    10%, 100% {
+        opacity: 0;
+        transform: translateY(-3rem) scale(0.2);
+    }
+}
+
+@keyframes fly-down {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(1.5rem) scale(0.4);
+    }
+
+    10%, 100% {
+        opacity: 0;
+        transform: translateY(3rem) scale(0.2);
+    }
+}
+
+
+
+.timer {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 36px;
+    color: #576c9e;
+
+    position: absolute;
+
+    right: 55px;
+}
+
 .current-user {
     position: absolute;
     bottom: 0;
@@ -74,13 +493,23 @@ html, body {
     background-color: aqua;
 }
 
+#player1-area {
+    position: relative;
+
+    width: 100%;
+
+
+}
+
 
 
 .card {
-    margin-top: 275px;
+    margin-bottom: 125px;
+    /* устанавливаем карточку на нижний край экрана */
+    transform: translateY(50%);
     /* !!!!!! */
 
-    position: absolute;
+    position: relative;
     width: 150px;
     height: 250px;
 
@@ -94,17 +523,19 @@ html, body {
 
 }
 
+
+
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5%);
+    transition: all 0.3s ease-in-out;
 
     box-shadow: rgba(105, 134, 200, 0.4) 0px 5px 5px 5px,
-   
+
         rgba(105, 134, 200, 0.4) 0px -5px 5px 5px,
-        
+
         rgba(105, 134, 200, 0.4) 5px 0px 5px 5px,
 
-        rgba(105, 134, 200, 0.4) -5px 0px 5px 5px
-        ;
+        rgba(105, 134, 200, 0.4) -5px 0px 5px 5px;
 }
 
 
@@ -180,7 +611,7 @@ html, body {
     width: 80px;
     height: 80px;
     justify-self: center;
-    margin-top: 45px;
+    margin-top: 15px;
     margin-left: 35px;
     object-fit: cover;
     /* outline: 1px red dotted; */
@@ -188,7 +619,7 @@ html, body {
 
 .cardname {
     position: absolute;
-    margin-top: 130px;
+    margin-top: 100px;
     margin-left: 10px;
     width: 130px;
     height: 50px;
@@ -220,20 +651,27 @@ html, body {
     cursor: pointer;
 }
 
+#player1_cards {
+    position: absolute;
+    bottom: 5px;
+    width: 80%;
+    outline: 3px red dotted;
+    height: 130px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
 
-.avatar.animate {
-    animation: rotate-center 1s ease-in-out both;
+    transition: all 0.3s ease-in-out;
 }
 
-.avatar:hover {
-    transition: 0.5s;
-    transform: translateY(-4px);
-    box-shadow: -25px -10px 30px -5px rgba(11, 80, 157, 0.8),
-        15px -20px 30px -5px rgba(11, 80, 157, 0.8),
-        15px 20px 30px -5px rgba(48, 197, 210, 0.8),
-        -15px 20px 30px -5px rgba(32, 172, 186, 0.8);
+#player1_cards .card {
+    margin-left: 10px;
 }
+
+
+
 
 /* ----------------------------------------------
  * Generated by Animista on 2023-10-2 22:55:14
