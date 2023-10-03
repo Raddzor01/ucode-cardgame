@@ -503,6 +503,7 @@ html, body {
 
 
 
+
 .card {
     margin-bottom: 125px;
     /* устанавливаем карточку на нижний край экрана */
@@ -668,6 +669,22 @@ html, body {
 
 #player1_cards .card {
     margin-left: 10px;
+}
+
+
+#player2_cards {
+    position: absolute;
+    top: 5px;
+    width: 80%;
+    outline: 3px red dotted;
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    transition: all 0.3s ease-in-out;
 }
 
 

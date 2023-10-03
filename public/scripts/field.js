@@ -139,7 +139,7 @@ function activateDragAndDrop(cardElement) {
                 gridWidth = 150,
                 gridHeight = 250,
                 gridRows = 1,
-                gridColumns = 7,
+                gridColumns = 8,
                 i, x;
 
                 let containerWidth = $container.width(),
@@ -151,7 +151,7 @@ function activateDragAndDrop(cardElement) {
                     x = i * (gridWidth + 20) + leftOffset; // Учитываем отступ
                     $("<div/>").css({
                         position: "absolute",
-                        border: "1px solid #454545",
+                        // border: "1px solid #454545",
                         width: gridWidth - 1,
                         height: gridHeight - 1,
                         top: 5,
