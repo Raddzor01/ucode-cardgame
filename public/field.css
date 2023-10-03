@@ -67,24 +67,101 @@ html, body {
     background-color: #262B45;
 }
 
+.unknown_card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    position: absolute;
+    width: 250px;
+    height: 150px;
+
+    background: transparent;
+
+    border-radius: 50px;
+    left: 37px;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 36px;
+    color: aliceblue;
+}
+
+.unknown_card svg, div {
+    z-index: 1;
+}
+
+.unknown_card:hover::before {
+    content: '';
+    position: absolute;
+    width: 130%;
+    background-image: linear-gradient(180deg, #9bafd9, #7990c4, #5971af, #395399, #103783);
+    height: 75px;
+    animation: rotBGimg 3s linear infinite;
+    transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.unknown_card::after {
+    content: '';
+    position: absolute;
+    background-color: #617A9F;
+    border: 4px solid #435165;
+    border-radius: 50px;
+    left: 37px;
+    inset: 5px;
+    border-radius: 50px;
+}
+
+
+.timer {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 36px;
+    color: aliceblue;
+
+    position: absolute;
+
+    right: 37px;
+}
+
 .current-user {
     position: absolute;
     bottom: 0;
     /* Второй игрок снизу без отступа */
     background-color: aqua;
 }
+
 #player1-area {
     position: relative;
 
     width: 100%;
-    
-    
+
+
 }
 
 
 .card {
-    bottom: 0; /* устанавливаем карточку на нижний край экрана */
-    transform: translateY(50%); 
+    bottom: 0;
+    /* устанавливаем карточку на нижний край экрана */
+    transform: translateY(50%);
     /* !!!!!! */
 
     position: absolute;
@@ -108,9 +185,9 @@ html, body {
     transition: all 0.3s ease-in-out;
 
     box-shadow: rgba(105, 134, 200, 0.4) 0px 5px 5px 5px,
-   
+
         rgba(105, 134, 200, 0.4) 0px -5px 5px 5px,
-        
+
         rgba(105, 134, 200, 0.4) 5px 0px 5px 5px,
 
         rgba(105, 134, 200, 0.4) -5px 0px 5px 5px;
@@ -307,8 +384,3 @@ html, body {
 
     animation: float 2s ease-in-out infinite;
 }
-
-
-  
-
-
