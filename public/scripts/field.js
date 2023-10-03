@@ -11,10 +11,10 @@ socket.on("userData", (data) => {
 
 
 socket.on('startGame', (data) => {
-        
+
         const firstPlayer = data[0];
         const secondPlayer = data[1];
-       
+
         // Получаем имя текущего пользователя
         const currentUserLogin = userData.login;  // используем данные из data
 
@@ -26,18 +26,38 @@ socket.on('startGame', (data) => {
         if (firstPlayer.login === currentUserLogin) {
                 document.getElementById('first-player-login').textContent = firstPlayer.login;
                 document.getElementById('second-player-login').textContent = secondPlayer.login;  // Добавлено
-                
+
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
         } else {
                 document.getElementById('first-player-login').textContent = secondPlayer.login;  // Добавлено
                 document.getElementById('second-player-login').textContent = firstPlayer.login;
-                
+
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
         }
 });
 
+$(document).ready(function () {
+        $(".avatar").on('mousedown', function () {
+                // Убедитесь, что класс animate удален перед добавлением, 
+                // чтобы можно было повторно запустить анимацию
+                $(this).removeClass("animate").addClass("animate");
+        });
+
+        // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
+        $(".avatar").on('animationend', function () {
+                $(this).removeClass("animate");
+        });
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+        const btnDiv = document.getElementById('btn-div');
+
+        btnDiv.addEventListener('click', function () {
+                btnDiv.classList.toggle('float-animation');
+        });
+});
 
 
 
