@@ -502,13 +502,14 @@ html, body {
 }
 
 
+
 .card {
-    bottom: 0;
+    margin-bottom: 125px;
     /* устанавливаем карточку на нижний край экрана */
     transform: translateY(50%);
     /* !!!!!! */
 
-    position: absolute;
+    position: relative;
     width: 150px;
     height: 250px;
 
@@ -648,6 +649,25 @@ html, body {
     transition: all 0.3s ease-in-out;
 
     cursor: pointer;
+}
+
+#player1_cards {
+    position: absolute;
+    bottom: 5px;
+    width: 80%;
+    outline: 3px red dotted;
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#player1_cards .card {
+    margin-left: 10px;
 }
 
 

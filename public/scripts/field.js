@@ -81,6 +81,10 @@ socket.on('startGame', (data) => {
 
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
+
+                data[1].startCards.forEach((card) => {
+                        createCard(card);
+                });
         }
 });
 
@@ -123,8 +127,76 @@ function createCard(cardData) {
         cardDiv.appendChild(hpDiv);
 
         // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
-        document.getElementById('player1-area').appendChild(cardDiv);
-        /////////////////////////////////////////////////
+        document.getElementById('player1_cards').appendChild(cardDiv);
+        activateDragAndDrop(cardDiv);
+}
+
+function activateDragAndDrop(cardElement) {
+        var $container = $("#player1-area"),
+                gridWidth = 150,
+                gridHeight = 250,
+                gridRows = 1,
+                gridColumns = 7,
+                i, x;
+
+                let containerWidth = $container.width(),
+                totalDivsWidth = (gridColumns * gridWidth) + (gridColumns - 1) * 10, // Добавляем отступы
+                leftOffset = (containerWidth - totalDivsWidth) / 2;
+            
+            if ($(".dropzone").length === 0) {
+                for (i = 0; i < gridColumns; i++) {
+                    x = i * (gridWidth + 20) + leftOffset; // Учитываем отступ
+                    $("<div/>").css({
+                        position: "absolute",
+                        border: "1px solid #454545",
+                        width: gridWidth - 1,
+                        height: gridHeight - 1,
+                        top: 5,
+                        left: x,
+                        zIndex: -9999
+                    }).prependTo($container).addClass("dropzone");
+                }
+            }
+            
+
+        let startPosition = {};
+
+        // Используем переданный элемент cardElement вместо .card
+        $(cardElement).draggable({
+                revert: "invalid",
+                start: function (event, ui) {
+                        console.log("Drag started");
+                        startPosition = $(this).position();
+                        ui.helper.css({
+                                "transition": "none",
+                        });
+                },
+                stop: function (event, ui) {
+                        console.log("Drag stopped");
+                        ui.helper.css({
+                                "transition": "all 0.3s ease-in-out",
+                        });
+                }
+        });
+
+        $(".dropzone").droppable({
+                accept: ".card",
+                drop: function (event, ui) {
+                        ui.draggable.data('dropped', true);
+                        console.log("Card was dropped into a dropzone");
+
+                        ui.draggable.draggable("disable");
+                        ui.draggable.css({
+                                "cursor": "default",
+                                "left": "",
+                                "top": "",
+                                "position": "relative",
+                                "transform": "none"
+                        });
+
+                        $(this).append(ui.draggable);
+                }
+        });
 }
 
 $(document).ready(function () {
