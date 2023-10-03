@@ -17,22 +17,22 @@ socket.on('startGame', (data) => {
 
         // Получаем имя текущего пользователя
         const currentUserLogin = userData.login;  // используем данные из data
-
+        console.log(firstPlayer);
+        console.log(secondPlayer);
         // Получаем контейнеры игроков
         const firstPlayerContainer = document.getElementById('first-player');
         const secondPlayerContainer = document.getElementById('second-player');
 
         // Проверяем, кто из игроков является текущим пользователем, и заполняем контейнеры соответственно
         if (firstPlayer.login === currentUserLogin) {
-                document.getElementById('first-player-login').textContent = firstPlayer.login;
-                document.getElementById('second-player-login').textContent = secondPlayer.login;  // Добавлено
-
+                document.getElementById('first_avatar').setAttribute("src", firstPlayer.profile_image);
+                document.getElementById('second_avatar').setAttribute("src", secondPlayer.profile_image);
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
         } else {
-                document.getElementById('first-player-login').textContent = secondPlayer.login;  // Добавлено
-                document.getElementById('second-player-login').textContent = firstPlayer.login;
-
+                document.getElementById('first_avatar').setAttribute("src", secondPlayer.profile_image);
+                document.getElementById('second_avatar').setAttribute("src", firstPlayer.profile_image);
+                
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
         }
