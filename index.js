@@ -8,6 +8,7 @@ import config from "./config.json" assert { type: 'json' };
 import authRouter from "./routes/authRouter.js";
 import socketRouter from "./routes/socketRouter.js";
 
+
 const port = config.port || 8000;
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(fileUpload({}));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('resources')));
+
 
 app.use(authRouter);
 
