@@ -41,11 +41,15 @@ socket.on('startGame', (data) => {
 
         // Проверяем, кто из игроков является текущим пользователем, и заполняем контейнеры соответственно
         if (firstPlayer.login === currentUserLogin) {
+                document.getElementById('first_player_login').innerHTML = firstPlayer.login;
+                document.getElementById('second_player_login').innerHTML = secondPlayer.login;
                 document.getElementById('first_avatar').setAttribute("src", firstPlayer.profile_image);
                 document.getElementById('second_avatar').setAttribute("src", secondPlayer.profile_image);
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
         } else {
+                document.getElementById('first_player_login').innerHTML = secondPlayer.login;
+                document.getElementById('second_player_login').innerHTML = firstPlayer.login;
                 document.getElementById('first_avatar').setAttribute("src", secondPlayer.profile_image);
                 document.getElementById('second_avatar').setAttribute("src", firstPlayer.profile_image);
 
@@ -55,14 +59,14 @@ socket.on('startGame', (data) => {
 });
 
 $(document).ready(function () {
-        $(".avatar").on('mousedown', function () {
+        $(".avatar_container").on('mousedown', function () {
                 // Убедитесь, что класс animate удален перед добавлением, 
                 // чтобы можно было повторно запустить анимацию
                 $(this).removeClass("animate").addClass("animate");
         });
 
         // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
-        $(".avatar").on('animationend', function () {
+        $(".avatar_container").on('animationend', function () {
                 $(this).removeClass("animate");
         });
 });

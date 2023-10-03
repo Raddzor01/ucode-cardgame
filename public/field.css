@@ -44,6 +44,86 @@ html, body {
     bottom: 140px;
 }
 
+#first_player_login {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 20px;
+
+    color: #576c9e;
+}
+
+#second_player_login {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 5rem;
+    line-height: 20px;
+
+    color: #576c9e;
+}
+
+.avatar_container {
+    transition: all 0.3s ease-in-out;
+    border-radius: 50%;
+}
+
+.avatar_container.animate {
+    animation: rotate-center 1s ease-in-out both;
+}
+
+.avatar_container:hover {
+    transition: 0.5s;
+    transform: translateY(-4px);
+    box-shadow: -25px -10px 30px -5px rgba(11, 80, 157, 0.8),
+        15px -20px 30px -5px rgba(11, 80, 157, 0.8),
+        15px 20px 30px -5px rgba(48, 197, 210, 0.8),
+        -15px 20px 30px -5px rgba(32, 172, 186, 0.8);
+}
+
+.players_hp {
+    position: absolute;
+
+    margin-top: -40px;
+    margin-left: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 50%;
+
+    width: 50px;
+    height: 50px;
+
+    background: #2BC27F;
+
+
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 20px;
+
+
+    color: #FFFFFF;
+}
+
+#second-player .players_hp {
+    margin-top: -40px;
+}
+
+
 .field {
     display: flex;
     align-items: center;
@@ -135,7 +215,7 @@ html, body {
     font-weight: 400;
     font-size: 5rem;
     line-height: 36px;
-    color: aliceblue;
+    color: #576c9e;
 
     position: absolute;
 
@@ -306,20 +386,6 @@ html, body {
     cursor: pointer;
 }
 
-
-
-.avatar.animate {
-    animation: rotate-center 1s ease-in-out both;
-}
-
-.avatar:hover {
-    transition: 0.5s;
-    transform: translateY(-4px);
-    box-shadow: -25px -10px 30px -5px rgba(11, 80, 157, 0.8),
-        15px -20px 30px -5px rgba(11, 80, 157, 0.8),
-        15px 20px 30px -5px rgba(48, 197, 210, 0.8),
-        -15px 20px 30px -5px rgba(32, 172, 186, 0.8);
-}
 
 
 

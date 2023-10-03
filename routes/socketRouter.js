@@ -19,9 +19,9 @@ export default function socketRouter(io, socket) {
         await controller.cancelSearch(io, socket, data);
     });
 
-    socket.on("disconnect", async () => {
-        await controller.disconnect(io, socket, userData);
-    });
+    // socket.on("disconnect", async () => {
+    //     await controller.disconnect(io, socket, userData);
+    // });
 
     socket.on("endTurn", async () => {
        await controller.endTurn(io, socket, userData);
