@@ -26,11 +26,11 @@ startTimer();
 
 function startTimer() {
         let remainingTime = 60;
-        document.querySelector(".timer").textContent = "01:00";
+        document.querySelector(".timer").textContent = "60s";
 
         const timerInterval = setInterval(() => {
                 remainingTime--;
-                document.querySelector(".timer").textContent = remainingTime < 10 ? `00:0${remainingTime}` : `00:${remainingTime}`;
+                document.querySelector(".timer").textContent = remainingTime + "s";
 
                 if (remainingTime <= 0) {
                         clearInterval(timerInterval);
