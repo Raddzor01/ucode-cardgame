@@ -32,7 +32,7 @@ socket.on('startGame', (data) => {
         } else {
                 document.getElementById('first_avatar').setAttribute("src", secondPlayer.profile_image);
                 document.getElementById('second_avatar').setAttribute("src", firstPlayer.profile_image);
-                
+
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
         }
@@ -51,17 +51,18 @@ $(document).ready(function () {
         });
 });
 
-document.addEventListener('DOMContentLoaded', (event) => {
-        const btnDiv = document.getElementById('btn-div');
+$(document).ready(function () {
+        $(".card").on('mousedown', function () {
+                // Убедитесь, что класс animate удален перед добавлением, 
+                // чтобы можно было повторно запустить анимацию
+                $(this).removeClass("animate_card").addClass("animate_card");
+        });
 
-        btnDiv.addEventListener('click', function () {
-                btnDiv.classList.toggle('float-animation');
+        // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
+        $(".avatar").on('animationend', function () {
+                $(this).removeClass("animate_card");
         });
 });
-
-
-
-
 
 function getCookie(name) {
         const cookies = document.cookie.split(';');

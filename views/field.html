@@ -9,7 +9,8 @@
         <link href='https://fonts.googleapis.com/css?family=VT323'
             rel='stylesheet'>
         <link rel="stylesheet" href="/field.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     </head>
 
     <body id="field_body">
@@ -22,15 +23,11 @@
 
         <div class="field">
             <div class="player-area" id="player2-area">
-                <!-- позиции для карт -->
-                <div class="card-position" id="p2-pos1"></div>
-                <!-- ...и так для каждой из 7 позиций -->
+               
             </div>
             <div class="line"></div>
             <div class="player-area" id="player1-area">
-                <!-- позиции для карт -->
-                <div class="card-position" id="p1-pos1"></div>
-                <!-- ...и так для каждой из 7 позиций -->
+                
             </div>
         </div>
         <div id="first-player">
@@ -41,13 +38,15 @@
         <div class="card" id="btn-div">
             
             <div class="mana_cost">8</div>
-            <img src="/images/Robo spider.png" class="card_img" alt="wfe"></img>
             <p class="cardname">Robo Spider</p>
+            <img src="/images/Robo spider.png" class="card_img" alt="wfe"></img>
             <div class="attack">8</div>
             <div class="hp">8</div>
             
         </div>
 
+        <script type="module" src="/scripts/drag.js"></script>
+        
         <script src="/socket.io/socket.io.js"></script>
         <script src="/scripts/field.js"></script>
     </body>
