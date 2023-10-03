@@ -36,16 +36,16 @@ socket.on('startGame', (data) => {
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
         }
+
+        console.log(firstPlayer.startCards);
+        console.log(secondPlayer.startCards);
 });
 
 $(document).ready(function () {
         $(".avatar").on('mousedown', function () {
-                // Убедитесь, что класс animate удален перед добавлением, 
-                // чтобы можно было повторно запустить анимацию
                 $(this).removeClass("animate").addClass("animate");
         });
 
-        // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
         $(".avatar").on('animationend', function () {
                 $(this).removeClass("animate");
         });
