@@ -124,6 +124,7 @@ function createCard(cardData) {
 
         // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
         document.getElementById('player1-area').appendChild(cardDiv);
+        /////////////////////////////////////////////////
 }
 
 $(document).ready(function () {
