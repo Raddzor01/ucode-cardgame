@@ -208,6 +208,270 @@ html, body {
     border-radius: 50px;
 }
 
+.leave_game_btn {
+    position: absolute;
+    margin-top: -145px;
+    right: 15px;
+
+    background: #BF0426;
+
+    padding: 0.5rem 2.55rem 0.5rem 2.55rem;
+    border-radius: 5rem;
+    border: 5px solid #435165;
+    letter-spacing: 0.075em;
+    transition: background 0.3s;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 36px;
+
+    cursor: pointer;
+}
+
+.leave_game_btn:active {
+    transform: scale(0.96);
+}
+
+.leave_game_btn:before,
+.leave_game_btn:after {
+    position: absolute;
+    content: "";
+    width: 150%;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    z-index: -1000;
+    background-repeat: no-repeat;
+}
+
+.leave_game_btn:hover:before {
+    top: -70%;
+    background-image: radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 20%, #BF0426 20%, transparent 30%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #BF0426 15%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%);
+    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+        10% 10%, 18% 18%;
+    background-position: 50% 120%;
+    animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+    0% {
+        background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+            40% 90%, 55% 90%, 70% 90%;
+    }
+
+    50% {
+        background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+            50% 50%, 65% 20%, 90% 30%;
+    }
+
+    100% {
+        background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+            50% 40%, 65% 10%, 90% 20%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+.leave_game_btn:hover::after {
+    bottom: -70%;
+    background-image: radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, transparent 10%, #BF0426 15%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%),
+        radial-gradient(circle, #BF0426 20%, transparent 20%);
+    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+    background-position: 50% 0%;
+    animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+    0% {
+        background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+            70% -10%, 70% 0%;
+    }
+
+    50% {
+        background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+            105% 0%;
+    }
+
+    100% {
+        background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+            110% 10%;
+        background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+}
+
+
+.voltage-button {
+    position: absolute;
+    margin-top: 145px;
+    right: 15px;
+
+}
+
+.voltage-button button {
+    color: white;
+    background: #0D1127;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    border-radius: 5rem;
+    border: 5px solid #435165;
+    letter-spacing: 0.075em;
+    transition: background 0.3s;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 36px;
+}
+
+.voltage-button button:hover {
+    cursor: pointer;
+    background: #0F1C53;
+}
+
+.voltage-button button:hover+svg, .voltage-button button:hover+svg+.dots {
+    opacity: 1;
+}
+
+.voltage-button svg {
+    display: block;
+    position: absolute;
+    top: -0.75em;
+    left: -0.25em;
+    width: calc(100% + 0.5em);
+    height: calc(100% + 1.5em);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+    transition-delay: 0.1s;
+}
+
+.voltage-button svg path {
+    stroke-dasharray: 100;
+    filter: url("#glow");
+}
+
+.voltage-button svg path.line-1 {
+    stroke: #f6de8d;
+    stroke-dashoffset: 0;
+    animation: spark-1 3s linear infinite;
+}
+
+.voltage-button svg path.line-2 {
+    stroke: #6bfeff;
+    stroke-dashoffset: 500;
+    animation: spark-2 3s linear infinite;
+}
+
+.voltage-button .dots {
+    opacity: 0;
+    transition: opacity 0.3s;
+    transition-delay: 0.4s;
+}
+
+.voltage-button .dots .dot {
+    width: 1rem;
+    height: 1rem;
+    background: white;
+    border-radius: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.voltage-button .dots .dot-1 {
+    top: 0;
+    left: 20%;
+    animation: fly-up 3s linear infinite;
+}
+
+.voltage-button .dots .dot-2 {
+    top: 0;
+    left: 55%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.voltage-button .dots .dot-3 {
+    top: 0;
+    left: 80%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 1s;
+}
+
+.voltage-button .dots .dot-4 {
+    bottom: 0;
+    left: 30%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 2.5s;
+}
+
+.voltage-button .dots .dot-5 {
+    bottom: 0;
+    left: 65%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 1.5s;
+}
+
+@keyframes spark-1 {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes spark-2 {
+    to {
+        stroke-dashoffset: -500;
+    }
+}
+
+@keyframes fly-up {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(-1.5rem) scale(0.4);
+    }
+
+    10%, 100% {
+        opacity: 0;
+        transform: translateY(-3rem) scale(0.2);
+    }
+}
+
+@keyframes fly-down {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(1.5rem) scale(0.4);
+    }
+
+    10%, 100% {
+        opacity: 0;
+        transform: translateY(3rem) scale(0.2);
+    }
+}
+
+
 
 .timer {
     font-family: 'VT323';
@@ -219,7 +483,7 @@ html, body {
 
     position: absolute;
 
-    right: 37px;
+    right: 55px;
 }
 
 .current-user {
@@ -238,13 +502,15 @@ html, body {
 }
 
 
+
+
 .card {
-    bottom: 0;
+    margin-bottom: 125px;
     /* устанавливаем карточку на нижний край экрана */
     transform: translateY(50%);
     /* !!!!!! */
 
-    position: absolute;
+    position: relative;
     width: 150px;
     height: 250px;
 
@@ -384,6 +650,41 @@ html, body {
     transition: all 0.3s ease-in-out;
 
     cursor: pointer;
+}
+
+#player1_cards {
+    position: absolute;
+    bottom: 5px;
+    width: 80%;
+    outline: 3px red dotted;
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    transition: all 0.3s ease-in-out;
+}
+
+#player1_cards .card {
+    margin-left: 10px;
+}
+
+
+#player2_cards {
+    position: absolute;
+    top: 5px;
+    width: 80%;
+    outline: 3px red dotted;
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    transition: all 0.3s ease-in-out;
 }
 
 

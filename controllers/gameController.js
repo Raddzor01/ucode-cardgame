@@ -114,4 +114,3 @@ const deck = [
 
 const game = new GameController(players, deck);
 game.playGame();
-
