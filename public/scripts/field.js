@@ -4,10 +4,6 @@ let userData = {};
 
 socket.emit("getUserData", getCookie('token'));
 
-function endTurn() {
-        socket.emit("endTurn");
-}
-
 socket.on("getNewCard", (data) => {
         console.log(data.name);
 });
@@ -25,6 +21,28 @@ socket.on('youWin', () => {
    // alert("You Win!");
    setTimeout(() =>{document.location.href = "/"}, 200);
 });
+
+startTimer();
+
+function startTimer() {
+        let remainingTime = 60;
+        document.querySelector(".timer").textContent = "01:00";
+
+        const timerInterval = setInterval(() => {
+                remainingTime--;
+                document.querySelector(".timer").textContent = remainingTime < 10 ? `00:0${remainingTime}` : `00:${remainingTime}`;
+
+                if (remainingTime <= 0) {
+                        clearInterval(timerInterval);
+                        endTurn();
+                }
+        }, 1000);
+}
+
+function endTurn() {
+        socket.emit("endTurn");
+}
+
 
 socket.on('startGame', (data) => {
 

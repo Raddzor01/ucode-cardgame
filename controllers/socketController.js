@@ -117,7 +117,7 @@ export default class socketController {
                     await newUser.updateField({id: userData.id, name: 'loses' , value: ++userData.loses});
                     io.to(enemyPlayer.socket.id).emit('youWin', {user: userData.login});
                 }
-                gameRooms = gameRooms.splice(userData.roomNbr, 1);
+                gameRooms.splice(userData.roomNbr, 1);
             }
         }
     }
