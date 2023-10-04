@@ -8,8 +8,11 @@ let secondPlayer = null;
 let currentPlayer = null;
 
 socket.emit("getUserData", getCookie('token'));
-// socket.emit("placeCard", { slotId: slotId, cardId: card.id }); // - отправка запроса
-// socket.on("placeEnemyCard", (data) => {  }; - прием запроса если противиник поставил карту
+
+function attack() {
+        // socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
+}
+socket.on("enemyAttack", (data) => { console.log( "enemyAttack" + data) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
         console.log(data);
@@ -25,6 +28,15 @@ socket.on("changeTurn", (data) => {
         }
         createEnemyCard(true);
 
+         // Меняем ход
+         if (currentPlayer === firstPlayer) {
+                currentPlayer = secondPlayer;
+
+        } else {
+                currentPlayer = firstPlayer;
+        }
+
+        console.log(currentPlayer.login + " your turn");
         startTimer();
 });
 
@@ -34,7 +46,12 @@ socket.on("userData", (data) => {
 });
 
 socket.on('youWin', () => {
-        // alert("You Win!");
+        alert("You Win!");
+        setTimeout(() => { document.location.href = "/" }, 200);
+});
+
+socket.on('youLose', () => {
+        alert("You Lose!");
         setTimeout(() => { document.location.href = "/" }, 200);
 });
 
@@ -79,9 +96,7 @@ function endTurn() {
                 currentPlayer = firstPlayer;
         }
         startTimer();
-        console.log(currentPlayer.login + " your turn")
 }
-
 
 socket.on('startGame', (data) => {
 

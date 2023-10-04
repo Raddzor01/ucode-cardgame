@@ -28,6 +28,10 @@ export default function socketRouter(io, socket) {
     });
 
     socket.on("placeCard", async (data) => {
-       await  controller.placeCard(socket, data, userData.roomNbr);
+       await controller.placeCard(socket, data, userData.roomNbr);
+    });
+
+    socket.on("attack", async (data) => {
+        await controller.attack(io, socket, data, userData);
     });
 }
