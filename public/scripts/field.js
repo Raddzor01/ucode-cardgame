@@ -22,6 +22,15 @@ socket.on("changeTurn", (data) => {
                 clearInterval(timerInterval);
         }
 
+         // Меняем ход
+         if (currentPlayer === firstPlayer) {
+                currentPlayer = secondPlayer;
+
+        } else {
+                currentPlayer = firstPlayer;
+        }
+
+        console.log(currentPlayer.login + " your turn");
         startTimer();
 });
 
@@ -76,9 +85,7 @@ function endTurn() {
                 currentPlayer = firstPlayer;
         }
         startTimer();
-        console.log(currentPlayer.login + " your turn")
 }
-
 
 socket.on('startGame', (data) => {
 
