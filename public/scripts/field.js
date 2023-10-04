@@ -59,6 +59,7 @@ socket.on('placeEnemyCard', (data) => {
         console.log(data);
         createCardSlots();
         displayEnemyCard(data);
+        removeEnemyCard();
 });
 
 function beginTurnForPlayer(player) {
@@ -258,6 +259,16 @@ function createEnemyCard(appendToContainer = false) {
 
         return cardDiv;
 }
+
+function removeEnemyCard() {
+        const container = document.getElementById('player2_cards');
+        const firstCard = container.firstElementChild;
+
+        if (firstCard) {
+                firstCard.remove();
+        }
+}
+
 
 function addThreeEnemyCards() {
         const container = document.getElementById('player2_cards');
