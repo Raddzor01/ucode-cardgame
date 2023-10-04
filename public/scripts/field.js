@@ -367,28 +367,51 @@ function displayEnemyCard(cardData) {
 
 
 function createDivWithStyles({ container, className, idPrefix, topOffset }) {
-        const gridWidth = 150,
-                gridHeight = 250,
+        const gridWidth = 149,
+                gridHeight = 249,
                 gridColumns = 8,
                 gap = 20,  // gap между дивами
                 totalDivsWidth = (gridColumns * gridWidth) + (gridColumns - 1) * gap,
                 leftOffset = (container.width() - totalDivsWidth) / 2;
+        //if container id === player1-area 
+
 
         if ($("." + className).length === 0) {
                 for (let i = 0; i < gridColumns; i++) {
                         const x = i * (gridWidth + gap) + leftOffset; // замените 17 на gap
-                        $("<div/>").css({
-                                position: "absolute",
-                                // border: "1px solid #454545",
-                                width: gridWidth - 1,
-                                height: gridHeight - 1,
-                                top: topOffset,
-                                left: x,
-                                zIndex: -9999
-                        })
-                                .attr('id', idPrefix + '-' + i)
-                                .prependTo(container)
-                                .addClass(className);
+                        if (container.attr('id') === 'player1-area') {
+                                $("<div/>").css({
+                                        position: "absolute",
+                                        background: "rgba(130, 149, 174, 0.2)",  /* уменьшена прозрачность */
+                                        boxShadow: "inset 0 0 0 3px rgba(130, 149, 174, 0.2)", // внутренний бордер и небольшая внешняя тень
+                                        borderRadius: "50px",
+                                        // border: "1px solid rgba(255, 255, 255, 0.2)",  /* уменьшена яркость рамки */
+                                        backdropFilter: "blur(5px)",
+                                        webkitBackdropFilter: "blur(5px)",
+                                        width: gridWidth - 1,
+                                        height: gridHeight - 1,
+                                        top: topOffset,
+                                        left: x,
+                                        zIndex: -1  /* чтобы убедиться, что div находится под другими элементами */
+                                    })
+                                    .attr('id', idPrefix + '-' + i)
+                                    .prependTo(container)
+                                    .addClass(className);
+                                    
+                        } else {
+                                $("<div/>").css({
+                                        position: "absolute",
+                                        width: gridWidth - 1,
+                                        height: gridHeight - 1,
+                                        top: topOffset,
+                                        left: x,
+                                        zIndex: -9999
+                                })
+                                        .attr('id', idPrefix + '-' + i)
+                                        .prependTo(container)
+                                        .addClass(className);
+                        }
+
                 }
         }
 
@@ -408,7 +431,7 @@ function activateDragAndDrop(cardElement) {
                 container: $("#player1-area"),
                 className: "dropzone",
                 idPrefix: "",
-                topOffset: 5
+                topOffset: 12.5
         });
         if ($(".dropzone").length === 0) {
                 for (i = 0; i < gridColumns; i++) {
