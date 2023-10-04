@@ -46,6 +46,7 @@ function startTimer() {
 }
 
 function endTurn() {
+        document.querySelector('.timer').textContent = "60s";
         socket.emit("endTurn");
 }
 
