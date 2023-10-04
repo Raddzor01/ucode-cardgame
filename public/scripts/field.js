@@ -10,9 +10,9 @@ let currentPlayer = null;
 socket.emit("getUserData", getCookie('token'));
 
 function attack() {
-        socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
+        // socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
 }
-socket.on("enemyAttack", (data) => { console.log( "enemyAttack" + data) }); // - прием запроса если противиник поставил карту
+socket.on("enemyAttack", (data) => { console.log( "enemyAttack" + data) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
         console.log(data.name);

@@ -107,8 +107,6 @@ export default class socketController {
             const player = currentRoom.players[playerIndex];
             const enemy = currentRoom.players[enemyIndex];
 
-            console.log(player.hp + "," + enemy.hp);
-
             player.hp -= cardsDeck.cardsArray[ownCardId - 1].damage;
 
             if (player.hp <= 0) {
