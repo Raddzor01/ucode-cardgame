@@ -1,100 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Game</title>
-    <link href='https://fonts.googleapis.com/css?family=DotGothic16' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet'>
-    <link rel="stylesheet" href="/field.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Game</title>
+        <link href='https://fonts.googleapis.com/css?family=DotGothic16'
+            rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=VT323'
+            rel='stylesheet'>
+        <link rel="stylesheet" href="/field.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    </head>
 
-<body id="field_body">
+    <body id="field_body">
 
-    <p id="second_player_login"></p>
-    <p id="first_player_login"></p>
+        <p id="second_player_login"></p>
+        <p id="first_player_login"></p>
 
-    <div id="player2_cards">
-    </div>
-    <div id="second-player">
-        <div class="avatar_container">
-            <img alt="pfp" class="avatar" id="second_avatar">
-            <div class="players_hp">30</div>
+        <div id="player2_cards">
         </div>
-    </div>
+        <div id="second-player">
+            <div class="avatar_container">
+                <img alt="pfp" class="avatar" id="second_avatar">
+                <div class="players_hp">30</div>
+            </div>
+            <div class="mana_wrapper">
+                <p class="player_mana">Mana:</p>
+                <p class="player_mana">10/10</p>
+            </div>
+        </div>
 
-    <div class="field">
-        <div class="player-area" id="player2-area">
+        <div class="field">
+            <div class="player-area" id="player2-area">
+
+            </div>
+            <div class="line"></div>
+            <div class="player-area" id="player1-area">
+
+            </div>
+        </div>
+        <div id="first-player">
+            <div class="avatar_container">
+                <img alt="pfp" onclick="attack()" class="avatar"
+                    id="first_avatar">
+                <div class="players_hp">30</div>
+            </div>
+            <div class="mana_wrapper">
+                <p class="player_mana">Mana:</p>
+                <p class="player_mana">10/10</p>
+            </div>
+        </div>
+
+        <div class="unknown_card">
+            <div id="numberCards">30</div>
+            <svg width="82" height="48" viewBox="0 0 82 48" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M72.25 37.6667L61.9375 23.5167M41 43.9167V29.3333M9.75 37.6667L20.0375 23.55M3.5 4.33333C18.5 37.6667 63.5 37.6667 78.5 4.33333"
+                    stroke="#90acca" stroke-width="7" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
 
         </div>
-        <div class="line"></div>
-        <div class="player-area" id="player1-area">
+
+        <button class="leave_game_btn" onclick="window.location.assign('/')">End
+            Game</button>
+        <div class="timer">60s</div>
+        <div class="voltage-button">
+
+            <button id="endTurnButton" onclick="endTurn()"
+                style="display: none;">End Turn</button>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px"
+                y="0px" viewBox="0 0 234.6 61.3"
+                preserveAspectRatio="none" xml:space="preserve">
+
+                <filter id="glow">
+                    <fegaussianblur class="blur" result="coloredBlur"
+                        stdDeviation="2"></fegaussianblur>
+                    <feturbulence type="fractalNoise" baseFrequency="0.075"
+                        numOctaves="0.3" result="turbulence">
+                    </feturbulence>
+                    <fedisplacementmap in="SourceGraphic" in2="turbulence"
+                        scale="30" xChannelSelector="R"
+                        yChannelSelector="G" result="displace"></fedisplacementmap>
+                    <femerge>
+                        <femergenode in="coloredBlur"></femergenode>
+                        <femergenode in="coloredBlur"></femergenode>
+                        <femergenode in="coloredBlur"></femergenode>
+                        <femergenode in="displace"></femergenode>
+                        <femergenode in="SourceGraphic"></femergenode>
+                    </femerge>
+                </filter>
+                <path class="voltage line-1"
+                    d="m216.3 51.2c-3.7 0-3.7-1.1-7.3-1.1-3.7 0-3.7 6.8-7.3 6.8-3.7 0-3.7-4.6-7.3-4.6-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-0.9-7.3-0.9-3.7 0-3.7-2.7-7.3-2.7-3.7 0-3.7 7.8-7.3 7.8-3.7 0-3.7-4.9-7.3-4.9-3.7 0-3.7-7.8-7.3-7.8-3.7 0-3.7-1.1-7.3-1.1-3.7 0-3.7 3.1-7.3 3.1-3.7 0-3.7 10.9-7.3 10.9-3.7 0-3.7-12.5-7.3-12.5-3.7 0-3.7 4.6-7.3 4.6-3.7 0-3.7 4.5-7.3 4.5-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-10-7.3-10-3.7 0-3.7-0.4-7.3-0.4-3.7 0-3.7 2.3-7.3 2.3-3.7 0-3.7 7.1-7.3 7.1-3.7 0-3.7-11.2-7.3-11.2-3.7 0-3.7 3.5-7.3 3.5-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-2.9-7.3-2.9-3.7 0-3.7 8.4-7.3 8.4-3.7 0-3.7-14.6-7.3-14.6-3.7 0-3.7 5.8-7.3 5.8-2.2 0-3.8-0.4-5.5-1.5-1.8-1.1-1.8-2.9-2.9-4.8-1-1.8 1.9-2.7 1.9-4.8 0-3.4-2.1-3.4-2.1-6.8s-9.9-3.4-9.9-6.8 8-3.4 8-6.8c0-2.2 2.1-2.4 3.1-4.2 1.1-1.8 0.2-3.9 2-5 1.8-1 3.1-7.9 5.3-7.9 3.7 0 3.7 0.9 7.3 0.9 3.7 0 3.7 6.7 7.3 6.7 3.7 0 3.7-1.8 7.3-1.8 3.7 0 3.7-0.6 7.3-0.6 3.7 0 3.7-7.8 7.3-7.8h7.3c3.7 0 3.7 4.7 7.3 4.7 3.7 0 3.7-1.1 7.3-1.1 3.7 0 3.7 11.6 7.3 11.6 3.7 0 3.7-2.6 7.3-2.6 3.7 0 3.7-12.9 7.3-12.9 3.7 0 3.7 10.9 7.3 10.9 3.7 0 3.7 1.3 7.3 1.3 3.7 0 3.7-8.7 7.3-8.7 3.7 0 3.7 11.5 7.3 11.5 3.7 0 3.7-1.4 7.3-1.4 3.7 0 3.7-2.6 7.3-2.6 3.7 0 3.7-5.8 7.3-5.8 3.7 0 3.7-1.3 7.3-1.3 3.7 0 3.7 6.6 7.3 6.6s3.7-9.3 7.3-9.3c3.7 0 3.7 0.2 7.3 0.2 3.7 0 3.7 8.5 7.3 8.5 3.7 0 3.7 0.2 7.3 0.2 3.7 0 3.7-1.5 7.3-1.5 3.7 0 3.7 1.6 7.3 1.6s3.7-5.1 7.3-5.1c2.2 0 0.6 9.6 2.4 10.7s4.1-2 5.1-0.1c1 1.8 10.3 2.2 10.3 4.3 0 3.4-10.7 3.4-10.7 6.8s1.2 3.4 1.2 6.8 1.9 3.4 1.9 6.8c0 2.2 7.2 7.7 6.2 9.5-1.1 1.8-12.3-6.5-14.1-5.5-1.7 0.9-0.1 6.2-2.2 6.2z"
+                    fill="transparent" stroke="#fff"></path>
+                <path class="voltage line-2"
+                    d="m216.3 52.1c-3 0-3-0.5-6-0.5s-3 3-6 3-3-2-6-2-3 1.6-6 1.6-3-0.4-6-0.4-3-1.2-6-1.2-3 3.4-6 3.4-3-2.2-6-2.2-3-3.4-6-3.4-3-0.5-6-0.5-3 1.4-6 1.4-3 4.8-6 4.8-3-5.5-6-5.5-3 2-6 2-3 2-6 2-3 1.6-6 1.6-3-4.4-6-4.4-3-0.2-6-0.2-3 1-6 1-3 3.1-6 3.1-3-4.9-6-4.9-3 1.5-6 1.5-3 1.6-6 1.6-3-1.3-6-1.3-3 3.7-6 3.7-3-6.4-6-6.4-3 2.5-6 2.5h-6c-3 0-3-0.6-6-0.6s-3-1.4-6-1.4-3 0.9-6 0.9-3 4.3-6 4.3-3-3.5-6-3.5c-2.2 0-3.4-1.3-5.2-2.3-1.8-1.1-3.6-1.5-4.6-3.3s-4.4-3.5-4.4-5.7c0-3.4 0.4-3.4 0.4-6.8s2.9-3.4 2.9-6.8-0.8-3.4-0.8-6.8c0-2.2 0.3-4.2 1.3-5.9 1.1-1.8 0.8-6.2 2.6-7.3 1.8-1 5.5-2 7.7-2 3 0 3 2 6 2s3-0.5 6-0.5 3 5.1 6 5.1 3-1.1 6-1.1 3-5.6 6-5.6 3 4.8 6 4.8 3 0.6 6 0.6 3-3.8 6-3.8 3 5.1 6 5.1 3-0.6 6-0.6 3-1.2 6-1.2 3-2.6 6-2.6 3-0.6 6-0.6 3 2.9 6 2.9 3-4.1 6-4.1 3 0.1 6 0.1 3 3.7 6 3.7 3 0.1 6 0.1 3-0.6 6-0.6 3 0.7 6 0.7 3-2.2 6-2.2 3 4.4 6 4.4 3-1.7 6-1.7 3-4 6-4 3 4.7 6 4.7 3-0.5 6-0.5 3-0.8 6-0.8 3-3.8 6-3.8 3 6.3 6 6.3 3-4.8 6-4.8 3 1.9 6 1.9 3-1.9 6-1.9 3 1.3 6 1.3c2.2 0 5-0.5 6.7 0.5 1.8 1.1 2.4 4 3.5 5.8 1 1.8 0.3 3.7 0.3 5.9 0 3.4 3.4 3.4 3.4 6.8s-3.3 3.4-3.3 6.8 4 3.4 4 6.8c0 2.2-6 2.7-7 4.4-1.1 1.8 1.1 6.7-0.7 7.7-1.6 0.8-4.7-1.1-6.8-1.1z"
+                    fill="transparent" stroke="#fff"></path>
+            </svg>
+            <div class="dots">
+                <div class="dot dot-1"></div>
+                <div class="dot dot-2"></div>
+                <div class="dot dot-3"></div>
+                <div class="dot dot-4"></div>
+                <div class="dot dot-5"></div>
+            </div>
+        </div>
+
+        <div id="player1_cards">
 
         </div>
-    </div>
-    <div id="first-player">
-        <div class="avatar_container">
-            <img alt="pfp" onclick="attack()" class="avatar" id="first_avatar">
-            <div class="players_hp">30</div>
-        </div>
-    </div>
 
-    <div class="unknown_card">
-        <div id="numberCards">30</div>
-        <svg width="82" height="48" viewBox="0 0 82 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M72.25 37.6667L61.9375 23.5167M41 43.9167V29.3333M9.75 37.6667L20.0375 23.55M3.5 4.33333C18.5 37.6667 63.5 37.6667 78.5 4.33333"
-                stroke="#90acca" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-
-    </div>
-
-    <button class="leave_game_btn" onclick="window.location.assign('/')">End Game</button>
-    <div class="timer">60s</div>
-    <div class="voltage-button">
-
-        <button id="endTurnButton" onclick="endTurn()" style="display: none;">End Turn</button>
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 234.6 61.3"
-            preserveAspectRatio="none" xml:space="preserve">
-
-            <filter id="glow">
-                <feGaussianBlur class="blur" result="coloredBlur" stdDeviation="2"></feGaussianBlur>
-                <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="0.3" result="turbulence">
-                </feTurbulence>
-                <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="30" xChannelSelector="R"
-                    yChannelSelector="G" result="displace"></feDisplacementMap>
-                <feMerge>
-                    <feMergeNode in="coloredBlur"></feMergeNode>
-                    <feMergeNode in="coloredBlur"></feMergeNode>
-                    <feMergeNode in="coloredBlur"></feMergeNode>
-                    <feMergeNode in="displace"></feMergeNode>
-                    <feMergeNode in="SourceGraphic"></feMergeNode>
-                </feMerge>
-            </filter>
-            <path class="voltage line-1"
-                d="m216.3 51.2c-3.7 0-3.7-1.1-7.3-1.1-3.7 0-3.7 6.8-7.3 6.8-3.7 0-3.7-4.6-7.3-4.6-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-0.9-7.3-0.9-3.7 0-3.7-2.7-7.3-2.7-3.7 0-3.7 7.8-7.3 7.8-3.7 0-3.7-4.9-7.3-4.9-3.7 0-3.7-7.8-7.3-7.8-3.7 0-3.7-1.1-7.3-1.1-3.7 0-3.7 3.1-7.3 3.1-3.7 0-3.7 10.9-7.3 10.9-3.7 0-3.7-12.5-7.3-12.5-3.7 0-3.7 4.6-7.3 4.6-3.7 0-3.7 4.5-7.3 4.5-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-10-7.3-10-3.7 0-3.7-0.4-7.3-0.4-3.7 0-3.7 2.3-7.3 2.3-3.7 0-3.7 7.1-7.3 7.1-3.7 0-3.7-11.2-7.3-11.2-3.7 0-3.7 3.5-7.3 3.5-3.7 0-3.7 3.6-7.3 3.6-3.7 0-3.7-2.9-7.3-2.9-3.7 0-3.7 8.4-7.3 8.4-3.7 0-3.7-14.6-7.3-14.6-3.7 0-3.7 5.8-7.3 5.8-2.2 0-3.8-0.4-5.5-1.5-1.8-1.1-1.8-2.9-2.9-4.8-1-1.8 1.9-2.7 1.9-4.8 0-3.4-2.1-3.4-2.1-6.8s-9.9-3.4-9.9-6.8 8-3.4 8-6.8c0-2.2 2.1-2.4 3.1-4.2 1.1-1.8 0.2-3.9 2-5 1.8-1 3.1-7.9 5.3-7.9 3.7 0 3.7 0.9 7.3 0.9 3.7 0 3.7 6.7 7.3 6.7 3.7 0 3.7-1.8 7.3-1.8 3.7 0 3.7-0.6 7.3-0.6 3.7 0 3.7-7.8 7.3-7.8h7.3c3.7 0 3.7 4.7 7.3 4.7 3.7 0 3.7-1.1 7.3-1.1 3.7 0 3.7 11.6 7.3 11.6 3.7 0 3.7-2.6 7.3-2.6 3.7 0 3.7-12.9 7.3-12.9 3.7 0 3.7 10.9 7.3 10.9 3.7 0 3.7 1.3 7.3 1.3 3.7 0 3.7-8.7 7.3-8.7 3.7 0 3.7 11.5 7.3 11.5 3.7 0 3.7-1.4 7.3-1.4 3.7 0 3.7-2.6 7.3-2.6 3.7 0 3.7-5.8 7.3-5.8 3.7 0 3.7-1.3 7.3-1.3 3.7 0 3.7 6.6 7.3 6.6s3.7-9.3 7.3-9.3c3.7 0 3.7 0.2 7.3 0.2 3.7 0 3.7 8.5 7.3 8.5 3.7 0 3.7 0.2 7.3 0.2 3.7 0 3.7-1.5 7.3-1.5 3.7 0 3.7 1.6 7.3 1.6s3.7-5.1 7.3-5.1c2.2 0 0.6 9.6 2.4 10.7s4.1-2 5.1-0.1c1 1.8 10.3 2.2 10.3 4.3 0 3.4-10.7 3.4-10.7 6.8s1.2 3.4 1.2 6.8 1.9 3.4 1.9 6.8c0 2.2 7.2 7.7 6.2 9.5-1.1 1.8-12.3-6.5-14.1-5.5-1.7 0.9-0.1 6.2-2.2 6.2z"
-                fill="transparent" stroke="#fff"></path>
-            <path class="voltage line-2"
-                d="m216.3 52.1c-3 0-3-0.5-6-0.5s-3 3-6 3-3-2-6-2-3 1.6-6 1.6-3-0.4-6-0.4-3-1.2-6-1.2-3 3.4-6 3.4-3-2.2-6-2.2-3-3.4-6-3.4-3-0.5-6-0.5-3 1.4-6 1.4-3 4.8-6 4.8-3-5.5-6-5.5-3 2-6 2-3 2-6 2-3 1.6-6 1.6-3-4.4-6-4.4-3-0.2-6-0.2-3 1-6 1-3 3.1-6 3.1-3-4.9-6-4.9-3 1.5-6 1.5-3 1.6-6 1.6-3-1.3-6-1.3-3 3.7-6 3.7-3-6.4-6-6.4-3 2.5-6 2.5h-6c-3 0-3-0.6-6-0.6s-3-1.4-6-1.4-3 0.9-6 0.9-3 4.3-6 4.3-3-3.5-6-3.5c-2.2 0-3.4-1.3-5.2-2.3-1.8-1.1-3.6-1.5-4.6-3.3s-4.4-3.5-4.4-5.7c0-3.4 0.4-3.4 0.4-6.8s2.9-3.4 2.9-6.8-0.8-3.4-0.8-6.8c0-2.2 0.3-4.2 1.3-5.9 1.1-1.8 0.8-6.2 2.6-7.3 1.8-1 5.5-2 7.7-2 3 0 3 2 6 2s3-0.5 6-0.5 3 5.1 6 5.1 3-1.1 6-1.1 3-5.6 6-5.6 3 4.8 6 4.8 3 0.6 6 0.6 3-3.8 6-3.8 3 5.1 6 5.1 3-0.6 6-0.6 3-1.2 6-1.2 3-2.6 6-2.6 3-0.6 6-0.6 3 2.9 6 2.9 3-4.1 6-4.1 3 0.1 6 0.1 3 3.7 6 3.7 3 0.1 6 0.1 3-0.6 6-0.6 3 0.7 6 0.7 3-2.2 6-2.2 3 4.4 6 4.4 3-1.7 6-1.7 3-4 6-4 3 4.7 6 4.7 3-0.5 6-0.5 3-0.8 6-0.8 3-3.8 6-3.8 3 6.3 6 6.3 3-4.8 6-4.8 3 1.9 6 1.9 3-1.9 6-1.9 3 1.3 6 1.3c2.2 0 5-0.5 6.7 0.5 1.8 1.1 2.4 4 3.5 5.8 1 1.8 0.3 3.7 0.3 5.9 0 3.4 3.4 3.4 3.4 6.8s-3.3 3.4-3.3 6.8 4 3.4 4 6.8c0 2.2-6 2.7-7 4.4-1.1 1.8 1.1 6.7-0.7 7.7-1.6 0.8-4.7-1.1-6.8-1.1z"
-                fill="transparent" stroke="#fff"></path>
-        </svg>
-        <div class="dots">
-            <div class="dot dot-1"></div>
-            <div class="dot dot-2"></div>
-            <div class="dot dot-3"></div>
-            <div class="dot dot-4"></div>
-            <div class="dot dot-5"></div>
-        </div>
-    </div>
-
-    <div id="player1_cards">
-
-    </div>
-
-
-    <!-- <div class="card" id="btn-div">
+        <!-- <div class="card" id="btn-div">
             
             <div class="mana_cost">8</div>
             <p class="cardname">Robo Spider</p>
@@ -104,9 +122,8 @@
             
         </div> -->
 
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/scripts/field.js"></script>
-</body>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/scripts/field.js"></script>
+    </body>
 
 </html>

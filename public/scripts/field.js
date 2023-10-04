@@ -18,7 +18,6 @@ socket.on("getNewCard", (data) => {
         // console.log(data);
         createCard(data, true);
         disableDragForCards(".card");
-
 });
 
 socket.on("changeTurn", (data) => {
@@ -107,6 +106,7 @@ function endTurn() {
 }
 
 function disableDragForCards(selector) {
+        console.log("disableDragForCards");
         const cards = document.querySelectorAll(selector);
         cards.forEach(card => {
                 card.classList.add('non-draggable');
@@ -147,7 +147,16 @@ socket.on('startGame', (data) => {
                 secondPlayerContainer.classList.remove('current-user');
 
                 addThreePlayerCards(data[0]);
-                activateDragAndDrop(".card");
+                
+                if (firstPlayer.firstTurn)
+                        beginTurnForPlayer(firstPlayer);
+                else {
+                        setTimeout(() => {
+                                disableDragForCards(".card");
+                        }, 1900);
+                        startTimer();
+                }
+                
                 addThreeEnemyCards();
                 
                 if (firstPlayer.firstTurn)
@@ -174,10 +183,16 @@ socket.on('startGame', (data) => {
                 if (secondPlayer.firstTurn)
                         beginTurnForPlayer(secondPlayer);
                 else {
-                        disableDragForCards(".card");
+                        setTimeout(() => {
+                                disableDragForCards(".card");
+                        }, 1900);
                         startTimer();
                 }
+                
+                addThreeEnemyCards();
         }
+        
+        
 
         // if (firstPlayer.firstTurn) {
         //         beginTurnForPlayer(firstPlayer);

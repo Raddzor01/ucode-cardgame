@@ -753,6 +753,35 @@ html, body {
     transform: scale(0.95);
 }
 
+.player_mana {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 36px;
+
+    color: #7B99B6;
+
+    margin: 0;
+    padding: 0;
+
+    /* outline: 2px red dotted; */
+}
+
+.mana_wrapper {
+    margin-left: 20px;
+
+    align-self: center;
+    text-align: center;
+
+    display: flex;
+    
+    flex-direction: column;
+}
+
+.mana_wrapper:last-child {
+    margin-top: 10px;
+}
 
 
 
