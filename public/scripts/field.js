@@ -12,7 +12,7 @@ socket.emit("getUserData", getCookie('token'));
 function attack() {
         // socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
 }
-socket.on("enemyAttack", (data) => { console.log( "enemyAttack" + data) }); // - прием запроса если противиник атаковал
+socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
         console.log(data);
@@ -28,8 +28,8 @@ socket.on("changeTurn", (data) => {
         }
         createEnemyCard(true);
 
-         // Меняем ход
-         if (currentPlayer === firstPlayer) {
+        // Меняем ход
+        if (currentPlayer === firstPlayer) {
                 currentPlayer = secondPlayer;
 
         } else {
@@ -193,14 +193,14 @@ function createCard(cardData, isNewCard) {
         document.getElementById('player1_cards').appendChild(cardDiv);
 
         activateDragAndDrop(".card");
-        
+
         if (isNewCard) {
                 setTimeout(() => {
                         cardDiv.classList.add('visible');
                 }, 50);
         }
         // После небольшой паузы (например, 50 мс) добавляем класс visible, чтобы начать анимацию
-       
+
 }
 
 function addThreePlayerCards(dataObject) {
@@ -224,13 +224,13 @@ function createEnemyCard(appendToContainer = false) {
         // Создаем элемент div для карты
         const cardDiv = document.createElement('div');
         cardDiv.className = "enemies_unknown_card";
-    
+
         // Создаем SVG для карты
         const svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svgElem.setAttribute('width', '82');
         svgElem.setAttribute('height', '48');
         svgElem.setAttribute('viewBox', '0 0 82 48');
-    
+
         // Создаем path для SVG
         const pathElem = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         pathElem.setAttribute('d', 'M72.25 37.6667L61.9375 23.5167M41 43.9167V29.3333M9.75 37.6667L20.0375 23.55M3.5 4.33333C18.5 37.6667 63.5 37.6667 78.5 4.33333');
@@ -239,25 +239,25 @@ function createEnemyCard(appendToContainer = false) {
         pathElem.setAttribute('stroke-linecap', 'round');
         pathElem.setAttribute('stroke-linejoin', 'round');
         pathElem.setAttribute('fill', 'none');
-    
+
         // Добавляем path в SVG
         svgElem.appendChild(pathElem);
         // Добавляем SVG в div карточки
         cardDiv.appendChild(svgElem);
-    
+
         // Если передан параметр appendToContainer, добавляем карту в контейнер
         if (appendToContainer) {
-            const container = document.getElementById('player2_cards');
-            container.appendChild(cardDiv);
-    
-            // Добавляем анимацию появления
-            setTimeout(() => {
-                cardDiv.classList.add('visible');
-            }, 50);
+                const container = document.getElementById('player2_cards');
+                container.appendChild(cardDiv);
+
+                // Добавляем анимацию появления
+                setTimeout(() => {
+                        cardDiv.classList.add('visible');
+                }, 50);
         }
-    
+
         return cardDiv;
-    }
+}
 
 function addThreeEnemyCards() {
         const container = document.getElementById('player2_cards');
@@ -274,13 +274,6 @@ function addThreeEnemyCards() {
 }
 
 function displayEnemyCard(cardData) {
-        const enemyCardContainer = document.getElementById('player2_cards');
-
-        // Удаляем последнюю карту (если она существует)
-        if (enemyCardContainer.lastChild) {
-                enemyCardContainer.removeChild(enemyCardContainer.lastChild);
-        }
-
         const card = cardData.card;
         const cardDiv = document.createElement('div');
         cardDiv.className = "card";

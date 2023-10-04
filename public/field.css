@@ -548,6 +548,7 @@ html, body {
 
 #player2-area .card {
     transform: translateY(0%);
+    opacity: 1;
 }
 
 
