@@ -2,6 +2,11 @@ const socket = io();
 
 let userData = {};
 
+let timerInterval = null;
+let firstPlayer = null;
+let secondPlayer = null;
+let currentPlayer = null;
+
 socket.emit("getUserData", getCookie('token'));
 // socket.emit("placeCard", { slotId: slotId, cardId: card.id }); // - отправка запроса
 // socket.on("placeEnemyCard", (data) => {  }; - прием запроса если противиник поставил карту
@@ -12,6 +17,12 @@ socket.on("getNewCard", (data) => {
 
 socket.on("changeTurn", (data) => {
         console.log("changeTurn " + data.mana);
+
+        if (timerInterval) {
+                clearInterval(timerInterval);
+        }
+
+        startTimer();
 });
 
 socket.on("userData", (data) => {
@@ -30,33 +41,49 @@ socket.on('placeEnemyCard', (data) => {
         displayEnemyCard(data);
 });
 
-startTimer();
+function beginTurnForPlayer(player) {
+        currentPlayer = player;
+        if (player.firstTurn === true) {
+                startTimer();
+        }
+}
 
 function startTimer() {
         let remainingTime = 60;
         document.querySelector(".timer").textContent = "60s";
 
-        const timerInterval = setInterval(() => {
+        timerInterval = setInterval(() => {
                 remainingTime--;
                 document.querySelector(".timer").textContent = remainingTime + "s";
 
                 if (remainingTime <= 0) {
-                        clearInterval(timerInterval);
                         endTurn();
                 }
         }, 1000);
 }
 
 function endTurn() {
-        document.querySelector('.timer').textContent = "60s";
+        if (timerInterval) {
+                clearInterval(timerInterval);
+        }
         socket.emit("endTurn");
+
+        // Меняем ход
+        if (currentPlayer === firstPlayer) {
+                currentPlayer = secondPlayer;
+
+        } else {
+                currentPlayer = firstPlayer;
+        }
+        startTimer();
+        console.log(currentPlayer.login + " your turn")
 }
 
 
 socket.on('startGame', (data) => {
 
-        const firstPlayer = data[0];
-        const secondPlayer = data[1];
+        firstPlayer = data[0];
+        secondPlayer = data[1];
 
         // Получаем имя текущего пользователя
         const currentUserLogin = userData.login;  // используем данные из data
@@ -96,6 +123,12 @@ socket.on('startGame', (data) => {
                         createCard(card);
                 });
                 activateDragAndDrop(".card");
+        }
+
+        if (firstPlayer.firstTurn) {
+                beginTurnForPlayer(firstPlayer);
+        } else {
+                beginTurnForPlayer(secondPlayer);
         }
 
         console.log(firstPlayer.startCards);
