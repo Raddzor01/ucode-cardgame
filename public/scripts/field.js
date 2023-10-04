@@ -15,7 +15,7 @@ function attack() {
 socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
-        console.log(data);
+        // console.log(data);
         createCard(data, true);
         disableDragForCards(".card");
 
@@ -38,6 +38,7 @@ socket.on("changeTurn", (data) => {
         }
         enableDragForCards(".card");
 
+        document.getElementById('endTurnButton').style.display = 'block';
         console.log(currentPlayer.login + " your turn");
         startTimer();
         minusCountCards();
@@ -59,7 +60,7 @@ socket.on('youLose', () => {
 });
 
 socket.on('placeEnemyCard', (data) => {
-        console.log(data);
+        // console.log(data);
         createCardSlots();
         displayEnemyCard(data);
         removeEnemyCard();
@@ -68,6 +69,7 @@ socket.on('placeEnemyCard', (data) => {
 function beginTurnForPlayer(player) {
         currentPlayer = player;
         if (player.firstTurn === true) {
+                document.getElementById('endTurnButton').style.display = 'block';
                 startTimer();
         }
 }
@@ -80,7 +82,7 @@ function startTimer() {
                 remainingTime--;
                 document.querySelector(".timer").textContent = remainingTime + "s";
 
-                if (remainingTime <= 0) {
+                if (remainingTime <= 0 && currentPlayer === userData.login) {
                         endTurn();
                 }
         }, 1000);
@@ -102,6 +104,7 @@ function endTurn() {
         }
         startTimer();
         minusCountCards();
+        document.getElementById('endTurnButton').style.display = 'none';
 }
 
 function disableDragForCards(selector) {
@@ -127,8 +130,8 @@ socket.on('startGame', (data) => {
 
         // Получаем имя текущего пользователя
         const currentUserLogin = userData.login;  // используем данные из data
-        console.log(firstPlayer);
-        console.log(secondPlayer);
+        // console.log(firstPlayer);
+        // console.log(secondPlayer);
         // Получаем контейнеры игроков
         const firstPlayerContainer = document.getElementById('first-player');
         const secondPlayerContainer = document.getElementById('second-player');
@@ -144,6 +147,11 @@ socket.on('startGame', (data) => {
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
 
+                if (firstPlayer.firstTurn)
+                        beginTurnForPlayer(firstPlayer);
+                else
+                        startTimer();
+
                 addThreePlayerCards(data[0]);
                 activateDragAndDrop(".card");
                 addThreeEnemyCards();
@@ -157,24 +165,30 @@ socket.on('startGame', (data) => {
                 secondPlayerContainer.classList.add('current-user');
                 firstPlayerContainer.classList.remove('current-user');
 
-                addThreePlayerCards(data[0]);
+                addThreePlayerCards(data[1]);
+
+                if (secondPlayer.firstTurn)
+                        beginTurnForPlayer(secondPlayer);
+                else
+                        startTimer();
+
                 activateDragAndDrop(".card");
                 addThreeEnemyCards();
         }
 
-        if (firstPlayer.firstTurn) {
-                beginTurnForPlayer(firstPlayer);
-        } else {
-                beginTurnForPlayer(secondPlayer);
-        }
+        // if (firstPlayer.firstTurn) {
+        //         beginTurnForPlayer(firstPlayer);
+        // } else {
+        //         beginTurnForPlayer(secondPlayer);
+        // }
 
-        console.log(firstPlayer.startCards);
-        console.log(secondPlayer.startCards);
+        // console.log(firstPlayer.startCards);
+        // console.log(secondPlayer.startCards);
 });
 
 function createCard(cardData, isNewCard) {
         // Создаем главный div для карты
-        console.log(cardData);
+        // console.log(cardData);
         const cardDiv = document.createElement('div');
         cardDiv.className = "card";
         cardDiv.id = `${cardData.id}`;
@@ -506,8 +520,8 @@ function getCookie(name) {
 function minusCountCards() {
         const numberDiv = document.getElementById('numberCards');
         let currentValue = parseInt(numberDiv.textContent, 10);
-    
+
         if (!isNaN(currentValue)) {
-            numberDiv.textContent = currentValue - 1;
+                numberDiv.textContent = currentValue - 1;
         }
 }
