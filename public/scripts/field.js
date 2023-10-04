@@ -40,6 +40,7 @@ socket.on("changeTurn", (data) => {
 
         console.log(currentPlayer.login + " your turn");
         startTimer();
+        minusCountCards();
 });
 
 socket.on("userData", (data) => {
@@ -100,6 +101,7 @@ function endTurn() {
                 currentPlayer = firstPlayer;
         }
         startTimer();
+        minusCountCards();
 }
 
 function disableDragForCards(selector) {
@@ -499,4 +501,13 @@ function getCookie(name) {
                 }
         }
         return null;
+}
+
+function minusCountCards() {
+        const numberDiv = document.getElementById('numberCards');
+        let currentValue = parseInt(numberDiv.textContent, 10);
+    
+        if (!isNaN(currentValue)) {
+            numberDiv.textContent = currentValue - 1;
+        }
 }
