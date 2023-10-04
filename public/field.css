@@ -126,8 +126,7 @@ html, body {
 
 .field {
     display: flex;
-    align-items: center;
-    justify-content: center;
+
     flex-direction: column;
 
     width: 1400px;
@@ -139,9 +138,10 @@ html, body {
 }
 
 .line {
+    position: absolute;
     border-radius: 2.5px;
-
-    width: 100%;
+    margin-top: 270px;
+    width: 1400px;
     height: 5px;
 
     background-color: #262B45;
@@ -497,8 +497,24 @@ html, body {
     position: relative;
 
     width: 100%;
+    
+    top: 10px;
 
+    width: 100%;
 
+    height: 260px;
+
+     /* outline: 2px red dotted; */
+}
+
+#player2-area {
+    position: relative;
+
+    width: 100%;
+
+    height: 260px;
+
+    /* outline: 2px red dotted; */
 }
 
 
@@ -524,9 +540,13 @@ html, body {
 
 }
 
+#player2-area .card {
+    transform: translateY(0%);
+}
 
 
-.card:hover {
+
+#player1_cards .card:hover {
     transform: translateY(-5%);
     transition: all 0.3s ease-in-out;
 
@@ -656,7 +676,7 @@ html, body {
     position: absolute;
     bottom: 5px;
     width: 80%;
-    outline: 3px red dotted;
+    /* outline: 3px red dotted; */
     height: 130px;
 
     display: flex;
@@ -676,7 +696,7 @@ html, body {
     position: absolute;
     top: 5px;
     width: 80%;
-    outline: 3px red dotted;
+    /* outline: 3px red dotted; */
     height: 130px;
 
     display: flex;
@@ -686,6 +706,34 @@ html, body {
 
     transition: all 0.3s ease-in-out;
 }
+
+#player2_cards .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(0%);
+    margin-left: 10px;
+}
+
+#player2_cards .card:hover {
+    transform: translateY(10px);
+    box-shadow: rgba(191, 4, 38, 0.4) 0px 5px 5px 5px,
+
+        rgba(191, 4, 38, 0.4) 0px -5px 5px 5px,
+
+        rgba(191, 4, 38, 0.4) 5px 0px 5px 5px,
+
+        rgba(191, 4, 38, 0.4) -5px 0px 5px 5px;
+}
+
+#player2_cards .card:active {
+    transform: scale(0.95);
+
+
+}
+
+
 
 
 
