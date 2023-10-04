@@ -31,9 +31,9 @@ export default class socketController {
             socket.emit("userData", userData);
 
             userData.socket = socket;
-            userData.roomNbr = 0;
+            userData.roomNbr = -1;
             userData.hp = 30;
-            userData.mana = 2;
+            userData.mana = 1;
             userData.cards = 17;
 
             return userData;
@@ -82,7 +82,6 @@ export default class socketController {
         }
 
         const firstTurn = Math.floor(Math.random() * 2);
-
         const players = foundRoom.players;
 
         const playersData = players.map(player => ({
@@ -96,6 +95,43 @@ export default class socketController {
         io.sockets.in(`room-${roomIndex}`).emit("startGame", playersData);
 
         return userData;
+    }
+
+    static async attack(io, socket, data, userData) {
+        const { ownSlotIndex, ownCardId, enemySlotIndex } = data;
+        const currentRoom = gameRooms[userData.roomNbr];
+        const playerIndex = currentRoom.players.findIndex((player) => player.id === userData.id);
+        const enemyIndex = 1 - playerIndex;
+
+        if (enemySlotIndex === -1) {
+            const player = currentRoom.players[playerIndex];
+            const enemy = currentRoom.players[enemyIndex];
+
+            player.hp -= cardsDeck.cardsArray[ownCardId - 1].damage;
+
+            if (player.hp <= 0) {
+                io.to(player.socket.id).emit("youWin");
+                io.to(enemy.socket.id).emit("youLose");
+
+                await updateGameResults(player, enemy);
+                gameRooms.splice(userData.roomNbr, 1);
+            }
+        }
+
+        socket.to(`room-${userData.roomNbr}`).emit("enemyAttack", { userCardIndex: enemySlotIndex, enemyCardIndex: ownSlotIndex });
+    }
+
+    static async placeCard(socket, data, gameRoomNbr) {
+        const card = cardsDeck.cardsArray[data.cardId - 1];
+        // console.log(data);
+        socket.to(`room-${gameRoomNbr}`).emit("placeEnemyCard", { card: card, slotId: data.slotId } );
+    }
+
+    static async endTurn(io, socket, userData){
+        const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
+        if(userData.cards-- > 0)
+            io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
+        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
     }
 
     static async cancelSearch(io, socket, data) {
@@ -120,19 +156,6 @@ export default class socketController {
         }
     }
 
-    static async endTurn(io, socket, userData){
-        const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
-        if(userData.cards-- > 0)
-            io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
-        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
-    }
-
-    static async placeCard(socket, data, gameRoomNbr) {
-        const card = cardsDeck.cardsArray[data.cardId - 1];
-        // console.log(data);
-        socket.to(`room-${gameRoomNbr}`).emit("placeEnemyCard", { card: card, slotId: data.slotId } );
-    }
-
 }
 
 function generateStartCards() {
@@ -155,3 +178,11 @@ function findRoomByUserData(id, login) {
     }
     return null;
 }
+
+async function updateGameResults(player, enemy) {
+    const newUser = new User();
+
+    await newUser.updateField({ id: player.id, name: 'wins', value: ++player.wins });
+    await newUser.updateField({ id: enemy.id, name: 'loses', value: ++enemy.loses });
+}
+

@@ -522,7 +522,6 @@ html, body {
 .card {
     margin-bottom: 125px;
     /* устанавливаем карточку на нижний край экрана */
-    transform: translateY(50%);
     /* !!!!!! */
 
     position: relative;
@@ -536,11 +535,20 @@ html, body {
     transition: all 0.3s ease-in-out;
 
     cursor: pointer;
+    
+    transform: translateY(100%);  /* начальное положение - за пределами области просмотра внизу */
+    opacity: 0;  /* сделаем карту прозрачной в начальном состоянии */
 
+}
+
+.card.visible {
+    transform: translateY(50%);  /* конечное положение */
+    opacity: 1;  /* сделаем карту видимой */
 }
 
 #player2-area .card {
     transform: translateY(0%);
+    opacity: 1;
 }
 
 
@@ -712,9 +720,6 @@ html, body {
     justify-content: center;
 
     margin-bottom: 125px;
-    /* устанавливаем карточку на нижний край экрана */
-    transform: translateY(50%);
-    /* !!!!!! */
 
     position: relative;
     width: 150px;
@@ -727,30 +732,29 @@ html, body {
     transition: all 0.3s ease-in-out;
 
     cursor: pointer;
-
-    transform: translateY(0%);
+    
     margin-left: 10px;
+    transform: translateY(-150%);  /* начальное положение - наполовину за пределами области просмотра сверху */
+    opacity: 0;  /* сделаем карту прозрачной в начальном состоянии */
+}
+.enemies_unknown_card svg {
+    margin-top: 100px;
 }
 
-.enemies_unknown_card svg {
-    margin-top: 90px;
+.enemies_unknown_card.visible {
+    transform: translateY(0);  /* конечное положение */
+    opacity: 1;  /* сделаем карту видимой */
 }
 
 .enemies_unknown_card:hover {
-    transform: translateY(10px);
     box-shadow: rgba(191, 4, 38, 0.4) 0px 5px 5px 5px,
-
-        rgba(191, 4, 38, 0.4) 0px -5px 5px 5px,
-
-        rgba(191, 4, 38, 0.4) 5px 0px 5px 5px,
-
-        rgba(191, 4, 38, 0.4) -5px 0px 5px 5px;
+                rgba(191, 4, 38, 0.4) 0px -5px 5px 5px,
+                rgba(191, 4, 38, 0.4) 5px 0px 5px 5px,
+                rgba(191, 4, 38, 0.4) -5px 0px 5px 5px;
 }
 
 .enemies_unknown_card:active {
     transform: scale(0.95);
-
-
 }
 
 
