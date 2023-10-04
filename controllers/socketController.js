@@ -31,9 +31,9 @@ export default class socketController {
             socket.emit("userData", userData);
 
             userData.socket = socket;
-            userData.roomNbr = 0;
+            userData.roomNbr = -1;
             userData.hp = 30;
-            userData.mana = 2;
+            userData.mana = 1;
             userData.cards = 17;
 
             return userData;
