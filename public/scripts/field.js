@@ -270,29 +270,51 @@ function activateDragAndDrop(cardElement) {
         $(".dropzone").droppable({
                 accept: ".card",
                 drop: function (event, ui) {
-                        ui.draggable.data('dropped', true);
+                        console.log("Card was dropped into a dropzone");
 
                         const cardId = ui.draggable.attr("id");
                         const dropZonePosition = $(this).index('.dropzone');
                         socket.emit("placeCard", { slotId: dropZonePosition, cardId: cardId });
 
-                        console.log("Card was dropped into a dropzone");
+                        // Просто добавьте элемент в dropzone
+                        $(this).append(ui.draggable);
 
-                        ui.draggable.draggable("disable");
+                        // Примените необходимые стили к перемещенной карточке
                         ui.draggable.css({
-                                "cursor": "default",
+                                "cursor": "pointer",
                                 "left": "",
                                 "top": "",
-                                "position": "relative",
-                                "transform": "none"
+                                "transform": "none",
                         });
 
-                        $(this).append(ui.draggable);
+                        // Убедитесь, что карточка снова становится перетаскиваемой
+                        makeCardDraggable(ui.draggable);
+                }
+        });
+
+}
+
+function makeCardDraggable(card) {
+        $(card).draggable({
+                revert: "invalid",
+                start: function (event, ui) {
+                        console.log("Drag started");
+                        ui.helper.css({
+                                "transition": "none",
+                        });
+                },
+                stop: function (event, ui) {
+                        console.log("Drag stopped");
+                        ui.helper.css({
+                                "transition": "all 0.3s ease-in-out",
+                        });
                 }
         });
 }
 
-
+$(document).ready(function() {
+        $(".enemycard").draggable("disable");
+    })
 $(document).ready(function () {
         $(".avatar_container").on('mousedown', function () {
                 // Убедитесь, что класс animate удален перед добавлением, 
@@ -306,18 +328,6 @@ $(document).ready(function () {
         });
 });
 
-$(document).ready(function () {
-        $(".card").on('mousedown', function () {
-                // Убедитесь, что класс animate удален перед добавлением, 
-                // чтобы можно было повторно запустить анимацию
-                $(this).removeClass("animate_card").addClass("animate_card");
-        });
-
-        // Удалить класс animate по завершении анимации, чтобы можно было запустить анимацию снова
-        $(".avatar").on('animationend', function () {
-                $(this).removeClass("animate_card");
-        });
-});
 
 function getCookie(name) {
         const cookies = document.cookie.split(';');
