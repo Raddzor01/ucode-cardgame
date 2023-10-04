@@ -26,6 +26,8 @@ socket.on('youWin', () => {
 
 socket.on('placeEnemyCard', (data) => {
         console.log(data);
+        createCardSlots();
+        displayEnemyCard(data);
 });
 
 startTimer();
@@ -78,6 +80,7 @@ socket.on('startGame', (data) => {
                 data[0].startCards.forEach((card) => {
                         createCard(card);
                 });
+                activateDragAndDrop(".card");
 
 
         } else {
@@ -92,6 +95,7 @@ socket.on('startGame', (data) => {
                 data[1].startCards.forEach((card) => {
                         createCard(card);
                 });
+                activateDragAndDrop(".card");
         }
 
         console.log(firstPlayer.startCards);
@@ -138,27 +142,104 @@ function createCard(cardData) {
 
         // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
         document.getElementById('player1_cards').appendChild(cardDiv);
-        activateDragAndDrop(cardDiv);
 }
 
-function activateDragAndDrop(cardElement) {
-        var $container = $("#player1-area"),
-                gridWidth = 150,
+function displayEnemyCard(cardData) {
+        const card = cardData.card;
+        const cardDiv = document.createElement('div');
+        cardDiv.className = "card";
+        cardDiv.classList.add('enemy-card');
+        cardDiv.id = `${card.id}`;
+
+        // Создаем div для стоимости маны
+        const manaCostDiv = document.createElement('div');
+        manaCostDiv.className = "mana_cost";
+        manaCostDiv.textContent = card.mana; // Предполагая, что у вас есть поле mana_cost в данных карты
+        cardDiv.appendChild(manaCostDiv);
+
+        // Создаем p для имени карты
+        const cardNameP = document.createElement('p');
+        cardNameP.className = "cardname";
+        cardNameP.textContent = card.name; // Предполагая, что у вас есть поле name в данных карты
+        cardDiv.appendChild(cardNameP);
+
+        // Создаем img для изображения карты
+        const cardImg = document.createElement('img');
+        cardImg.className = "card_img";
+        cardImg.src = card.picture_path; // Предполагая, что у вас есть поле image_url в данных карты
+        cardImg.alt = card.name;
+        cardDiv.appendChild(cardImg);
+
+        // Создаем div для атаки
+        const attackDiv = document.createElement('div');
+        attackDiv.className = "attack";
+        attackDiv.textContent = card.damage; // Предполагая, что у вас есть поле attack в данных карты
+        cardDiv.appendChild(attackDiv);
+
+        // Создаем div для здоровья
+        const hpDiv = document.createElement('div');
+        hpDiv.className = "hp";
+        hpDiv.textContent = card.hp; // Предполагая, что у вас есть поле hp в данных карты
+        cardDiv.appendChild(hpDiv);
+
+        const targetSlot = document.getElementById(`slot-${cardData.slotId}`);
+        if (targetSlot) {
+                targetSlot.appendChild(cardDiv);
+        } else {
+                console.error(`Slot with ID slot-${cardData.slotId} not found`);
+        }
+}
+
+function createDivWithStyles({ container, className, idPrefix, topOffset }) {
+        const gridWidth = 150,
                 gridHeight = 250,
-                gridRows = 1,
                 gridColumns = 8,
-                i, x;
+                gap = 20,  // gap между дивами
+                totalDivsWidth = (gridColumns * gridWidth) + (gridColumns - 1) * gap,
+                leftOffset = (container.width() - totalDivsWidth) / 2;
 
-        let containerWidth = $container.width(),
-                totalDivsWidth = (gridColumns * gridWidth) + (gridColumns - 1) * 10, // Добавляем отступы
-                leftOffset = (containerWidth - totalDivsWidth) / 2;
-
-        if ($(".dropzone").length === 0) {
-                for (i = 0; i < gridColumns; i++) {
-                        x = i * (gridWidth + 20) + leftOffset; // Учитываем отступ
+        if ($("." + className).length === 0) {
+                for (let i = 0; i < gridColumns; i++) {
+                        const x = i * (gridWidth + gap) + leftOffset; // замените 17 на gap
                         $("<div/>").css({
                                 position: "absolute",
                                 // border: "1px solid #454545",
+                                width: gridWidth - 1,
+                                height: gridHeight - 1,
+                                top: topOffset,
+                                left: x,
+                                zIndex: -9999
+                        })
+                                .attr('id', idPrefix + '-' + i)
+                                .prependTo(container)
+                                .addClass(className);
+                }
+        }
+
+}
+
+function createCardSlots() {
+        createDivWithStyles({
+                container: $("#player2-area"),
+                className: "slot",
+                idPrefix: "slot",
+                topOffset: 5
+        });
+}
+
+function activateDragAndDrop(cardElement) {
+        createDivWithStyles({
+                container: $("#player1-area"),
+                className: "dropzone",
+                idPrefix: "",
+                topOffset: 5
+        });
+        if ($(".dropzone").length === 0) {
+                for (i = 0; i < gridColumns; i++) {
+                        x = i * (gridWidth + 10) + leftOffset; // Учитываем отступ
+                        $("<div/>").css({
+                                position: "absolute",
+                                border: "1px solid #454545",
                                 width: gridWidth - 1,
                                 height: gridHeight - 1,
                                 top: 5,
@@ -167,9 +248,6 @@ function activateDragAndDrop(cardElement) {
                         }).prependTo($container).addClass("dropzone");
                 }
         }
-
-
-        let startPosition = {};
 
         // Используем переданный элемент cardElement вместо .card
         $(cardElement).draggable({
@@ -213,6 +291,7 @@ function activateDragAndDrop(cardElement) {
                 }
         });
 }
+
 
 $(document).ready(function () {
         $(".avatar_container").on('mousedown', function () {
