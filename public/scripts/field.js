@@ -68,10 +68,9 @@ socket.on('placeEnemyCard', (data) => {
 
 function beginTurnForPlayer(player) {
         currentPlayer = player;
-        if (player.firstTurn === true) {
-                document.getElementById('endTurnButton').style.display = 'block';
-                startTimer();
-        }
+        document.getElementById('endTurnButton').style.display = 'block';
+        startTimer();
+        disableDragForCards(".card");
 }
 
 function startTimer() {
@@ -147,14 +146,16 @@ socket.on('startGame', (data) => {
                 firstPlayerContainer.classList.add('current-user');
                 secondPlayerContainer.classList.remove('current-user');
 
-                if (firstPlayer.firstTurn)
-                        beginTurnForPlayer(firstPlayer);
-                else
-                        startTimer();
-
                 addThreePlayerCards(data[0]);
                 activateDragAndDrop(".card");
                 addThreeEnemyCards();
+                
+                if (firstPlayer.firstTurn)
+                        beginTurnForPlayer(firstPlayer);
+                else {
+                        disableDragForCards(".card");
+                        startTimer();
+                }
 
         } else {
                 document.getElementById('first_player_login').innerHTML = secondPlayer.login;
@@ -166,14 +167,16 @@ socket.on('startGame', (data) => {
                 firstPlayerContainer.classList.remove('current-user');
 
                 addThreePlayerCards(data[1]);
+                
+                activateDragAndDrop(".card");
+                addThreeEnemyCards();
 
                 if (secondPlayer.firstTurn)
                         beginTurnForPlayer(secondPlayer);
-                else
+                else {
+                        disableDragForCards(".card");
                         startTimer();
-
-                activateDragAndDrop(".card");
-                addThreeEnemyCards();
+                }
         }
 
         // if (firstPlayer.firstTurn) {
@@ -393,11 +396,11 @@ function createDivWithStyles({ container, className, idPrefix, topOffset }) {
                                         top: topOffset,
                                         left: x,
                                         zIndex: -1  /* чтобы убедиться, что div находится под другими элементами */
-                                    })
-                                    .attr('id', idPrefix + '-' + i)
-                                    .prependTo(container)
-                                    .addClass(className);
-                                    
+                                })
+                                        .attr('id', idPrefix + '-' + i)
+                                        .prependTo(container)
+                                        .addClass(className);
+
                         } else {
                                 $("<div/>").css({
                                         position: "absolute",
