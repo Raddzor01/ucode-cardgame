@@ -134,7 +134,6 @@ html, body {
 
     background: rgba(66, 78, 139, 0.7);
     border-radius: 20px;
-    z-index: -100;
 }
 
 .line {
@@ -707,16 +706,37 @@ html, body {
     transition: all 0.3s ease-in-out;
 }
 
-#player2_cards .card {
+.enemies_unknown_card {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    margin-bottom: 125px;
+    /* устанавливаем карточку на нижний край экрана */
+    transform: translateY(50%);
+    /* !!!!!! */
+
+    position: relative;
+    width: 150px;
+    height: 250px;
+
+    background-color: #617A9F;
+    border: 4px solid #435165;
+    border-radius: 50px;
+
+    transition: all 0.3s ease-in-out;
+
+    cursor: pointer;
 
     transform: translateY(0%);
     margin-left: 10px;
 }
 
-#player2_cards .card:hover {
+.enemies_unknown_card svg {
+    margin-top: 90px;
+}
+
+.enemies_unknown_card:hover {
     transform: translateY(10px);
     box-shadow: rgba(191, 4, 38, 0.4) 0px 5px 5px 5px,
 
@@ -727,7 +747,7 @@ html, body {
         rgba(191, 4, 38, 0.4) -5px 0px 5px 5px;
 }
 
-#player2_cards .card:active {
+.enemies_unknown_card:active {
     transform: scale(0.95);
 
 
