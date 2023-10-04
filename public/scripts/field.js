@@ -17,6 +17,7 @@ socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - 
 socket.on("getNewCard", (data) => {
         console.log(data);
         createCard(data, true);
+        disableDragForCards(".card");
 
 });
 
@@ -35,6 +36,7 @@ socket.on("changeTurn", (data) => {
         } else {
                 currentPlayer = firstPlayer;
         }
+        enableDragForCards(".card");
 
         console.log(currentPlayer.login + " your turn");
         startTimer();
@@ -89,6 +91,7 @@ function endTurn() {
         }
         socket.emit("endTurn");
 
+        disableDragForCards(".card");
         // Меняем ход
         if (currentPlayer === firstPlayer) {
                 currentPlayer = secondPlayer;
@@ -97,6 +100,22 @@ function endTurn() {
                 currentPlayer = firstPlayer;
         }
         startTimer();
+}
+
+function disableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'none';
+        });
+}
+
+function enableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'auto';
+        });
 }
 
 socket.on('startGame', (data) => {

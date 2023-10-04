@@ -4,7 +4,6 @@ html, body {
     overflow: hidden;
 }
 
-
 #field_body {
     width: 100vw;
     height: 100vh;
@@ -36,7 +35,6 @@ html, body {
 }
 
 #second-player {
-
     top: 140px;
 }
 
@@ -660,9 +658,6 @@ html, body {
     text-align: center;
 
     color: #FFFFFF;
-
-
-
 }
 
 
@@ -737,6 +732,7 @@ html, body {
     transform: translateY(-150%);  /* начальное положение - наполовину за пределами области просмотра сверху */
     opacity: 0;  /* сделаем карту прозрачной в начальном состоянии */
 }
+
 .enemies_unknown_card svg {
     margin-top: 100px;
 }
@@ -756,7 +752,6 @@ html, body {
 .enemies_unknown_card:active {
     transform: scale(0.95);
 }
-
 
 
 
