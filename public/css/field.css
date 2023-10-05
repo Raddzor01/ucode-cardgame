@@ -901,5 +901,8 @@ html, body {
 }
 .disabled_card {
     pointer-events: none;
-    opacity: 0.5;
+    box-shadow: rgba(191, 4, 38, 0.4) 0px 5px 5px 5px,
+    rgba(191, 4, 38, 0.4) 0px -5px 5px 5px,
+    rgba(191, 4, 38, 0.4) 5px 0px 5px 5px,
+    rgba(191, 4, 38, 0.4) -5px 0px 5px 5px;
 }

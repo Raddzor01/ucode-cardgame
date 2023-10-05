@@ -18,6 +18,7 @@ socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - 
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
+        disableDragForCards(".card");
         
 });
 
@@ -38,7 +39,7 @@ socket.on("changeTurn", (data) => {
 
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
 
-        // enableDragForCards(".card");
+        enableDragForCards(".card");
 
         document.getElementById('endTurnButton').disabled = false;
         document.getElementById('endTurnButton').textContent = "End Turn";
@@ -53,7 +54,7 @@ socket.on("changeTurn", (data) => {
 
 function makeCardDraggable(card) {
         console.log("makeCardDraggable");
-        $(".dropzone").droppable("disable");
+        
         $(card).draggable({
                 revert: true,
                 start: function (event, ui) {
@@ -147,7 +148,7 @@ function endTurn() {
         }
         socket.emit("endTurn");
 
-        // disableDragForCards(".card");
+        disableDragForCards(".card");
 
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
 
@@ -194,7 +195,7 @@ socket.on('startGame', (data) => {
                         beginTurnForPlayer(firstPlayer);
                 else {
                         // setTimeout(() => {
-                                // disableDragForCards(".card");
+                                disableDragForCards(".card");
                         // }, 1900);
                         startTimer(false);
                 }
@@ -216,7 +217,7 @@ socket.on('startGame', (data) => {
                         beginTurnForPlayer(secondPlayer);
                 else {
                         // setTimeout(() => {
-                                // disableDragForCards(".card");
+                                disableDragForCards(".card");
                         // }, 1900);
                         startTimer(false);
                         turn++;
@@ -521,7 +522,7 @@ function activateDragAndDrop(cardElement) {
         });
 
         $(".dropzone").droppable({
-                accept: ".card",
+                accept: ".card:not(.dropped)",
                 drop: function (event, ui) {
                         
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
@@ -592,4 +593,20 @@ function minusCountCards() {
         if (!isNaN(currentValue)) {
                 numberDiv.textContent = currentValue - 1;
         }
+}
+
+function disableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'none';
+        });
+}
+
+function enableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'auto';
+        });
 }
