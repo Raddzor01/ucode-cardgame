@@ -21,6 +21,10 @@ socket.on("getNewCard", (data) => {
         
 });
 
+socket.on("roomNotFound", () => {
+        window.location.href = "/";
+});
+
 socket.on("changeTurn", (data) => {
         turn++;
         console.log("changeTurn " + data.mana);
@@ -43,11 +47,13 @@ socket.on("changeTurn", (data) => {
         console.log(currentPlayer.login + " your turn");
         startTimer();
         minusCountCards();
+        $(".dropped").removeClass("disabled_card");
         makeCardDraggable(".dropped");
 });
 
 function makeCardDraggable(card) {
         console.log("makeCardDraggable");
+        $(".dropzone").droppable("disable");
         $(card).draggable({
                 revert: true,
                 start: function (event, ui) {
@@ -494,9 +500,9 @@ function activateDragAndDrop(cardElement) {
         $(cardElement).draggable({
                 revert: "invalid",
                 start: function (event, ui) {
-                        
-                        let playerMana = document.querySelector('.player_mana').textContent.split("/")[1];
-                        if(playerMana < ui.helper.find('.mana_cost').text())
+                        let playerMana = parseInt(document.querySelector('.player_mana').textContent.split("/")[1]);
+                        let cardMana = parseInt(ui.helper.find('.mana_cost').text());
+                        if(playerMana < cardMana)
                                 return false;
 
                         console.log("Card was dropped into a dropzone");
@@ -519,9 +525,8 @@ function activateDragAndDrop(cardElement) {
                 drop: function (event, ui) {
                         
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
-                        let cardCost = ui.helper.find('.mana_cost').text();
-
-                        document.querySelector('.player_mana').textContent = `${playerMana[0]}/${playerMana[1]-cardCost}`
+                        let cardCost = parseInt(ui.helper.find('.mana_cost').text());
+                        document.querySelector('.player_mana').textContent = `${playerMana[0]}/${parseInt(playerMana[1]) - cardCost}`
 
                         const cardId = ui.draggable.attr("id");
                         const dropZonePosition = $(this).index('.dropzone');
