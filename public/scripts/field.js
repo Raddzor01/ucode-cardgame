@@ -12,8 +12,19 @@ let turn = 0;
 socket.emit("getUserData", getCookie('token'));
 
 function findCardBySlotId(slotId) {
+        console.log(-(slotId - 7));
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
-        const cardElement = $(`#player1_area #-${slotId} .card`);
+        const cardElement = $(`#-${-(slotId - 7)} .card`);
+        if (cardElement.length > 0) {
+                return cardElement;
+        }
+        return null;
+}
+
+function findEnemyCardBySlotId(slotId, isAttacked = true) {
+        console.log(slotId);
+        // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
+        const cardElement = $(`#slot-${slotId} .card`);
         if (cardElement.length > 0) {
                 return cardElement;
         }
@@ -25,10 +36,15 @@ socket.on("enemyAttack", (data) => {
 
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
         const attackedCard = findCardBySlotId(data.userCardIndex);
-
-        if (attackedCard) {
-                const nativeDomElement = attackedCard[0];
-                console.log("Attacked card found:", nativeDomElement.querySelector('.cardname').textContent);
+        const attackCard = findEnemyCardBySlotId(data.enemyCardIndex);
+        if (attackedCard && attackCard) {
+                const attackedCardDOM = attackedCard[0];
+                const attackCardDOM = attackCard[0];
+                attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
+                if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
+                        attackedCardDOM.innerHTML = '';
+                // console.log("Attacked card found:", nativeDomElement1.querySelector('.cardname').textContent);
+                // console.log("Attacked card found:", nativeDomElement2.querySelector('.cardname').textContent);
 
         } else {
                 console.log("Card not found in the specified slot.");
