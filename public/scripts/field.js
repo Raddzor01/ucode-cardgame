@@ -136,9 +136,7 @@ function makeCardDraggable(card) {
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
 
-                                const attackCard = findCardBySlotId(slotId);
-
-                                const attackCardDOM = attackCard[0];
+                                const attackCardDOM = findCardBySlotId(slotId)[0].querySelector(`.card`);
                                 const playerHpElement = document.querySelector('#enemyHp');
                                 playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
                         }
