@@ -80,7 +80,7 @@ function startTimer() {
                 remainingTime--;
                 document.querySelector(".timer").textContent = remainingTime + "s";
 
-                if (remainingTime <= 0 && currentPlayer === userData.login) {
+                if (remainingTime <= 0) {
                         endTurn();
                 }
         }, 1000);
