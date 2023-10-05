@@ -254,3 +254,24 @@ html, body {
     -webkit-animation: jello-vertical 0.9s both;
     animation: jello-vertical 0.9s both;
 }
+
+.logout {
+    position: absolute;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    margin: 0;
+    cursor: pointer;
+
+    transition: transform 0.35s;
+
+    bottom: 46px;
+    left: 50px;
+}
+
+.logout:hover {
+    transform: scale(1.25);
+    transition: transform 0.5s;
+    /* Увеличиваем время анимации при уходе курсора */
+}
