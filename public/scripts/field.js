@@ -11,10 +11,29 @@ let turn = 0;
 
 socket.emit("getUserData", getCookie('token'));
 
-function attack() {
-        //   // - отправка запроса
+function findCardBySlotId(slotId) {
+        // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
+        const cardElement = $(`#player1_area #-${slotId} .card`);
+        if (cardElement.length > 0) {
+                return cardElement;
+        }
+        return null;
 }
-socket.on("enemyAttack", (data) => { console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex) }); // - прием запроса если противиник атаковал
+
+socket.on("enemyAttack", (data) => {
+        console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex);
+
+        // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
+        const attackedCard = findCardBySlotId(data.userCardIndex);
+
+        if (attackedCard) {
+                const nativeDomElement = attackedCard[0];
+                console.log("Attacked card found:", nativeDomElement.querySelector('.cardname').textContent);
+
+        } else {
+                console.log("Card not found in the specified slot.");
+        }
+});
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
@@ -56,7 +75,7 @@ socket.on("changeTurn", (data) => {
 function makeCardDraggable(card) {
 
         $(card).draggable("enable");
-        
+
         $(card).draggable({
                 revert: true,
                 start: function (event, ui) {
@@ -84,7 +103,7 @@ function makeCardDraggable(card) {
                         drop: function (event, ui) {
                                 $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
-                                
+
                                 const cardId = ui.draggable.attr("id");
 
                                 // Определите slotId и enemySlotId здесь
@@ -110,11 +129,10 @@ function makeCardDraggable(card) {
                         drop: function (event, ui) {
                                 $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
-                                
-                                const cardId = ui.draggable.attr("id");
 
+                                const cardId = ui.draggable.attr("id");
                                 const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
-                                const enemySlotId = $(this).index(".enemy-card");
+                                const enemySlotId = $(this).data('slot-id');
 
                                 $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
 
@@ -123,7 +141,6 @@ function makeCardDraggable(card) {
                         }
                 });
         }
-
 }
 
 socket.on("userData", (data) => {
@@ -431,6 +448,8 @@ function displayEnemyCard(cardData) {
         hpDiv.className = "hp";
         hpDiv.textContent = card.hp; // Предполагая, что у вас есть поле hp в данных карты
         cardDiv.appendChild(hpDiv);
+
+        cardDiv.setAttribute('data-slot-id', cardData.slotId);
 
         const targetSlot = document.getElementById(`slot-${cardData.slotId}`);
         if (targetSlot) {
