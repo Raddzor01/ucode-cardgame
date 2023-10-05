@@ -12,14 +12,14 @@ let turn = 0;
 socket.emit("getUserData", getCookie('token'));
 
 function attack() {
-        // socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
+        //   // - отправка запроса
 }
-socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - прием запроса если противиник атаковал
+socket.on("enemyAttack", (data) => { console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
         disableDragForCards(".card");
-        
+
 });
 
 socket.on("roomNotFound", () => {
@@ -54,7 +54,7 @@ socket.on("changeTurn", (data) => {
 
 function makeCardDraggable(card) {
         console.log("makeCardDraggable");
-        
+
         $(card).draggable({
                 revert: true,
                 start: function (event, ui) {
@@ -72,33 +72,52 @@ function makeCardDraggable(card) {
         });
         if ($(".enemy-card").length === 0) {
                 $("#second-player").droppable({
-                    accept: ".card",
-                    over: function (event, ui) {
-                        $(this).addClass("scale-up-center");
-                    },
-                    out: function (event, ui) {
-                        $(this).removeClass("scale-up-center");
-                    },
-                    drop: function (event, ui) {
-                        $(this).removeClass("scale-up-center");
-                        $(ui.draggable).addClass("disabled_card");
-                    }
+                        accept: ".card",
+                        over: function (event, ui) {
+                                $(this).addClass("scale-up-center");
+                        },
+                        out: function (event, ui) {
+                                $(this).removeClass("scale-up-center");
+                        },
+                        drop: function (event, ui) {
+                                $(this).removeClass("scale-up-center");
+                                $(ui.draggable).addClass("disabled_card");
+                                
+                                const cardId = ui.draggable.attr("id");
+
+                                // Определите slotId и enemySlotId здесь
+                                const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
+
+                                const enemySlotId = -1;
+
+                                console.log(slotId + " " + enemySlotId);
+                                socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
+                        }
                 });
-            } else {
+        } else {
                 $(".enemy-card").droppable({
-                    accept: ".card",
-                    over: function (event, ui) {
-                        $(this).addClass("scale-up-center");
-                    },
-                    out: function (event, ui) {
-                        $(this).removeClass("scale-up-center");
-                    },
-                    drop: function (event, ui) {
-                        $(this).removeClass("scale-up-center");
-                        $(ui.draggable).addClass("disabled_card");
-                    }
+                        accept: ".card",
+                        over: function (event, ui) {
+                                $(this).addClass("scale-up-center");
+                        },
+                        out: function (event, ui) {
+                                $(this).removeClass("scale-up-center");
+                        },
+                        drop: function (event, ui) {
+                                $(this).removeClass("scale-up-center");
+                                $(ui.draggable).addClass("disabled_card");
+                                
+                                const cardId = ui.draggable.attr("id");
+
+                                const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
+                                const enemySlotId = $(this).index(".enemy-card");
+
+                                console.log(slotId + " " + enemySlotId);
+                                socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
+                        }
                 });
-            }
+        }
+
 }
 
 socket.on("userData", (data) => {
@@ -124,7 +143,7 @@ socket.on('placeEnemyCard', (data) => {
         let enemyMana = document.querySelector('.enemy_mana').textContent.split("/");
         let cardCost = data.card.mana;
 
-        document.querySelector('.enemy_mana').textContent = `${enemyMana[0]}/${enemyMana[1]-cardCost}`
+        document.querySelector('.enemy_mana').textContent = `${enemyMana[0]}/${enemyMana[1] - cardCost}`
         removeEnemyCard();
 });
 
@@ -190,16 +209,16 @@ socket.on('startGame', (data) => {
                 secondPlayerContainer.classList.remove('current-user');
 
                 addThreePlayerCards(data[0]);
-                
+
                 if (firstPlayer.firstTurn)
                         beginTurnForPlayer(firstPlayer);
                 else {
                         // setTimeout(() => {
-                                disableDragForCards(".card");
+                        disableDragForCards(".card");
                         // }, 1900);
                         startTimer(false);
                 }
-                
+
                 addThreeEnemyCards();
 
         } else {
@@ -217,12 +236,12 @@ socket.on('startGame', (data) => {
                         beginTurnForPlayer(secondPlayer);
                 else {
                         // setTimeout(() => {
-                                disableDragForCards(".card");
+                        disableDragForCards(".card");
                         // }, 1900);
                         startTimer(false);
                         turn++;
                 }
-                
+
                 addThreeEnemyCards();
         }
 });
@@ -281,7 +300,7 @@ function createCard(cardData, isNewCard) {
 
         if (isNewCard) {
                 // setTimeout(() => {
-                        cardDiv.classList.add('visible');
+                cardDiv.classList.add('visible');
                 // }, 50);
         }
         // После небольшой паузы (например, 50 мс) добавляем класс visible, чтобы начать анимацию
@@ -294,14 +313,14 @@ function addThreePlayerCards(dataObject) {
         dataObject.startCards.forEach((card, index) => {
                 // Здесь мы создаем задержку перед тем, как создать и показать карту
                 // setTimeout(() => {
-                        createCard(card); // Создаем карту
-                        const addedCard = container.lastChild; // Последний добавленный элемент
+                createCard(card); // Создаем карту
+                const addedCard = container.lastChild; // Последний добавленный элемент
 
-                        // Задержка перед добавлением класса visible
-                        // setTimeout(() => {
-                                addedCard.classList.add('visible');
-                        }, 100);
-                // }, index * 300); // Общая задержка учитывает индекс, поэтому первая карта будет сразу, вторая через 300ms, третья через 600ms и т.д.
+                // Задержка перед добавлением класса visible
+                // setTimeout(() => {
+                addedCard.classList.add('visible');
+        }, 100);
+        // }, index * 300); // Общая задержка учитывает индекс, поэтому первая карта будет сразу, вторая через 300ms, третья через 600ms и т.д.
         // });
 }
 
@@ -337,7 +356,7 @@ function createEnemyCard(appendToContainer = false) {
 
                 // Добавляем анимацию появления
                 // setTimeout(() => {
-                        cardDiv.classList.add('visible');
+                cardDiv.classList.add('visible');
                 // }, 50);
         }
 
@@ -363,7 +382,7 @@ function addThreeEnemyCards() {
 
                 // Добавляем анимацию через небольшой промежуток времени для каждой карты
                 // setTimeout(() => {
-                        card.classList.add('visible');
+                card.classList.add('visible');
                 // }, i * 300); // 300ms между каждой анимацией
         }
 }
@@ -503,7 +522,7 @@ function activateDragAndDrop(cardElement) {
                 start: function (event, ui) {
                         let playerMana = parseInt(document.querySelector('.player_mana').textContent.split("/")[1]);
                         let cardMana = parseInt(ui.helper.find('.mana_cost').text());
-                        if(playerMana < cardMana)
+                        if (playerMana < cardMana)
                                 return false;
 
                         console.log("Card was dropped into a dropzone");
@@ -524,7 +543,7 @@ function activateDragAndDrop(cardElement) {
         $(".dropzone").droppable({
                 accept: ".card:not(.dropped)",
                 drop: function (event, ui) {
-                        
+
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
                         let cardCost = parseInt(ui.helper.find('.mana_cost').text());
                         document.querySelector('.player_mana').textContent = `${playerMana[0]}/${parseInt(playerMana[1]) - cardCost}`
