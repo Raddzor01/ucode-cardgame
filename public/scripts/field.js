@@ -12,9 +12,9 @@ let turn = 0;
 socket.emit("getUserData", getCookie('token'));
 
 function attack() {
-        // socket.emit("attack", {ownSlotIndex: 2, ownCardId: 3, enemySlotIndex: -1 }); // - отправка запроса
+        //   // - отправка запроса
 }
-socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - прием запроса если противиник атаковал
+socket.on("enemyAttack", (data) => { console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
@@ -75,31 +75,50 @@ function makeCardDraggable(card) {
                 $("#second-player").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
+                                
+                                const cardId = ui.draggable.attr("id");
+
+                                // Определите slotId и enemySlotId здесь
+                                const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
+
+                                const enemySlotId = -1;
+
+                                console.log(slotId + " " + enemySlotId);
+                                socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
                         }
                 });
         } else {
                 $(".enemy-card").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
+                                
+                                const cardId = ui.draggable.attr("id");
+
+                                const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
+                                const enemySlotId = $(this).index(".enemy-card");
+
+                                console.log(slotId + " " + enemySlotId);
+                                socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
                         }
                 });
         }
+
 }
 
 socket.on("userData", (data) => {
@@ -538,7 +557,7 @@ function activateDragAndDrop(cardElement) {
 
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
-                        ui.draggable.addClass("dropped");
+                        ui.draggable.addClass("dropped").addClass("disabled_card");
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке
