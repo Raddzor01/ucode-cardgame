@@ -86,6 +86,8 @@ function startTimer(commonTimer = true) {
 
                 if (remainingTime <= 0 && commonTimer) {
                         endTurn();
+                } else if (remainingTime < -3) {
+                        window.location.href = "/";
                 }
         }, 1000);
 }
