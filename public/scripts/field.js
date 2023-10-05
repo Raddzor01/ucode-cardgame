@@ -18,7 +18,7 @@ socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - 
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
-        disableDragForCards(".card");
+        
 });
 
 socket.on("changeTurn", (data) => {
@@ -34,7 +34,7 @@ socket.on("changeTurn", (data) => {
 
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
 
-        enableDragForCards(".card");
+        // enableDragForCards(".card");
 
         document.getElementById('endTurnButton').disabled = false;
         document.getElementById('endTurnButton').textContent = "End Turn";
@@ -43,7 +43,56 @@ socket.on("changeTurn", (data) => {
         console.log(currentPlayer.login + " your turn");
         startTimer();
         minusCountCards();
+        makeCardDraggable(".dropped");
 });
+
+function makeCardDraggable(card) {
+        console.log("makeCardDraggable");
+        $(card).draggable({
+                revert: true,
+                start: function (event, ui) {
+                        console.log("Drag started");
+                        ui.helper.css({
+                                "transition": "none",
+                        });
+                },
+                stop: function (event, ui) {
+                        console.log("Drag stopped");
+                        ui.helper.css({
+                                "transition": "all 0.3s ease-in-out",
+                        });
+                }
+        });
+        if ($(".enemy-card").length === 0) {
+                $("#second-player").droppable({
+                    accept: ".card",
+                    over: function (event, ui) {
+                        $(this).addClass("scale-up-center");
+                    },
+                    out: function (event, ui) {
+                        $(this).removeClass("scale-up-center");
+                    },
+                    drop: function (event, ui) {
+                        $(this).removeClass("scale-up-center");
+                        $(ui.draggable).addClass("disabled_card");
+                    }
+                });
+            } else {
+                $(".enemy-card").droppable({
+                    accept: ".card",
+                    over: function (event, ui) {
+                        $(this).addClass("scale-up-center");
+                    },
+                    out: function (event, ui) {
+                        $(this).removeClass("scale-up-center");
+                    },
+                    drop: function (event, ui) {
+                        $(this).removeClass("scale-up-center");
+                        $(ui.draggable).addClass("disabled_card");
+                    }
+                });
+            }
+}
 
 socket.on("userData", (data) => {
         userData = data;
@@ -92,7 +141,7 @@ function endTurn() {
         }
         socket.emit("endTurn");
 
-        disableDragForCards(".card");
+        // disableDragForCards(".card");
 
         currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
 
@@ -138,9 +187,9 @@ socket.on('startGame', (data) => {
                 if (firstPlayer.firstTurn)
                         beginTurnForPlayer(firstPlayer);
                 else {
-                        setTimeout(() => {
-                                disableDragForCards(".card");
-                        }, 1900);
+                        // setTimeout(() => {
+                                // disableDragForCards(".card");
+                        // }, 1900);
                         startTimer(false);
                 }
                 
@@ -160,9 +209,9 @@ socket.on('startGame', (data) => {
                 if (secondPlayer.firstTurn)
                         beginTurnForPlayer(secondPlayer);
                 else {
-                        setTimeout(() => {
-                                disableDragForCards(".card");
-                        }, 1900);
+                        // setTimeout(() => {
+                                // disableDragForCards(".card");
+                        // }, 1900);
                         startTimer(false);
                         turn++;
                 }
@@ -224,9 +273,9 @@ function createCard(cardData, isNewCard) {
         activateDragAndDrop(".card");
 
         if (isNewCard) {
-                setTimeout(() => {
+                // setTimeout(() => {
                         cardDiv.classList.add('visible');
-                }, 50);
+                // }, 50);
         }
         // После небольшой паузы (например, 50 мс) добавляем класс visible, чтобы начать анимацию
 
@@ -237,16 +286,16 @@ function addThreePlayerCards(dataObject) {
 
         dataObject.startCards.forEach((card, index) => {
                 // Здесь мы создаем задержку перед тем, как создать и показать карту
-                setTimeout(() => {
+                // setTimeout(() => {
                         createCard(card); // Создаем карту
                         const addedCard = container.lastChild; // Последний добавленный элемент
 
                         // Задержка перед добавлением класса visible
-                        setTimeout(() => {
+                        // setTimeout(() => {
                                 addedCard.classList.add('visible');
                         }, 100);
-                }, index * 300); // Общая задержка учитывает индекс, поэтому первая карта будет сразу, вторая через 300ms, третья через 600ms и т.д.
-        });
+                // }, index * 300); // Общая задержка учитывает индекс, поэтому первая карта будет сразу, вторая через 300ms, третья через 600ms и т.д.
+        // });
 }
 
 function createEnemyCard(appendToContainer = false) {
@@ -280,9 +329,9 @@ function createEnemyCard(appendToContainer = false) {
                 container.appendChild(cardDiv);
 
                 // Добавляем анимацию появления
-                setTimeout(() => {
+                // setTimeout(() => {
                         cardDiv.classList.add('visible');
-                }, 50);
+                // }, 50);
         }
 
         return cardDiv;
@@ -306,9 +355,9 @@ function addThreeEnemyCards() {
                 container.appendChild(card);
 
                 // Добавляем анимацию через небольшой промежуток времени для каждой карты
-                setTimeout(() => {
+                // setTimeout(() => {
                         card.classList.add('visible');
-                }, i * 300); // 300ms между каждой анимацией
+                // }, i * 300); // 300ms между каждой анимацией
         }
 }
 
@@ -445,6 +494,7 @@ function activateDragAndDrop(cardElement) {
         $(cardElement).draggable({
                 revert: "invalid",
                 start: function (event, ui) {
+                        
                         let playerMana = document.querySelector('.player_mana').textContent.split("/")[1];
                         if(playerMana < ui.helper.find('.mana_cost').text())
                                 return false;
@@ -467,6 +517,7 @@ function activateDragAndDrop(cardElement) {
         $(".dropzone").droppable({
                 accept: ".card",
                 drop: function (event, ui) {
+                        
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
                         let cardCost = ui.helper.find('.mana_cost').text();
 
@@ -478,6 +529,7 @@ function activateDragAndDrop(cardElement) {
 
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
+                        ui.draggable.addClass("dropped");
 
                         // Примените необходимые стили к перемещенной карточке
                         ui.draggable.css({
@@ -487,8 +539,6 @@ function activateDragAndDrop(cardElement) {
                                 "transform": "none",
                         });
 
-                        // Убедитесь, что карточка снова становится перетаскиваемой
-                        makeCardDraggable(ui.draggable);
                 }
         });
 
@@ -500,23 +550,6 @@ function checkMana(ui) {
 
 }
 
-function makeCardDraggable(card) {
-        $(card).draggable({
-                revert: "invalid",
-                start: function (event, ui) {
-                        console.log("Drag started");
-                        ui.helper.css({
-                                "transition": "none",
-                        });
-                },
-                stop: function (event, ui) {
-                        console.log("Drag stopped");
-                        ui.helper.css({
-                                "transition": "all 0.3s ease-in-out",
-                        });
-                }
-        });
-}
 
 $(document).ready(function () {
         $(".enemycard").draggable("disable");
@@ -554,20 +587,4 @@ function minusCountCards() {
         if (!isNaN(currentValue)) {
                 numberDiv.textContent = currentValue - 1;
         }
-}
-
-function disableDragForCards(selector) {
-        const cards = document.querySelectorAll(selector);
-        cards.forEach(card => {
-                card.classList.add('non-draggable');
-                card.style.pointerEvents = 'none';
-        });
-}
-
-function enableDragForCards(selector) {
-        const cards = document.querySelectorAll(selector);
-        cards.forEach(card => {
-                card.classList.add('non-draggable');
-                card.style.pointerEvents = 'auto';
-        });
 }
