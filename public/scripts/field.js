@@ -12,8 +12,19 @@ let turn = 0;
 socket.emit("getUserData", getCookie('token'));
 
 function findCardBySlotId(slotId) {
+        console.log(-(slotId - 7));
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
-        const cardElement = $(`#player1_area #${slotId} .card`);
+        const cardElement = $(`#-${-(slotId - 7)} .card`);
+        if (cardElement.length > 0) {
+                return cardElement;
+        }
+        return null;
+}
+
+function findEnemyCardBySlotId(slotId, isAttacked = true) {
+        console.log(slotId);
+        // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
+        const cardElement = $(`#slot-${slotId} .card`);
         if (cardElement.length > 0) {
                 return cardElement;
         }
@@ -21,14 +32,20 @@ function findCardBySlotId(slotId) {
 }
 
 socket.on("enemyAttack", (data) => {
-        // Находим карту по ее ID в player1-area
-        const attackedCard = document.querySelector(`#player1-area #${data.userCardIndex}`);
-    
-        if(attackedCard) {
-            // Извлекаем имя карты
-            const cardName = attackedCard.querySelector('.cardname').textContent;
-    
-            console.log(`Attacked card name: ${cardName}`);
+        console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex);
+
+        // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
+        const attackedCard = findCardBySlotId(data.userCardIndex);
+        const attackCard = findEnemyCardBySlotId(data.enemyCardIndex);
+        if (attackedCard && attackCard) {
+                const attackedCardDOM = attackedCard[0];
+                const attackCardDOM = attackCard[0];
+                attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
+                if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
+                        attackedCardDOM.innerHTML = '';
+                // console.log("Attacked card found:", nativeDomElement1.querySelector('.cardname').textContent);
+                // console.log("Attacked card found:", nativeDomElement2.querySelector('.cardname').textContent);
+
         } else {
             console.log('No card found with the specified ID.');
         }
@@ -67,6 +84,7 @@ socket.on("changeTurn", (data) => {
         startTimer();
         minusCountCards();
         $(".dropped").removeClass("disabled_card");
+        $(".card").removeClass("attacked");
         makeCardDraggable(".dropped");
 });
 
@@ -91,7 +109,7 @@ function makeCardDraggable(card) {
         });
         if ($(".enemy-card").length === 0) {
                 $("#second-player").droppable({
-                        accept: ".card",
+                        accept: ".card:not(.attacked)",
                         over: function (event, ui) {
                                 $(this).addClass("jello-horizontal");
                         },
@@ -109,13 +127,15 @@ function makeCardDraggable(card) {
 
                                 const enemySlotId = -1;
 
+                                $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
+
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
                         }
                 });
         } else {
                 $(".enemy-card").droppable({
-                        accept: ".card",
+                        accept: ".card:not(.attacked)",
                         over: function (event, ui) {
                                 $(this).addClass("jello-horizontal");
                         },
@@ -129,6 +149,8 @@ function makeCardDraggable(card) {
                                 const cardId = ui.draggable.attr("id");
                                 const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
                                 const enemySlotId = $(this).data('slot-id');
+
+                                $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
 
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
@@ -312,7 +334,6 @@ function createCard(cardData, isNewCard) {
         cardDiv.appendChild(hpDiv);
 
         // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
-        document.getElementById('player1_cards').appendChild(cardDiv);
         document.getElementById('player1_cards').appendChild(cardDiv);
 
         activateDragAndDrop(".card");
@@ -576,6 +597,7 @@ function activateDragAndDrop(cardElement) {
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
                         ui.draggable.addClass("dropped").addClass("disabled_card");
+                        
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке
