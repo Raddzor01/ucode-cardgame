@@ -33,10 +33,10 @@ function findEnemyCardBySlotId(slotId, isAttacked = true) {
 socket.on("enemyAttack", (data) => {
 
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
-        const attackedCard = findCardBySlotId(data.userCardIndex)[0].querySelector(`.card`);
+        const attackedCard = data.userCardIndex === -1 ? -1 : findCardBySlotId(data.userCardIndex)[0].querySelector(`.card`);
         const attackCard = findEnemyCardBySlotId(data.enemyCardIndex)[0].querySelector(`.card`);
         if (data.userCardIndex === -1) {
-                const attackCardDOM = attackCard[0];
+                const attackCardDOM = attackCard;
                 const playerHpElement = document.querySelector('#playerHp');
                 playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
         } else if (attackedCard && attackCard) {
