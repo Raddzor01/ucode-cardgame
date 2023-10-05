@@ -297,7 +297,6 @@ function createCard(cardData, isNewCard) {
 
         // Добавляем готовую карту в контейнер на странице (предполагая, что у вас есть контейнер с id="cards-container")
         document.getElementById('player1_cards').appendChild(cardDiv);
-        document.getElementById('player1_cards').appendChild(cardDiv);
 
         activateDragAndDrop(".card");
 
