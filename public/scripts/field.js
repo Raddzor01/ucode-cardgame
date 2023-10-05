@@ -94,13 +94,13 @@ function makeCardDraggable(card) {
                 $("#second-player").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
 
                                 const cardId = ui.draggable.attr("id");
@@ -118,13 +118,13 @@ function makeCardDraggable(card) {
                 $(".enemy-card").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
 
                                 const cardId = ui.draggable.attr("id");
@@ -175,6 +175,8 @@ function startTimer(commonTimer = true) {
 
                 if (remainingTime <= 0 && commonTimer) {
                         endTurn();
+                } else if (remainingTime < -3) {
+                        window.location.href = "/";
                 }
         }, 1000);
 }
@@ -574,7 +576,7 @@ function activateDragAndDrop(cardElement) {
 
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
-                        ui.draggable.addClass("dropped");
+                        ui.draggable.addClass("dropped").addClass("disabled_card");
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке

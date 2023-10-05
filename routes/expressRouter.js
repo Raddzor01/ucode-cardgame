@@ -12,8 +12,9 @@ router.get('/login', controller.login);
 router.post('/login', controller.loginUser);
 router.get('/logout', checkToken, controller.logout);
 router.get('/game', checkToken, controller.game);
-// напоминание пароля Приоритет: 5
+// напоминание пароля
 router.post('/upload', checkToken, controller.updatePhoto);
 router.get('/cards', checkToken, controller.cards);
+router.post('/all-cards', controller.allCards);
 
 export default router;

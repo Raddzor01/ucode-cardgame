@@ -135,8 +135,10 @@ export default class socketController {
 
     static async endTurn(io, socket, userData){
         const room = gameRooms[userData.roomNbr];
-        if(!room)
+        if(!room) {
             socket.emit("roomNotFound");
+            return;
+        }
         const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
         if(userData.cards-- > 0)
             io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);

@@ -2,6 +2,7 @@ import path from "path";
 import jsonwebtoken from "jsonwebtoken";
 import User from '../models/User.js';
 import config from "../config.json" assert { type: 'json' };
+import Card from "../models/Card.js";
 
 export default class controller {
 
@@ -85,5 +86,13 @@ export default class controller {
 
     static async cards(req, res) {
         res.sendFile(path.resolve('views', 'cards.html'));
+    }
+
+    static async allCards(req, res){
+        const cardsDeck = new Card();
+
+        cardsDeck.getAllCards().then(result => {
+            res.json(cardsDeck.cardsArray);
+        });
     }
 }
