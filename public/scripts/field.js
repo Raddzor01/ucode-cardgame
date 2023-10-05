@@ -35,7 +35,12 @@ socket.on("enemyAttack", (data) => {
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
         const attackedCard = findCardBySlotId(data.userCardIndex);
         const attackCard = findEnemyCardBySlotId(data.enemyCardIndex);
-        if (attackedCard && attackCard) {
+        if (data.userCardIndex === -1) {
+                const attackCardDOM = attackCard[0];
+                const playerHpElement = document.querySelector('#playerHp');
+                playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
+        }
+        else if (attackedCard && attackCard) {
                 const attackedCardDOM = attackedCard[0];
                 const attackCardDOM = attackCard[0];
                 attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
@@ -46,7 +51,7 @@ socket.on("enemyAttack", (data) => {
                 if(parseInt(attackCardDOM.querySelector('.hp').textContent) <= 0)
                         $(`#slot-${-(data.userCardIndex - 7)}`)[0].innerHTML = '';
 
-        } else if() {
+        } else {
                 console.log("Card not found in the specified slot.");
         }
 });
@@ -131,6 +136,12 @@ function makeCardDraggable(card) {
 
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
+
+                                const attackCard = findCardBySlotId(slotId);
+
+                                const attackCardDOM = attackCard[0];
+                                const playerHpElement = document.querySelector('#enemyHp');
+                                playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
                         }
                 });
         } else {
@@ -183,12 +194,12 @@ socket.on("userData", (data) => {
 
 socket.on('youWin', () => {
         alert("You Win!");
-        setTimeout(() => { document.location.href = "/" }, 200);
+        setTimeout(() => { document.location.href = "/" }, 3000);
 });
 
 socket.on('youLose', () => {
         alert("You Lose!");
-        setTimeout(() => { document.location.href = "/" }, 200);
+        setTimeout(() => { document.location.href = "/" }, 3000);
 });
 
 socket.on('placeEnemyCard', (data) => {
