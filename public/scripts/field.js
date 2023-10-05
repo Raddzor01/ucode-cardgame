@@ -14,7 +14,7 @@ socket.emit("getUserData", getCookie('token'));
 function findCardBySlotId(slotId) {
         console.log(-(slotId - 7));
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
-        const cardElement = $(`#-${-(slotId - 7)} .card`);
+        const cardElement = $(`#-${-(slotId - 7)}`);
         if (cardElement.length > 0) {
                 return cardElement;
         }
@@ -23,7 +23,7 @@ function findCardBySlotId(slotId) {
 
 function findEnemyCardBySlotId(slotId, isAttacked = true) {
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
-        const cardElement = $(`#slot-${slotId} .card`);
+        const cardElement = $(`#slot-${slotId}`);
         if (cardElement.length > 0) {
                 return cardElement;
         }
@@ -33,23 +33,22 @@ function findEnemyCardBySlotId(slotId, isAttacked = true) {
 socket.on("enemyAttack", (data) => {
 
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
-        const attackedCard = findCardBySlotId(data.userCardIndex);
-        const attackCard = findEnemyCardBySlotId(data.enemyCardIndex);
+        const attackedCard = findCardBySlotId(data.userCardIndex)[0].querySelector(`.card`);
+        const attackCard = findEnemyCardBySlotId(data.enemyCardIndex)[0].querySelector(`.card`);
         if (data.userCardIndex === -1) {
                 const attackCardDOM = attackCard[0];
                 const playerHpElement = document.querySelector('#playerHp');
                 playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
-        }
-        else if (attackedCard && attackCard) {
-                const attackedCardDOM = attackedCard[0];
-                const attackCardDOM = attackCard[0];
+        } else if (attackedCard && attackCard) {
+                const attackedCardDOM = attackedCard;
+                const attackCardDOM = attackCard;
                 attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
                 attackCardDOM.querySelector('.hp').textContent = parseInt(attackCardDOM.querySelector('.hp').textContent) - parseInt(attackedCardDOM.querySelector('.attack').textContent);
 
                 if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
-                        $(`#-${data.enemyCardIndex}`)[0].innerHTML = '';
+                        findCardBySlotId(data.userCardIndex)[0].innerHTML = '';
                 if(parseInt(attackCardDOM.querySelector('.hp').textContent) <= 0)
-                        $(`#slot-${-(data.userCardIndex - 7)}`)[0].innerHTML = '';
+                        findEnemyCardBySlotId(data.enemyCardIndex)[0].innerHTML = '';
 
         } else {
                 console.log("Card not found in the specified slot.");
@@ -161,18 +160,19 @@ function makeCardDraggable(card) {
                                 const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
                                 const enemySlotId = $(this).data('slot-id');
 
-                                const attackedCard = findCardBySlotId(slotId);
-                                const attackCard = findEnemyCardBySlotId(enemySlotId);
+                                const attackedCard = findCardBySlotId(slotId)[0].querySelector(`.card`);
+                                const attackCard = findEnemyCardBySlotId(enemySlotId)[0].querySelector(`.card`);
                                 if (attackedCard && attackCard) {
-                                        const attackedCardDOM = attackedCard[0];
-                                        const attackCardDOM = attackCard[0];
+                                        const attackedCardDOM = attackedCard;
+                                        const attackCardDOM = attackCard;
+                                        // console.log(attackedCardDOM.querySelector('.hp').textContent);
+                                        // console.log(attackCardDOM.querySelector('.hp').textContent);
                                         attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
                                         attackCardDOM.querySelector('.hp').textContent = parseInt(attackCardDOM.querySelector('.hp').textContent) - parseInt(attackedCardDOM.querySelector('.attack').textContent);
-
                                         if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
-                                                $(`#-${enemySlotId}`)[0].innerHTML = '';
+                                                findCardBySlotId(slotId)[0].innerHTML = '';
                                         if(parseInt(attackCardDOM.querySelector('.hp').textContent) <= 0)
-                                                $(`#slot-${-(slotId - 7)}`)[0].innerHTML = '';
+                                                findEnemyCardBySlotId(enemySlotId)[0].innerHTML = '';
                                 } else {
                                         console.log("Card not found in the specified slot.");
                                 }
