@@ -53,8 +53,9 @@ socket.on("changeTurn", (data) => {
 });
 
 function makeCardDraggable(card) {
-        console.log("makeCardDraggable");
 
+        $(card).draggable("enable");
+        
         $(card).draggable({
                 revert: true,
                 start: function (event, ui) {
@@ -555,6 +556,7 @@ function activateDragAndDrop(cardElement) {
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
                         ui.draggable.addClass("dropped");
+                        ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке
                         ui.draggable.css({
