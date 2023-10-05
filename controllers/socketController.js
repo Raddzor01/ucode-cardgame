@@ -51,9 +51,13 @@ export default class socketController {
             io.sockets.in(`room-${roomNbr}`).emit("toGame", "game");
             roomNbr++;
         } else {
-            gameRooms[roomNbr] = {players: []};
             userData.roomNbr = roomNbr;
-            gameRooms[roomNbr].inCreating = true;
+            gameRooms[roomNbr] = {
+                players: [],
+                inCreating: true,
+                gameTurn: 0,
+                mana: 1
+            }
             gameRooms[roomNbr].players.push(userData);
             matchQueue.enqueue(userData);
         }
@@ -128,10 +132,14 @@ export default class socketController {
     }
 
     static async endTurn(io, socket, userData){
+        const room = gameRooms[userData.roomNbr];
         const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
         if(userData.cards-- > 0)
             io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
-        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : userData.mana++ });
+        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: room.mana });
+        room.gameTurn++;
+        if (room.gameTurn % 2 === 1 && room.mana < 10)
+                room.mana++;
     }
 
     static async cancelSearch(io, socket, data) {

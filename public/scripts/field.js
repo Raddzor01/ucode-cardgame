@@ -7,6 +7,8 @@ let firstPlayer = null;
 let secondPlayer = null;
 let currentPlayer = null;
 
+let turn = 0;
+
 socket.emit("getUserData", getCookie('token'));
 
 function attack() {
@@ -20,6 +22,7 @@ socket.on("getNewCard", (data) => {
 });
 
 socket.on("changeTurn", (data) => {
+        turn++;
         console.log("changeTurn " + data.mana);
         document.querySelector(".player_mana").textContent = `${data.mana}/${data.mana}`;
         userData.mana = data.mana;
@@ -100,7 +103,9 @@ function endTurn() {
         document.getElementById('endTurnButton').style.color = "red";
 
         let enemyMana = parseInt(document.querySelector('.enemy_mana').textContent.split("/")[0]);
-        document.querySelector(".enemy_mana").textContent = `${++enemyMana}/${enemyMana}`;
+        if (turn !== 0 && enemyMana < 10) enemyMana++;
+        turn++;
+        document.querySelector(".enemy_mana").textContent = `${enemyMana}/${enemyMana}`;
 
 }
 
@@ -159,6 +164,7 @@ socket.on('startGame', (data) => {
                                 disableDragForCards(".card");
                         }, 1900);
                         startTimer(false);
+                        turn++;
                 }
                 
                 addThreeEnemyCards();
@@ -380,11 +386,11 @@ function createDivWithStyles({ container, className, idPrefix, topOffset }) {
                                         top: topOffset,
                                         left: x,
                                         zIndex: -1  /* чтобы убедиться, что div находится под другими элементами */
-                                    })
-                                    .attr('id', idPrefix + '-' + i)
-                                    .prependTo(container)
-                                    .addClass(className);
-                                    
+                                })
+                                        .attr('id', idPrefix + '-' + i)
+                                        .prependTo(container)
+                                        .addClass(className);
+
                         } else {
                                 $("<div/>").css({
                                         position: "absolute",
@@ -439,8 +445,8 @@ function activateDragAndDrop(cardElement) {
         $(cardElement).draggable({
                 revert: "invalid",
                 start: function (event, ui) {
-                        let playerMana = document.querySelector('.player_mana').textContent.split("/");
-                        if(parseInt(playerMana[1]) < ui.helper.find('.mana_cost').text())
+                        let playerMana = document.querySelector('.player_mana').textContent.split("/")[1];
+                        if(playerMana < ui.helper.find('.mana_cost').text())
                                 return false;
 
                         console.log("Card was dropped into a dropzone");
@@ -462,7 +468,7 @@ function activateDragAndDrop(cardElement) {
                 accept: ".card",
                 drop: function (event, ui) {
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
-                        let cardCost = parseInt(ui.helper.find('.mana_cost').text());
+                        let cardCost = ui.helper.find('.mana_cost').text();
 
                         document.querySelector('.player_mana').textContent = `${playerMana[0]}/${playerMana[1]-cardCost}`
 
