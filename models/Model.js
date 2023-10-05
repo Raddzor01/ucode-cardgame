@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../db/db.js";
+import { connectToDatabase } from "../utils/utils.js";
 
 export default class Model {
 

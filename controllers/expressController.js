@@ -82,4 +82,8 @@ export default class controller {
         await userTable.updateField({id: decoded.id, name: 'picture_path', value: filePath});
         res.redirect("/")
     }
+
+    static async cards(req, res) {
+        res.sendFile(path.resolve('views', 'cards.html'));
+    }
 }

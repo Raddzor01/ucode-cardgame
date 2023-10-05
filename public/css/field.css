@@ -206,6 +206,7 @@ html, body {
 }
 
 .leave_game_btn {
+    z-index: 2;
     position: absolute;
     margin-top: -145px;
     right: 15px;
@@ -239,7 +240,7 @@ html, body {
     left: 50%;
     height: 100%;
     transform: translateX(-50%);
-    z-index: -1000;
+    z-index: 2;
     background-repeat: no-repeat;
 }
 
@@ -753,7 +754,7 @@ html, body {
     transform: scale(0.95);
 }
 
-.player_mana {
+.mana {
     font-family: 'VT323';
     font-style: normal;
     font-weight: 400;
