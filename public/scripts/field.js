@@ -21,6 +21,10 @@ socket.on("getNewCard", (data) => {
         disableDragForCards(".card");
 });
 
+socket.on("roomNotFound", () => {
+        window.location.href = "/";
+});
+
 socket.on("changeTurn", (data) => {
         turn++;
         console.log("changeTurn " + data.mana);
@@ -445,8 +449,9 @@ function activateDragAndDrop(cardElement) {
         $(cardElement).draggable({
                 revert: "invalid",
                 start: function (event, ui) {
-                        let playerMana = document.querySelector('.player_mana').textContent.split("/")[1];
-                        if(playerMana < ui.helper.find('.mana_cost').text())
+                        let playerMana = parseInt(document.querySelector('.player_mana').textContent.split("/")[1]);
+                        let cardMana = parseInt(ui.helper.find('.mana_cost').text());
+                        if(playerMana < cardMana)
                                 return false;
 
                         console.log("Card was dropped into a dropzone");
@@ -468,9 +473,8 @@ function activateDragAndDrop(cardElement) {
                 accept: ".card",
                 drop: function (event, ui) {
                         let playerMana = document.querySelector('.player_mana').textContent.split("/");
-                        let cardCost = ui.helper.find('.mana_cost').text();
-
-                        document.querySelector('.player_mana').textContent = `${playerMana[0]}/${playerMana[1]-cardCost}`
+                        let cardCost = parseInt(ui.helper.find('.mana_cost').text());
+                        document.querySelector('.player_mana').textContent = `${playerMana[0]}/${parseInt(playerMana[1]) - cardCost}`
 
                         const cardId = ui.draggable.attr("id");
                         const dropZonePosition = $(this).index('.dropzone');
@@ -491,12 +495,6 @@ function activateDragAndDrop(cardElement) {
                         makeCardDraggable(ui.draggable);
                 }
         });
-
-}
-
-function checkMana(ui) {
-        let playerMana = parseInt(document.querySelector('.player_mana').textContent.split("/")[1]);
-        return !!playerMana < ui.helper.find('.mana_cost').text()
 
 }
 

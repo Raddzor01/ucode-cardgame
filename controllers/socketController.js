@@ -68,8 +68,10 @@ export default class socketController {
         const { id, login } = jsonwebtoken.verify(data, config.jswt.secretKey);
         const foundRoom = findRoomByUserData(id, login);
 
-        if(!foundRoom)
+        if(!foundRoom) {
+            socket.emit("roomNotFound");
             return userData;
+        }
 
         let roomIndex = gameRooms.indexOf(foundRoom);
 
@@ -133,6 +135,8 @@ export default class socketController {
 
     static async endTurn(io, socket, userData){
         const room = gameRooms[userData.roomNbr];
+        if(!room)
+            socket.emit("roomNotFound");
         const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
         if(userData.cards-- > 0)
             io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
