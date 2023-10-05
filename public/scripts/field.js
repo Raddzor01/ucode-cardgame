@@ -75,13 +75,13 @@ function makeCardDraggable(card) {
                 $("#second-player").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
                         }
                 });
@@ -89,13 +89,13 @@ function makeCardDraggable(card) {
                 $(".enemy-card").droppable({
                         accept: ".card",
                         over: function (event, ui) {
-                                $(this).addClass("scale-up-center");
+                                $(this).addClass("jello-horizontal");
                         },
                         out: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                         },
                         drop: function (event, ui) {
-                                $(this).removeClass("scale-up-center");
+                                $(this).removeClass("jello-horizontal");
                                 $(ui.draggable).addClass("disabled_card");
                         }
                 });
@@ -536,7 +536,7 @@ function activateDragAndDrop(cardElement) {
 
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
-                        ui.draggable.addClass("dropped");
+                        ui.draggable.addClass("dropped").addClass("disabled_card");
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке

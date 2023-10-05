@@ -1,0 +1,33 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#check_cards_body {
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url("/images/field_bg.png");
+    background-size: cover;
+
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.cards_wrapper {
+
+    width: calc(100% - 372px);
+    height: calc(100% - 200px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    outline: 2px red dotted;
+}
