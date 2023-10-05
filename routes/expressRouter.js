@@ -1,7 +1,7 @@
 import express from "express";
-import jsonwebtoken from "jsonwebtoken";
+import { checkToken } from "../utils/utils.js";
 
-import controller from "../controllers/authController.js";
+import controller from "../controllers/expressController.js";
 
 const router = express.Router();
 
@@ -14,18 +14,6 @@ router.get('/logout', checkToken, controller.logout);
 router.get('/game', checkToken, controller.game);
 // напоминание пароля Приоритет: 5
 router.post('/upload', checkToken, controller.updatePhoto);
-function checkToken(req, res, next) {
-    let token = req.cookies.token;
-    if (!token)
-        return res.redirect("/login");
-    jsonwebtoken.verify(token, "securepass", (err, decoded) => {
-        if (err) {
-            res.status(403).clearCookie('token').redirect("/login");
-            return;
-        }
-        req.user = decoded;
-        next();
-    });
-}
+router.get('/cards', checkToken, controller.cards);
 
 export default router;

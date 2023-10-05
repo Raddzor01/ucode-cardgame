@@ -15,29 +15,28 @@ function attack() {
 socket.on("enemyAttack", (data) => { console.log("enemyAttack" + data) }); // - прием запроса если противиник атаковал
 
 socket.on("getNewCard", (data) => {
-        // console.log(data);
         createCard(data, true);
         disableDragForCards(".card");
 });
 
 socket.on("changeTurn", (data) => {
         console.log("changeTurn " + data.mana);
+        document.querySelector(".player_mana").textContent = `${data.mana}/${data.mana}`;
+        userData.mana = data.mana;
 
         if (timerInterval) {
                 clearInterval(timerInterval);
         }
         createEnemyCard(true);
 
-        // Меняем ход
-        if (currentPlayer === firstPlayer) {
-                currentPlayer = secondPlayer;
+        currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
 
-        } else {
-                currentPlayer = firstPlayer;
-        }
         enableDragForCards(".card");
 
-        document.getElementById('endTurnButton').style.display = 'block';
+        document.getElementById('endTurnButton').disabled = false;
+        document.getElementById('endTurnButton').textContent = "End Turn";
+        document.getElementById('endTurnButton').style.color = "white";
+
         console.log(currentPlayer.login + " your turn");
         startTimer();
         minusCountCards();
@@ -45,6 +44,7 @@ socket.on("changeTurn", (data) => {
 
 socket.on("userData", (data) => {
         userData = data;
+        userData.mana = 1;
         socket.emit("connectToRoom", getCookie('token'));
 });
 
@@ -59,21 +59,17 @@ socket.on('youLose', () => {
 });
 
 socket.on('placeEnemyCard', (data) => {
-        // console.log(data);
+
         createCardSlots();
         displayEnemyCard(data);
+        let enemyMana = document.querySelector('.enemy_mana').textContent.split("/");
+        let cardCost = data.card.mana;
+
+        document.querySelector('.enemy_mana').textContent = `${enemyMana[0]}/${enemyMana[1]-cardCost}`
         removeEnemyCard();
 });
 
-function beginTurnForPlayer(player) {
-        currentPlayer = player;
-        if (player.firstTurn === true) {
-                document.getElementById('endTurnButton').style.display = 'block';
-                startTimer();
-        }
-}
-
-function startTimer() {
+function startTimer(commonTimer = true) {
         let remainingTime = 60;
         document.querySelector(".timer").textContent = "60s";
 
@@ -81,7 +77,7 @@ function startTimer() {
                 remainingTime--;
                 document.querySelector(".timer").textContent = remainingTime + "s";
 
-                if (remainingTime <= 0 && currentPlayer === userData.login) {
+                if (remainingTime <= 0 && commonTimer) {
                         endTurn();
                 }
         }, 1000);
@@ -94,33 +90,18 @@ function endTurn() {
         socket.emit("endTurn");
 
         disableDragForCards(".card");
-        // Меняем ход
-        if (currentPlayer === firstPlayer) {
-                currentPlayer = secondPlayer;
 
-        } else {
-                currentPlayer = firstPlayer;
-        }
-        startTimer();
+        currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
+
+        startTimer(false);
         minusCountCards();
-        document.getElementById('endTurnButton').style.display = 'none';
-}
+        document.getElementById('endTurnButton').disabled = true;
+        document.getElementById('endTurnButton').textContent = "Enemy Turn";
+        document.getElementById('endTurnButton').style.color = "red";
 
-function disableDragForCards(selector) {
-        console.log("disableDragForCards");
-        const cards = document.querySelectorAll(selector);
-        cards.forEach(card => {
-                card.classList.add('non-draggable');
-                card.style.pointerEvents = 'none';
-        });
-}
+        let enemyMana = parseInt(document.querySelector('.enemy_mana').textContent.split("/")[0]);
+        document.querySelector(".enemy_mana").textContent = `${++enemyMana}/${enemyMana}`;
 
-function enableDragForCards(selector) {
-        const cards = document.querySelectorAll(selector);
-        cards.forEach(card => {
-                card.classList.add('non-draggable');
-                card.style.pointerEvents = 'auto';
-        });
 }
 
 socket.on('startGame', (data) => {
@@ -155,7 +136,7 @@ socket.on('startGame', (data) => {
                         setTimeout(() => {
                                 disableDragForCards(".card");
                         }, 1900);
-                        startTimer();
+                        startTimer(false);
                 }
                 
                 addThreeEnemyCards();
@@ -177,23 +158,20 @@ socket.on('startGame', (data) => {
                         setTimeout(() => {
                                 disableDragForCards(".card");
                         }, 1900);
-                        startTimer();
+                        startTimer(false);
                 }
                 
                 addThreeEnemyCards();
         }
-        
-        
-
-        // if (firstPlayer.firstTurn) {
-        //         beginTurnForPlayer(firstPlayer);
-        // } else {
-        //         beginTurnForPlayer(secondPlayer);
-        // }
-
-        // console.log(firstPlayer.startCards);
-        // console.log(secondPlayer.startCards);
 });
+
+function beginTurnForPlayer(player) {
+        currentPlayer = player;
+        document.getElementById('endTurnButton').disabled = false;
+        document.getElementById('endTurnButton').textContent = "End Turn";
+        document.getElementById('endTurnButton').style.color = "white";
+        startTimer();
+}
 
 function createCard(cardData, isNewCard) {
         // Создаем главный div для карты
@@ -461,6 +439,11 @@ function activateDragAndDrop(cardElement) {
         $(cardElement).draggable({
                 revert: "invalid",
                 start: function (event, ui) {
+                        let playerMana = document.querySelector('.player_mana').textContent.split("/");
+                        if(parseInt(playerMana[1]) < ui.helper.find('.mana_cost').text())
+                                return false;
+
+                        console.log("Card was dropped into a dropzone");
                         console.log("Drag started");
                         startPosition = $(this).position();
                         ui.helper.css({
@@ -478,7 +461,10 @@ function activateDragAndDrop(cardElement) {
         $(".dropzone").droppable({
                 accept: ".card",
                 drop: function (event, ui) {
-                        console.log("Card was dropped into a dropzone");
+                        let playerMana = document.querySelector('.player_mana').textContent.split("/");
+                        let cardCost = parseInt(ui.helper.find('.mana_cost').text());
+
+                        document.querySelector('.player_mana').textContent = `${playerMana[0]}/${playerMana[1]-cardCost}`
 
                         const cardId = ui.draggable.attr("id");
                         const dropZonePosition = $(this).index('.dropzone');
@@ -499,6 +485,12 @@ function activateDragAndDrop(cardElement) {
                         makeCardDraggable(ui.draggable);
                 }
         });
+
+}
+
+function checkMana(ui) {
+        let playerMana = parseInt(document.querySelector('.player_mana').textContent.split("/")[1]);
+        return !!playerMana < ui.helper.find('.mana_cost').text()
 
 }
 
@@ -556,4 +548,20 @@ function minusCountCards() {
         if (!isNaN(currentValue)) {
                 numberDiv.textContent = currentValue - 1;
         }
+}
+
+function disableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'none';
+        });
+}
+
+function enableDragForCards(selector) {
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+                card.classList.add('non-draggable');
+                card.style.pointerEvents = 'auto';
+        });
 }

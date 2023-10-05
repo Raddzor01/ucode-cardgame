@@ -1,6 +1,5 @@
-import mysql from 'mysql2';
 import Model from "./Model.js";
-import {connectToDatabase} from "../db/db.js";
+import { connectToDatabase } from "../utils/utils.js";
 
 export default class User extends Model {
     constructor() {

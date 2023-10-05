@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 import config from "../config.json" assert { type: 'json' };
 import User from '../models/User.js';
 import Card from "../models/Card.js";
-import MatchQueue from "../utils/matchQueue.js";
+import { MatchQueue } from "../utils/utils.js";
 
 let roomNbr = 0;
 let gameRooms = [];
@@ -33,8 +33,8 @@ export default class socketController {
             userData.socket = socket;
             userData.roomNbr = -1;
             userData.hp = 30;
-            userData.mana = 1;
-            userData.cards = 17;
+            userData.mana = 2;
+            userData.cards = 27;
 
             return userData;
             } catch (err) {
@@ -131,7 +131,7 @@ export default class socketController {
         const newCardIndex = Math.floor(Math.random() * cardsDeck.cardsArray.length);
         if(userData.cards-- > 0)
             io.to(socket.id).emit("getNewCard", cardsDeck.cardsArray[newCardIndex]);
-        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : ++userData.mana });
+        socket.to(`room-${userData.roomNbr}`).emit("changeTurn", { mana: userData.mana === 10 ? 10 : userData.mana++ });
     }
 
     static async cancelSearch(io, socket, data) {
