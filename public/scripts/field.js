@@ -49,6 +49,7 @@ socket.on("changeTurn", (data) => {
         startTimer();
         minusCountCards();
         $(".dropped").removeClass("disabled_card");
+        $(".card").removeClass("attacked");
         makeCardDraggable(".dropped");
 });
 
@@ -73,7 +74,7 @@ function makeCardDraggable(card) {
         });
         if ($(".enemy-card").length === 0) {
                 $("#second-player").droppable({
-                        accept: ".card",
+                        accept: ".card:not(.attacked)",
                         over: function (event, ui) {
                                 $(this).addClass("jello-horizontal");
                         },
@@ -91,13 +92,15 @@ function makeCardDraggable(card) {
 
                                 const enemySlotId = -1;
 
+                                $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
+
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
                         }
                 });
         } else {
                 $(".enemy-card").droppable({
-                        accept: ".card",
+                        accept: ".card:not(.attacked)",
                         over: function (event, ui) {
                                 $(this).addClass("jello-horizontal");
                         },
@@ -112,6 +115,8 @@ function makeCardDraggable(card) {
 
                                 const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
                                 const enemySlotId = $(this).index(".enemy-card");
+
+                                $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
 
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
@@ -557,6 +562,7 @@ function activateDragAndDrop(cardElement) {
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
                         ui.draggable.addClass("dropped").addClass("disabled_card");
+                        
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке
