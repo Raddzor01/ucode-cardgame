@@ -37,19 +37,24 @@ socket.on("enemyAttack", (data) => {
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
         const attackedCard = findCardBySlotId(data.userCardIndex);
         const attackCard = findEnemyCardBySlotId(data.enemyCardIndex);
-        if (attackedCard && attackCard) {
+        if (data.userCardIndex === -1) {
+                const attackCardDOM = attackCard[0];
+                const playerHpElement = document.querySelector('#playerHp');
+                playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
+        }
+        else if (attackedCard && attackCard) {
                 const attackedCardDOM = attackedCard[0];
                 const attackCardDOM = attackCard[0];
                 attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
-                if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
+                if (parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
                         attackedCardDOM.innerHTML = '';
                 // console.log("Attacked card found:", nativeDomElement1.querySelector('.cardname').textContent);
                 // console.log("Attacked card found:", nativeDomElement2.querySelector('.cardname').textContent);
 
         } else {
-            console.log('No card found with the specified ID.');
+                console.log('No card found with the specified ID.');
         }
-    });
+});
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
@@ -131,6 +136,12 @@ function makeCardDraggable(card) {
 
                                 console.log(slotId + " " + enemySlotId);
                                 socket.emit("attack", { ownSlotIndex: slotId, ownCardId: cardId, enemySlotIndex: enemySlotId });
+
+                                const attackCard = findCardBySlotId(slotId);
+
+                                const attackCardDOM = attackCard[0];
+                                const playerHpElement = document.querySelector('#enemyHp');
+                                playerHpElement.textContent = parseInt(playerHpElement.textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
                         }
                 });
         } else {
@@ -597,7 +608,7 @@ function activateDragAndDrop(cardElement) {
                         // Просто добавьте элемент в dropzone
                         $(this).append(ui.draggable);
                         ui.draggable.addClass("dropped").addClass("disabled_card");
-                        
+
                         ui.draggable.draggable("disable");
 
                         // Примените необходимые стили к перемещенной карточке
