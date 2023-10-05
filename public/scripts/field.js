@@ -22,7 +22,6 @@ function findCardBySlotId(slotId) {
 }
 
 function findEnemyCardBySlotId(slotId, isAttacked = true) {
-        console.log(slotId);
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
         const cardElement = $(`#slot-${slotId} .card`);
         if (cardElement.length > 0) {
@@ -32,7 +31,6 @@ function findEnemyCardBySlotId(slotId, isAttacked = true) {
 }
 
 socket.on("enemyAttack", (data) => {
-        console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex);
 
         // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
         const attackedCard = findCardBySlotId(data.userCardIndex);
@@ -41,12 +39,14 @@ socket.on("enemyAttack", (data) => {
                 const attackedCardDOM = attackedCard[0];
                 const attackCardDOM = attackCard[0];
                 attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
-                if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
-                        attackedCardDOM.innerHTML = '';
-                // console.log("Attacked card found:", nativeDomElement1.querySelector('.cardname').textContent);
-                // console.log("Attacked card found:", nativeDomElement2.querySelector('.cardname').textContent);
+                attackCardDOM.querySelector('.hp').textContent = parseInt(attackCardDOM.querySelector('.hp').textContent) - parseInt(attackedCardDOM.querySelector('.attack').textContent);
 
-        } else {
+                if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
+                        $(`#-${data.enemyCardIndex}`)[0].innerHTML = '';
+                if(parseInt(attackCardDOM.querySelector('.hp').textContent) <= 0)
+                        $(`#slot-${-(data.userCardIndex - 7)}`)[0].innerHTML = '';
+
+        } else if() {
                 console.log("Card not found in the specified slot.");
         }
 });
@@ -149,6 +149,22 @@ function makeCardDraggable(card) {
                                 const cardId = ui.draggable.attr("id");
                                 const slotId = ui.draggable.closest(".dropzone").index(".dropzone");
                                 const enemySlotId = $(this).data('slot-id');
+
+                                const attackedCard = findCardBySlotId(slotId);
+                                const attackCard = findEnemyCardBySlotId(enemySlotId);
+                                if (attackedCard && attackCard) {
+                                        const attackedCardDOM = attackedCard[0];
+                                        const attackCardDOM = attackCard[0];
+                                        attackedCardDOM.querySelector('.hp').textContent = parseInt(attackedCardDOM.querySelector('.hp').textContent) - parseInt(attackCardDOM.querySelector('.attack').textContent);
+                                        attackCardDOM.querySelector('.hp').textContent = parseInt(attackCardDOM.querySelector('.hp').textContent) - parseInt(attackedCardDOM.querySelector('.attack').textContent);
+
+                                        if(parseInt(attackedCardDOM.querySelector('.hp').textContent) <= 0)
+                                                $(`#-${enemySlotId}`)[0].innerHTML = '';
+                                        if(parseInt(attackCardDOM.querySelector('.hp').textContent) <= 0)
+                                                $(`#slot-${-(slotId - 7)}`)[0].innerHTML = '';
+                                } else {
+                                        console.log("Card not found in the specified slot.");
+                                }
 
                                 $(ui.draggable).addClass("disabled_card attacked").draggable("disable");
 
