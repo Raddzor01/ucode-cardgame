@@ -13,7 +13,7 @@ socket.emit("getUserData", getCookie('token'));
 
 function findCardBySlotId(slotId) {
         // Находим элемент слота по id, затем находим дочерний элемент с классом "card"
-        const cardElement = $(`#player1_area #-${slotId} .card`);
+        const cardElement = $(`#player1_area #${slotId} .card`);
         if (cardElement.length > 0) {
                 return cardElement;
         }
@@ -21,19 +21,18 @@ function findCardBySlotId(slotId) {
 }
 
 socket.on("enemyAttack", (data) => {
-        console.log("enemyAttack " + data.userCardIndex + "   " + data.enemyCardIndex);
-
-        // Используем функцию findCardBySlotId для извлечения элемента карты по slotId
-        const attackedCard = findCardBySlotId(data.userCardIndex);
-
-        if (attackedCard) {
-                const nativeDomElement = attackedCard[0];
-                console.log("Attacked card found:", nativeDomElement.querySelector('.cardname').textContent);
-
+        // Находим карту по ее ID в player1-area
+        const attackedCard = document.querySelector(`#player1-area #${data.userCardIndex}`);
+    
+        if(attackedCard) {
+            // Извлекаем имя карты
+            const cardName = attackedCard.querySelector('.cardname').textContent;
+    
+            console.log(`Attacked card name: ${cardName}`);
         } else {
-                console.log("Card not found in the specified slot.");
+            console.log('No card found with the specified ID.');
         }
-});
+    });
 
 socket.on("getNewCard", (data) => {
         createCard(data, true);
