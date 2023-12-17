@@ -14,7 +14,7 @@ Before you begin, make sure you have [NodeJS](https://nodejs.org/) and [MySQL](h
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/ucode-cardgame.git
+   git clone https://github.com/Raddzor01/ucode-cardgame.git
    ```
 
 2. Navigate to the project directory:
